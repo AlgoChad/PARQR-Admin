@@ -208,7 +208,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                                 <div style="display: flex; flex-direction: column; padding: 40px; justify-content: center;">
                                     <span style="font-size: 20px; font-weight: bold;"><?php echo $operatorDoc['name'] ?></span>
                                     <span><?php echo $operatorDoc['phone_number'] ?></span>
-                                    <span style="padding-top: 10px; font-size: 10px;">Hired since <?php echo $operatorDoc['name'] ?></span> 
+                                    <span style="padding-top: 10px; font-size: 10px;">Hired since <?php echo $operatorDoc['hired_by'] ?></span> 
                                 </div>
                             </div>
                         </div>
@@ -241,6 +241,40 @@ $spaces = $database->getReference('parking_availability')->getValue();
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLqTYCYZm0XTxWG0uabY0oolAwb-8XK08",
+            authDomain: "parqr-8d2fd.firebaseapp.com",
+            databaseURL: "https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "parqr-8d2fd",
+            storageBucket: "parqr-8d2fd.appspot.com",
+            messagingSenderId: "267085407338",
+            appId: "1:267085407338:web:4c70ca4740d6a1d8919613"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Get a reference to the data you want to retrieve
+        const parkingRef = ref(database, 'parking_availability');
+
+        // Attach an event listener to get the data
+        onValue(parkingRef, (snapshot) => {
+            const data = snapshot.val();
+            displaySpaces(data);
+        });
+
+        function displaySpaces(spaces){
+            $('#available').text(spaces.max_spaces - spaces.occupied_spaces);
+            $('#occupied').text(spaces.occupied_spaces);
+        }
+    </script>
     <script>
     var ctx1 = document.getElementById('Chart').getContext('2d');
     var chart1 = new Chart(ctx1, {
@@ -339,13 +373,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
         $('#payment').text(transaction.payment);
     }
 
-    function displaySpaces(spaces){
-        $('#available').text(spaces.max_spaces - spaces.occupied_spaces);
-        $('#occupied').text(spaces.occupied_spaces);
-    }
-
     displayTransaction(<?php echo json_encode($data); ?>);
-    displaySpaces(<?php echo json_encode($spaces); ?>);
 
     function updateTransaction() {
         $.ajax({
@@ -354,7 +382,6 @@ $spaces = $database->getReference('parking_availability')->getValue();
             dataType: 'json',
             success: function(data) {
                 displayTransaction(data);
-                displaySpaces(data);
             }
         });
     }

@@ -29,7 +29,7 @@ if (!$database->getReference('parking_availability')->getSnapshot()->exists()) {
 }
 
 // Retrieve the parking availability data from the database
-$data = $database->getReference('parking_availability')->getValue();
+$spaces = $database->getReference('parking_availability')->getValue();
 
 // Handle form submission to edit the maximum parking spaces
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -220,16 +220,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </a>
                             </div>
                             <div style="text-align: center;">
-                                <span style="font-size: 150px; font-weight: bold;">100</span>
+                                <span id="total-space"style="font-size: 150px; font-weight: bold;"></span>
                             </div>
                             <div style="display: flex; flex-direction: row; justify-content: center;">
                                 <div style="display: flex; flex-direction: column; background-color: #F3BB01; padding: 40px; margin: 20px; border-radius: 15px; text-align: center;">
-                                    <span style="color: white;">Available</span>
-                                    <span style="font-size: 100px; font-weight: bold;">80</span>
+                                    <span style="color: white;">Occupied</span>
+                                    <span id="occupied" style="font-size: 100px; font-weight: bold;"></span>
                                 </div>
                                 <div style="display: flex; flex-direction: column; background-color: #213A5C; padding: 40px; margin: 20px; border-radius: 15px; text-align: center;">
                                     <span style="color: white;">Available</span>
-                                    <span style="font-size: 100px; color: white; font-weight: bold;">20</span>
+                                    <span id="available" style="font-size: 100px; color: white; font-weight: bold;">20</span>
                                 </div>
                             </div>
                         </div>
@@ -246,6 +246,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             </div>
         </div>
     </div>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
     var ctx = document.getElementById("Chart").getContext("2d");
@@ -288,6 +289,43 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         }
     });
+    </script>
+    <script type="module">
+        // Import the functions you need from the SDKs you need
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLqTYCYZm0XTxWG0uabY0oolAwb-8XK08",
+            authDomain: "parqr-8d2fd.firebaseapp.com",
+            databaseURL: "https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "parqr-8d2fd",
+            storageBucket: "parqr-8d2fd.appspot.com",
+            messagingSenderId: "267085407338",
+            appId: "1:267085407338:web:4c70ca4740d6a1d8919613"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+
+        // Get a reference to the data you want to retrieve
+        const parkingRef = ref(database, 'parking_availability');
+
+        // Attach an event listener to get the data
+        onValue(parkingRef, (snapshot) => {
+            const data = snapshot.val();
+            displaySpaces(data);
+        });
+
+        function displaySpaces(spaces){
+            $('#total-space').text(spaces.max_spaces);
+            $('#available').text(spaces.max_spaces - spaces.occupied_spaces);
+            $('#occupied').text(spaces.occupied_spaces);
+            myChart.data.datasets[0].data = [spaces.occupied_spaces, spaces.max_spaces - spaces.occupied_spaces];
+            myChart.update();
+        }
     </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>
