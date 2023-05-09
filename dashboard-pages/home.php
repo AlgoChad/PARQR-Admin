@@ -169,7 +169,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">Today's Income</span>
-                                    <span style="font-size: 24px;">+3,052</span>
+                                    <div>
+                                        <span id="today-income" style="font-size: 24px;"></span>
+                                        <span id="today-income-percentage" style="font-size: 12px;"></span>
+                                    </div>
                                 </div>
                                 <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Income.png" alt="">
@@ -177,7 +180,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">Today's Users</span>
-                                    <span style="font-size: 24px;">+3,052</span>
+                                    <div>
+                                        <span id="today-users" style="font-size: 24px;"></span>
+                                        <span id="today-users-percentage" style="font-size: 12px;"></span>
+                                    </div>
                                 </div>
                                 <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Users.png" alt="">
@@ -197,7 +203,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">New Clients</span>
-                                    <span style="font-size: 24px;">+3,052</span>
+                                    <div>
+                                        <span id="new-clients"style="font-size: 24px;"></span>
+                                        <span id="new-clients-percentage" style="font-size: 12px;"></span>
+                                    </div>
                                 </div>
                                 <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Clients.png" alt="">
@@ -205,7 +214,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">Total Sales</span>
-                                    <span style="font-size: 24px;">+3,052</span>
+                                    <div>
+                                        <span id="total-revenue" style="font-size: 24px;"></span>
+                                        <span id="total-revenue-percentage" style="font-size: 12px;"></span>
+                                    </div>
                                 </div>
                                 <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Sales.png" alt="">
@@ -293,7 +305,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     <script type="module">
         // Import the functions you need from the SDKs you need
         import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+        import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
 
         // Your web app's Firebase configuration
         const firebaseConfig = {
@@ -310,14 +322,135 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const app = initializeApp(firebaseConfig);
         const database = getDatabase(app);
 
+        const today = new Date().toISOString().slice(0, 10);
+        const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
+
         // Get a reference to the data you want to retrieve
         const parkingRef = ref(database, 'parking_availability');
+        const peakParkingRef = ref(database, `peak_parking/${new Date().toISOString().slice(0, 10)}`);
 
-        // Attach an event listener to get the data
+        // Attach an event listener to get the data from parking availability
         onValue(parkingRef, (snapshot) => {
             const data = snapshot.val();
+            const occupiedSpaces = data.occupied_spaces;
             displaySpaces(data);
+
+            // Update the peak parking ref if current occupied spaces is greater than previous peak
+            runTransaction(peakParkingRef, (currentPeak) => {
+                if (currentPeak === null || occupiedSpaces > currentPeak) {
+                    return occupiedSpaces;
+                } else {
+                    return currentPeak;
+                }
+            });
         });
+
+        const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
+
+        // Update total revenue for each day
+            onValue(transactionsCountAndRevenue, (snapshot) => {
+                const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
+                let totalRevenue = 0;
+                console.log(today);
+
+                    // Update the total revenue for each day, including today
+                onValue(transactionsCountAndRevenue, (snapshot) => {
+                const transactionCountAndRevenueData = snapshot.val() || {};
+                const todayRevenue = transactionCountAndRevenueData[today]?.revenue || 0;
+                const yesterdayRevnue = transactionCountAndRevenueData[yesterday]?.revenue || 0;
+
+                displayTodayUsers(transactionCountAndRevenueData[today]?.count, transactionCountAndRevenueData[yesterday]?.count);
+                
+
+                // Calculate the total revenue for all past days
+                let totalRevenue = Object.keys(transactionCountAndRevenueData)
+                    .filter((date) => date !== today) // exclude today's revenue
+                    .reduce((acc, date) => {
+                        const revenue = transactionCountAndRevenueData[date].revenue || 0;
+                        return acc + revenue;
+                    }, 0);
+
+                // Add today's revenue to the total revenue
+                const newTotalRevenue = totalRevenue + todayRevenue;
+
+                // Get the reference to the node for today's total revenue
+                const todayTotalRevenueRef = ref(database, `total_revenue/${today}`);
+                const yesterdayTotalRevenueRef = ref(database, `total_revenue/${yesterday}`);
+
+                // Get the current total revenue for today
+                onValue(todayTotalRevenueRef, (snapshot) => {
+                    const todayTotalRevenue = snapshot.val() || 0;
+
+                    // If the new total revenue is greater than the current one, update the node
+                    if (newTotalRevenue > todayTotalRevenue) {
+                        runTransaction(todayTotalRevenueRef, (currentRevenue) => {
+                            return newTotalRevenue;
+                        });
+                    }
+
+                    displayTodayrevenue(todayRevenue, yesterdayRevnue);
+                    onValue(yesterdayTotalRevenueRef, (snapshot) => {
+                        const yesterdayTotalRevenue = snapshot.val() || 0;
+                        displayTotalRevenue(newTotalRevenue, yesterdayTotalRevenue);
+                    })
+                });
+            });
+        });
+
+
+        const userRegisterCountToday = ref(database, `user_register_count/${today}`);
+        const userRegisterCountYesterday = ref(database, `user_register_count/${yesterday}`);
+         onValue(userRegisterCountToday, (snapshot) => {
+            const userRegisterCount = snapshot.val();
+            onValue(userRegisterCountYesterday, (snapshot) => {
+                const userRegistercountYesterday = snapshot.val();
+                displayNewClients(userRegisterCount, userRegistercountYesterday);
+            })
+        });
+
+        function displayTodayrevenue(todayRevenue, yesterdayRevenue){
+            console.log("yesterday revenue: " + yesterdayRevenue);
+            $('#today-income').text("+" + todayRevenue);
+            const revenueChangePercentage = calculatePercentageChange(todayRevenue, yesterdayRevenue);
+            displayPercentageChange('#today-income-percentage', revenueChangePercentage);
+        }
+
+        function displayNewClients(newClients, yesterdayClients){
+            console.log("yesterday clients: " + yesterdayClients);
+            $('#new-clients').text(newClients);
+            const clientsChangePercentage = calculatePercentageChange(newClients, yesterdayClients);
+            displayPercentageChange('#new-clients-percentage', clientsChangePercentage);
+        }
+
+        function displayTotalRevenue(totalRevenue, yesterdayTotalRevenue){
+            console.log("yesterday total revenue: " + yesterdayTotalRevenue);
+            $('#total-revenue').text(totalRevenue);
+            const totalRevenueChangePercentage = calculatePercentageChange(totalRevenue, yesterdayTotalRevenue);
+            displayPercentageChange('#total-revenue-percentage', totalRevenueChangePercentage);
+        }
+
+        function displayTodayUsers(todayUsers, yesterdayUsers){
+            console.log("yesterday users: " + yesterdayUsers);
+            $('#today-users').text(todayUsers);
+            const usersChangePercentage = calculatePercentageChange(todayUsers, yesterdayUsers);
+            displayPercentageChange('#today-users-percentage', usersChangePercentage);
+        }
+
+        function calculatePercentageChange(currentValue, previousValue) {
+            if (previousValue === 0) {
+                return 0;
+            }
+            return ((currentValue - previousValue) / previousValue) * 100;
+        }
+
+        function displayPercentageChange(selector, percentageChange) {
+            const percentageChangeText = percentageChange.toFixed(2) + "%";
+            const percentageChangeColor = percentageChange >= 0 ? "green" : "red";
+            $(selector).text(percentageChange >= 0 ? "+" + percentageChangeText : "-" + percentageChangeText ).css("color", percentageChangeColor);
+        }
+
+
+
 
         function displaySpaces(spaces){
             $('#total-space').text(spaces.max_spaces);

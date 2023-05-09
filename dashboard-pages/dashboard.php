@@ -21,7 +21,9 @@ $factory = (new Factory)->withServiceAccount('../firebase.json');
 $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app')->createDatabase();
 
 $transactionsData = $database->getReference('transactions')->getValue();
-$data = reset($transactionsData);
+if ($transactionsData) {
+    $data = reset($transactionsData);
+}
 $spaces = $database->getReference('parking_availability')->getValue();
 ?>
 <?php
