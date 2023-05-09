@@ -159,20 +159,136 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </ul>
             </div>
             <!-- Main Content -->
-            <div class="col-md-10">
-                <h1>Welcome to the Home</h1>
-                <h1>Parking Availability</h1>
-                <p>Maximum Spaces: <?php echo $data['max_spaces']; ?></p>
-                <p>Occupied Spaces: <?php echo $data['occupied_spaces']; ?></p>
-                
-                <form method="post">
-                    <label for="max_spaces">Edit Maximum Spaces:</label>
-                    <input type="number" id="max_spaces" name="max_spaces" value="<?php echo $data['max_spaces']; ?>">
-                    <button type="submit">Save</button>
-                </form>
+            <div class="col-md-10" style="overflow-y: scroll; height: calc(100vh);">
+                <div style="display: flex; padding-left: 30px; padding-top: 30px;">
+                        <h2 style="color: #213A5C;">Home</h1>
+                </div>
+                <div style="display: flex; flex-direction: row;">
+                    <div style=" width: 100%;">
+                        <div style="display: flex; flex-direction: row;">
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 10px;">Today's Income</span>
+                                    <span style="font-size: 24px;">+3,052</span>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <img src="../assets/home-icons/Income.png" alt="">
+                            </div>
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 10px;">Today's Users</span>
+                                    <span style="font-size: 24px;">+3,052</span>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <img src="../assets/home-icons/Users.png" alt="">
+                            </div>
+                        </div>
+                        <div style="background-color: #fef8e6; height: 600px; padding: 20px; margin: 20px; border-radius: 15px;">
+                            <div style="display: flex; flex-direction: row; padding-bottom: 10px;">
+                                <span style="font-size: 26px; color: #213A5C;">Parking Spaces</span>
+                            </div>
+                            <div style="height: 90%;">
+                                <canvas id="Chart"></canvas>
+                            </div>
+                        </div>
+                    </div>
+                    <div style="width: 100%;">
+                        <div style="display: flex; flex-direction: row;">
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 10px;">New Clients</span>
+                                    <span style="font-size: 24px;">+3,052</span>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <img src="../assets/home-icons/Clients.png" alt="">
+                            </div>
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                                <div style="display: flex; flex-direction: column;">
+                                    <span style="font-size: 10px;">Total Sales</span>
+                                    <span style="font-size: 24px;">+3,052</span>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <img src="../assets/home-icons/Sales.png" alt="">
+                            </div>
+                        </div>
+                        <div style="background-color: #ebedf0; height: 600px; padding: 20px; margin: 20px; border-radius: 15px;">
+                            <div style="display: flex; flex-direction: row;">
+                                <span style="font-size: 26px; color: #213A5C;">Total Number of Parking Spaces</span>
+                                <div style="flex: 1;"></div>
+                                <a class="btn"  href="operators.php">
+                                    <img src="../assets/home-icons/Menu.png" alt="">
+                                </a>
+                            </div>
+                            <div style="text-align: center;">
+                                <span style="font-size: 150px; font-weight: bold;">100</span>
+                            </div>
+                            <div style="display: flex; flex-direction: row; justify-content: center;">
+                                <div style="display: flex; flex-direction: column; background-color: #F3BB01; padding: 40px; margin: 20px; border-radius: 15px; text-align: center;">
+                                    <span style="color: white;">Available</span>
+                                    <span style="font-size: 100px; font-weight: bold;">80</span>
+                                </div>
+                                <div style="display: flex; flex-direction: column; background-color: #213A5C; padding: 40px; margin: 20px; border-radius: 15px; text-align: center;">
+                                    <span style="color: white;">Available</span>
+                                    <span style="font-size: 100px; color: white; font-weight: bold;">20</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div style="display: flex; padding-left: 30px; padding-top: 30px;">
+                            <h2 style="color: #213A5C;">Operator</h1>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
             </div>
         </div>
     </div>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+    var ctx = document.getElementById("Chart").getContext("2d");
+    var myChart = new Chart(ctx, {
+        type: 'doughnut',
+        data: {
+            labels: ['Occupied', 'Vacant'],
+            datasets: [{
+                label: 'Occupancy',
+                data: [75, 25],
+                backgroundColor: ['#F3BB01', '#213A5C'],
+                borderWidth: 0,
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            plugins: {
+                legend: {
+                    position: 'bottom',
+                },
+                tooltip: {
+                    enabled: true,
+                    callbacks: {
+                        label: function(context) {
+                            return context.label + ': ' + context.parsed.toFixed(0) + '%';
+                        }
+                    }
+                },
+                outlabels: {
+                    text: "%l %p",
+                    color: "white",
+                    stretch: 45,
+                    font: {
+                        resizable: true,
+                        minSize: 12,
+                        maxSize: 18,
+                    },
+                }
+            }
+        }
+    });
+    </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

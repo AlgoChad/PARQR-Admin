@@ -19,7 +19,6 @@ $factory = (new Factory)->withServiceAccount('../firebase.json');
 $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app')->createDatabase();
 
 $data = $database->getReference('transactions')->getValue();
-
 ?>
 <?php
     require_once '../vendor/autoload.php';
@@ -148,9 +147,9 @@ $data = $database->getReference('transactions')->getValue();
                         <div class="col-md-12">
                             <div>
                                 <?php foreach ($data as $info) : ?>
-                                    <?php if ($info->exists()) : ?>
+                                    <?php if (!empty($info)) : ?>
                                         <div>
-                                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; border: 1px solid #000; padding: 10px; border-radius: 10px;">
+                                            <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; border: 1px solid #000; padding: 10px; border-radius: 10px;">
                                                 <div>
                                                     <img src="<?php echo isset($profile_image_url) ? $profile_image_url : '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
                                                 </div>

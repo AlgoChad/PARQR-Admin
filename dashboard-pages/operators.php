@@ -39,7 +39,6 @@ $docs = $collection->documents();
     ]);
 
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
-
 ?>
 <!DOCTYPE html>
 <html>
@@ -175,7 +174,7 @@ $docs = $collection->documents();
                                 <?php foreach ($docs as $doc) : ?>
                                     <?php if ($doc->exists()) : ?>
                                         <div>
-                                            <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; border: 1px solid #000; padding: 10px; border-radius: 10px;">
+                                            <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; border: 1px solid #000; padding: 10px; border-radius: 10px;">
                                                 <div>
                                                     <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
                                                 </div>
