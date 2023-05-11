@@ -57,6 +57,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     ]);
 
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
+    $collection = $firestore->collection('operators');
+    $query = $collection->limit(3); // Retrieve three documents
+
+    $operatorDocs = $query->documents();
 ?>
 <!DOCTYPE html>
 <html>
@@ -251,8 +255,23 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div style="display: flex; padding-left: 30px; padding-top: 30px;">
                             <h2 style="color: #213A5C;">Operator</h1>
                     </div>
-                    <div>
-
+                    <div style="display: flex; flex-direction: row;">
+                        <ul style="list-style-type: none; padding: 0; display: flex; flex-direction: row;">
+                            <?php foreach ($operatorDocs as $operatorDoc): ?>
+                                <li style="margin-bottom: 20px;">
+                                    <div style="display: flex; align-items: center; margin: 20px;">
+                                        <div style="background-color: #213A5C; height: 150px; width: 150px; border-radius: 15px;">
+                                            <img src="<?php echo isset($operatorDoc['profile_picture']) ? $operatorDoc['profile_picture'] : '../assets/PARQR-White.png';?>" class="img-responsive" style="height: 100%; width: 100%; object-fit: cover; border-radius: 15px;">
+                                        </div>
+                                        <div style="display: flex; flex-direction: column; justify-content: center; margin-left: 20px;">
+                                            <span style="font-size: 20px; font-weight: bold;"><?php echo $operatorDoc['name']; ?></span>
+                                            <span><?php echo $operatorDoc['phone_number']; ?></span>
+                                            <span style="padding-top: 10px; font-size: 10px;">Hired since <?php echo $operatorDoc['hired_by']; ?></span>
+                                        </div>
+                                    </div>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
                     </div>
                 </div>
             </div>
@@ -267,8 +286,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         data: {
             labels: ['Occupied', 'Vacant'],
             datasets: [{
-                label: 'Occupancy',
-                data: [75, 25],
+                label: 'Parking Spaces',
+                data: [0, 0],
                 backgroundColor: ['#F3BB01', '#213A5C'],
                 borderWidth: 0,
             }]
@@ -281,22 +300,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     position: 'bottom',
                 },
                 tooltip: {
-                    enabled: true,
                     callbacks: {
-                        label: function(context) {
-                            return context.label + ': ' + context.parsed.toFixed(0) + '%';
+                        label: function (context) {
+                            var dataset = context.dataset;
+                            var data = dataset.data[context.dataIndex];
+                            var total = dataset.data.reduce((acc, curr) => acc + curr);
+                            var percentage = ((data / total) * 100).toFixed(2) + "%";
+                            return dataset.label + ": " + data + " (" + percentage + ")";
                         }
                     }
-                },
-                outlabels: {
-                    text: "%l %p",
-                    color: "white",
-                    stretch: 45,
-                    font: {
-                        resizable: true,
-                        minSize: 12,
-                        maxSize: 18,
-                    },
                 }
             }
         }
@@ -348,18 +360,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
 
         // Update total revenue for each day
-            onValue(transactionsCountAndRevenue, (snapshot) => {
-                const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
-                let totalRevenue = 0;
-                console.log(today);
+        onValue(transactionsCountAndRevenue, (snapshot) => {
+            const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
+            let totalRevenue = 0;
+            console.log(today);
 
                     // Update the total revenue for each day, including today
-                onValue(transactionsCountAndRevenue, (snapshot) => {
+            onValue(transactionsCountAndRevenue, (snapshot) => {
                 const transactionCountAndRevenueData = snapshot.val() || {};
                 const todayRevenue = transactionCountAndRevenueData[today]?.revenue || 0;
                 const yesterdayRevnue = transactionCountAndRevenueData[yesterday]?.revenue || 0;
 
-                displayTodayUsers(transactionCountAndRevenueData[today]?.count, transactionCountAndRevenueData[yesterday]?.count);
+                displayTodayUsers(transactionCountAndRevenueData[today]?.count ? transactionCountAndRevenueData[today]?.count : 0, transactionCountAndRevenueData[yesterday]?.count);
                 
 
                 // Calculate the total revenue for all past days
@@ -368,7 +380,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     .reduce((acc, date) => {
                         const revenue = transactionCountAndRevenueData[date].revenue || 0;
                         return acc + revenue;
-                    }, 0);
+                }, 0);
 
                 // Add today's revenue to the total revenue
                 const newTotalRevenue = totalRevenue + todayRevenue;
@@ -379,7 +391,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
                 // Get the current total revenue for today
                 onValue(todayTotalRevenueRef, (snapshot) => {
-                    const todayTotalRevenue = snapshot.val() || 0;
+                const todayTotalRevenue = snapshot.val() || 0;
 
                     // If the new total revenue is greater than the current one, update the node
                     if (newTotalRevenue > todayTotalRevenue) {
@@ -388,7 +400,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         });
                     }
 
-                    displayTodayrevenue(todayRevenue, yesterdayRevnue);
+
+                    displayTodayrevenue(todayRevenue ? todayRevenue : 0, yesterdayRevnue);
                     onValue(yesterdayTotalRevenueRef, (snapshot) => {
                         const yesterdayTotalRevenue = snapshot.val() || 0;
                         displayTotalRevenue(newTotalRevenue, yesterdayTotalRevenue);
@@ -397,14 +410,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         });
 
-
         const userRegisterCountToday = ref(database, `user_register_count/${today}`);
         const userRegisterCountYesterday = ref(database, `user_register_count/${yesterday}`);
          onValue(userRegisterCountToday, (snapshot) => {
             const userRegisterCount = snapshot.val();
             onValue(userRegisterCountYesterday, (snapshot) => {
                 const userRegistercountYesterday = snapshot.val();
-                displayNewClients(userRegisterCount, userRegistercountYesterday);
+                displayNewClients(userRegisterCount ? userRegisterCount : 0, userRegistercountYesterday);
             })
         });
 
@@ -439,6 +451,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function calculatePercentageChange(currentValue, previousValue) {
             if (previousValue === 0) {
                 return 0;
+            } else if ( currentValue == 0) {
+                return 0;
             }
             return ((currentValue - previousValue) / previousValue) * 100;
         }
@@ -446,11 +460,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         function displayPercentageChange(selector, percentageChange) {
             const percentageChangeText = percentageChange.toFixed(2) + "%";
             const percentageChangeColor = percentageChange >= 0 ? "green" : "red";
-            $(selector).text(percentageChange >= 0 ? "+" + percentageChangeText : "-" + percentageChangeText ).css("color", percentageChangeColor);
+            $(selector).text(percentageChange >= 0 ? "+" + percentageChangeText : percentageChangeText ).css("color", percentageChangeColor);
         }
-
-
-
 
         function displaySpaces(spaces){
             $('#total-space').text(spaces.max_spaces);

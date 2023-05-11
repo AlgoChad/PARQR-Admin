@@ -164,7 +164,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                                     <span style="font-weight: bold; font-size: 16px; font-style: italic; color: #213A5C;">Space</span>
                                 </div>
                                 <div style="display: flex; flex-direction: column; align-items: center; flex: 1;">
-                                    <span style="font-size: 52px; font-weight: bold; padding-top: 10px; padding-bottom: 10px; color: #213A5C;">100</span>
+                                    <span id="today-income" style="font-size: 52px; font-weight: bold; padding-top: 10px; padding-bottom: 10px; color: #213A5C;"></span>
                                     <span style="font-weight: bold; font-size: 16px; font-style: italic; color: #213A5C;">Revenue</span>
                                 </div>
                             </div>
@@ -178,9 +178,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                                 </a>
                             </div>
                             <div id="transactions-container">
-                                <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-top: 20px; padding-bottom: 20px;">
-                                    <img src="../assets/green.png" style="height: auto; width: auto;">
-                                    <div style="flex: 1;"></div>
+                                <div style="display: flex; flex-direction: row; justify-content: center; border-bottom: 1px solid lightgray; padding-top: 20px; padding-bottom: 20px;">
                                     <div style="display: flex; flex-direction: column; text-align: center;">
                                         <span id="user-name" style="font-weight: bold;"></span>
                                         <span id="car-plate"></span>
@@ -205,7 +203,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                             </div>
                             <div style="display: flex; flex-direction: row;">
                                 <div style="padding: 20px;">
-                                    <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 150px; width: 150px;">
+                                    <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 150px; width: 150px; border-radius: 15px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; padding: 40px; justify-content: center;">
                                     <span style="font-size: 20px; font-weight: bold;"><?php echo $operatorDoc['name'] ?></span>
@@ -220,7 +218,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                             <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Statistics</span>
                                 <div style="flex: 1;"></div>
-                                <a class="btn" style="background-color: #213A5C; color: white; border-radius: 20px;" href="">
+                                <a class="btn" style="background-color: #213A5C; color: white; border-radius: 20px;" href="dashboard-screens/dashboard-statistics.php">
                                     <span>View All</span>
                                 </a>
                             </div>
@@ -243,48 +241,14 @@ $spaces = $database->getReference('parking_availability')->getValue();
     </div>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script type="module">
-        // Import the functions you need from the SDKs you need
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
-        import { getDatabase, ref, onValue } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
-
-        // Your web app's Firebase configuration
-        const firebaseConfig = {
-            apiKey: "AIzaSyBLqTYCYZm0XTxWG0uabY0oolAwb-8XK08",
-            authDomain: "parqr-8d2fd.firebaseapp.com",
-            databaseURL: "https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app",
-            projectId: "parqr-8d2fd",
-            storageBucket: "parqr-8d2fd.appspot.com",
-            messagingSenderId: "267085407338",
-            appId: "1:267085407338:web:4c70ca4740d6a1d8919613"
-        };
-
-        // Initialize Firebase
-        const app = initializeApp(firebaseConfig);
-        const database = getDatabase(app);
-
-        // Get a reference to the data you want to retrieve
-        const parkingRef = ref(database, 'parking_availability');
-
-        // Attach an event listener to get the data
-        onValue(parkingRef, (snapshot) => {
-            const data = snapshot.val();
-            displaySpaces(data);
-        });
-
-        function displaySpaces(spaces){
-            $('#available').text(spaces.max_spaces - spaces.occupied_spaces);
-            $('#occupied').text(spaces.occupied_spaces);
-        }
-    </script>
     <script>
     var ctx1 = document.getElementById('Chart').getContext('2d');
     var chart1 = new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: ["day 1", "day 2", "day 3", "day 4", "day 5", "day 6", "day 7"],
+            labels: [],
             datasets: [{
-                data: [12, 19, 3, 5, 2, 3, 7],
+                data: [],
                 backgroundColor: '#213A5C',
                 borderColor: '#F3BB01',
                 borderWidth: 1
@@ -299,9 +263,6 @@ $spaces = $database->getReference('parking_availability')->getValue();
                     grid: {
                         display: false
                     },
-                    ticks: {
-                        display: false
-                    }
                 },
                 x: {
                     beginAtZero: true,
@@ -323,9 +284,9 @@ $spaces = $database->getReference('parking_availability')->getValue();
     var myChart = new Chart(ctx, {
         type: 'line',
         data: {
-            labels: ["day 1", "day 2", "day 3", "day 4", "day 5", "day 6", "day 7"],
+            labels: [],
             datasets: [{
-                data: [12, 19, 3, 5, 2, 3, 7],
+                data: [],
                     backgroundColor: 'transparent',
                     borderColor: '#213A5C',
                     borderWidth: 2,
@@ -342,9 +303,6 @@ $spaces = $database->getReference('parking_availability')->getValue();
                     grid: {
                         display: false
                     },
-                    ticks: {
-                        display: false
-                    }
                 },
                 x: {
                     beginAtZero: true,
@@ -361,7 +319,97 @@ $spaces = $database->getReference('parking_availability')->getValue();
          }
     });
     </script>
-    <script>
+    <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+    import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+
+    const firebaseConfig = {
+        apiKey: "AIzaSyBLqTYCYZm0XTxWG0uabY0oolAwb-8XK08",
+        authDomain: "parqr-8d2fd.firebaseapp.com",
+        databaseURL: "https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app",
+        projectId: "parqr-8d2fd",
+        storageBucket: "parqr-8d2fd.appspot.com",
+        messagingSenderId: "267085407338",
+        appId: "1:267085407338:web:4c70ca4740d6a1d8919613"
+    };
+
+        // Initialize Firebase
+    const app = initializeApp(firebaseConfig);
+    const database = getDatabase(app);
+
+    const today = new Date().toISOString().slice(0, 10);
+    const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
+
+    const parkingRef = ref(database, 'parking_availability');
+
+        // Attach an event listener to get the data
+    onValue(parkingRef, (snapshot) => {
+        const data = snapshot.val();
+        displaySpaces(data);
+    });
+
+    function displaySpaces(spaces){
+        $('#available').text(spaces.max_spaces - spaces.occupied_spaces);
+        $('#occupied').text(spaces.occupied_spaces);
+    }
+
+    onValue(transactionsCountAndRevenue, (snapshot) => {
+        const transactionCountAndRevenueData = snapshot.val() || {};
+        const todayRevenue = transactionCountAndRevenueData[today]?.revenue || 0;
+
+        displayTodayrevenue(todayRevenue ? todayRevenue : 0);
+    })
+
+    const transactionList = ref(database, 'transactions');
+
+    onValue(transactionList, (snapshot) => {
+        const transactionListData = snapshot.val() || {};
+        const transactionArray = Object.values(transactionListData);
+        const lastTransaction = transactionArray[transactionArray.length - 1];
+        displayTransaction(lastTransaction);
+    })
+
+    function updateBarChartData(peakList) {
+        const labels = Object.keys(peakList).slice(-7); // Get the dates as labels
+        const data = Object.values(peakList).slice(-7); // Get the data for each day
+
+        // Update the chart labels and data
+        chart1.data.labels = labels;
+        chart1.data.datasets[0].data = data;
+
+        // Update the chart
+        chart1.update();
+    }
+
+    function updateLineChartData(registerCount) {
+        const labels = Object.keys(registerCount).slice(-7);
+        const data = Object.values(registerCount).slice(-7);
+
+        // Update the chart labels and data
+        myChart.data.labels = labels;
+        myChart.data.datasets[0].data = data;
+
+        // Update the chart
+        myChart.update();
+    }
+
+    const peakListRef = ref(database, 'peak_parking');
+    
+    onValue(peakListRef, (snapshot) => {
+        const peakListData = snapshot.val() || {};
+        updateBarChartData(peakListData);
+    })
+
+    const registerCountRef = ref(database, 'user_register_count');
+
+    onValue(registerCountRef, (snapshot) => {
+        const registerCountData = snapshot.val() || {};
+        updateLineChartData(registerCountData);
+    })
+
+    function displayTodayrevenue(todayRevenue){
+        $('#today-income').text(todayRevenue);
+    }
     // Function to display the transaction data
     function displayTransaction(transaction) {
         var date = new Date(transaction.date);
@@ -374,22 +422,6 @@ $spaces = $database->getReference('parking_availability')->getValue();
         $('#time').text(formattedStartTime + ' - ' + formattedEndTime);
         $('#payment').text(transaction.payment);
     }
-
-    displayTransaction(<?php echo json_encode($data); ?>);
-
-    function updateTransaction() {
-        $.ajax({
-            url: '<?php echo $_SERVER['PHP_SELF']; ?>',
-            method: 'GET',
-            dataType: 'json',
-            success: function(data) {
-                displayTransaction(data);
-            }
-        });
-    }
-
-    // Set an interval to periodically update the transaction data
-    setInterval(updateTransaction, 5000); // Update every 5 seconds
     </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>
