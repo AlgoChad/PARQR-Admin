@@ -58,9 +58,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
     $collection = $firestore->collection('operators');
-    $query = $collection->limit(3); // Retrieve three documents
-
-    $operatorDocs = $query->documents();
+    $operatorDoc = $collection->document('W1NPHituB1VZehbJoZXoqxx2GMF3')->snapshot()->data();
+    $profilePicture = isset($operatorDoc['profile_picture']) ? $operatorDoc['profile_picture'] : '../assets/PARQR-White.png';
 ?>
 <!DOCTYPE html>
 <html>
@@ -127,7 +126,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="flex: 1;">
                             <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" 
                                 class="img-responsive rounded-circle" 
-                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;">
+                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;"
+                            >
                         </div>
                         <div style="margin-left: 10px">
                             <span style="font-size: 14; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="display: flex; flex-direction: row;">
                             <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
                                 <div style="display: flex; flex-direction: column;">
-                                    <span style="font-size: 10px;">New Clients</span>
+                                    <span style="font-size: 10px;">New User</span>
                                     <div>
                                         <span id="new-clients"style="font-size: 24px;"></span>
                                         <span id="new-clients-percentage" style="font-size: 12px;"></span>
@@ -230,10 +230,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         <div style="background-color: #ebedf0; height: 600px; padding: 20px; margin: 20px; border-radius: 15px;">
                             <div style="display: flex; flex-direction: row;">
                                 <span style="font-size: 26px; color: #213A5C;">Total Number of Parking Spaces</span>
-                                <div style="flex: 1;"></div>
-                                <a class="btn"  href="operators.php">
-                                    <img src="../assets/home-icons/Menu.png" alt="">
-                                </a>
+                            <div style="flex: 1;"></div>
+                            <button data-open-modal class="btn">
+                                <img src="../assets/home-icons/Menu.png" alt="">
+                            </button>
+                            <dialog data-modal style="display: none; border: none;">
+                                <p id="maxSpaces">Maximum Spaces: </p>
+                                <form id="editMaxSpacesForm" method="post">
+                                    <label for="max_spaces">Edit Maximum Spaces:</label>
+                                    <input type="number" id="max_spaces" name="max_spaces" value="">
+                                    <button type="submit">Save</button>
+                                </form>
+                                <button data-close-modal style="border: none;" class="btn">Close</button>
+                            </dialog>
                             </div>
                             <div style="text-align: center;">
                                 <span id="total-space"style="font-size: 150px; font-weight: bold;"></span>
@@ -245,33 +254,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                                 <div style="display: flex; flex-direction: column; background-color: #213A5C; padding: 40px; margin: 20px; border-radius: 15px; text-align: center;">
                                     <span style="color: white;">Available</span>
-                                    <span id="available" style="font-size: 100px; color: white; font-weight: bold;">20</span>
+                                    <span id="available" style="font-size: 100px; color: white; font-weight: bold;"></span>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div>
-                    <div style="display: flex; padding-left: 30px; padding-top: 30px;">
+                    <div style="display: flex; padding-left: 25px; padding-top: 30px;">
                             <h2 style="color: #213A5C;">Operator</h1>
+                            <div style="flex: 1;"></div>
+                            <h2 style="color: #213A5C;">Payment</h1>
+                            <div style="flex: 1;"></div>
                     </div>
                     <div style="display: flex; flex-direction: row;">
-                        <ul style="list-style-type: none; padding: 0; display: flex; flex-direction: row;">
-                            <?php foreach ($operatorDocs as $operatorDoc): ?>
-                                <li style="margin-bottom: 20px;">
-                                    <div style="display: flex; align-items: center; margin: 20px;">
-                                        <div style="background-color: #213A5C; height: 150px; width: 150px; border-radius: 15px;">
-                                            <img src="<?php echo isset($operatorDoc['profile_picture']) ? $operatorDoc['profile_picture'] : '../assets/PARQR-White.png';?>" class="img-responsive" style="height: 100%; width: 100%; object-fit: cover; border-radius: 15px;">
-                                        </div>
-                                        <div style="display: flex; flex-direction: column; justify-content: center; margin-left: 20px;">
-                                            <span style="font-size: 20px; font-weight: bold;"><?php echo $operatorDoc['name']; ?></span>
-                                            <span><?php echo $operatorDoc['phone_number']; ?></span>
-                                            <span style="padding-top: 10px; font-size: 10px;">Hired since <?php echo $operatorDoc['hired_by']; ?></span>
-                                        </div>
-                                    </div>
-                                </li>
-                            <?php endforeach; ?>
-                        </ul>
+                        <div style="display: flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%;">
+                            <div style="padding: 20px;">
+                                    <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 200px; width: 200px; border-radius: 15px;">
+                            </div>
+                            <div style="display: flex; flex-direction: column; padding: 40px; justify-content: center;">
+                                <span style="font-size: 32px; font-weight: bold;"><?php echo $operatorDoc['name'] ?></span>
+                                <span style="font-size: 24px;"><?php echo $operatorDoc['phone_number'] ?></span>
+                                <span style="padding-top: 10px; font-size: 16px;">Hired since <?php echo $operatorDoc['hired_by'] ?></span> 
+                            </div>
+                        </div>
+                        <div style="margin: 20px; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%;">
+                            <div style="margin: 10px;">
+                                <div class="form-group">
+                                    <label>Initial Hours:</label>
+                                    <input type="number" class="form-control" id="initial-hours">
+                                </div>
+                                <div class="form-group">
+                                    <label>Initial Hours Payment Amount:</label>
+                                    <input type="text" class="form-control" id="initial-hours-payment-amount">
+                                </div>
+                                <div class="form-group">
+                                    <label>Incremental Payment Amount (Per Hour):</label>
+                                    <input type="text" class="form-control" id="incremental-payment-amount">
+                                </div>
+                                <button type="button" class="btn" id="submit-button" style="background-color: #213A5C; color: white;">Update</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -363,7 +386,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         onValue(transactionsCountAndRevenue, (snapshot) => {
             const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
             let totalRevenue = 0;
-            console.log(today);
+            
 
                     // Update the total revenue for each day, including today
             onValue(transactionsCountAndRevenue, (snapshot) => {
@@ -421,37 +444,36 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
 
         function displayTodayrevenue(todayRevenue, yesterdayRevenue){
-            console.log("yesterday revenue: " + yesterdayRevenue);
             $('#today-income').text("+" + todayRevenue);
             const revenueChangePercentage = calculatePercentageChange(todayRevenue, yesterdayRevenue);
             displayPercentageChange('#today-income-percentage', revenueChangePercentage);
         }
 
         function displayNewClients(newClients, yesterdayClients){
-            console.log("yesterday clients: " + yesterdayClients);
             $('#new-clients').text(newClients);
             const clientsChangePercentage = calculatePercentageChange(newClients, yesterdayClients);
             displayPercentageChange('#new-clients-percentage', clientsChangePercentage);
         }
 
         function displayTotalRevenue(totalRevenue, yesterdayTotalRevenue){
-            console.log("yesterday total revenue: " + yesterdayTotalRevenue);
             $('#total-revenue').text(totalRevenue);
             const totalRevenueChangePercentage = calculatePercentageChange(totalRevenue, yesterdayTotalRevenue);
             displayPercentageChange('#total-revenue-percentage', totalRevenueChangePercentage);
         }
 
         function displayTodayUsers(todayUsers, yesterdayUsers){
-            console.log("yesterday users: " + yesterdayUsers);
             $('#today-users').text(todayUsers);
             const usersChangePercentage = calculatePercentageChange(todayUsers, yesterdayUsers);
             displayPercentageChange('#today-users-percentage', usersChangePercentage);
         }
 
         function calculatePercentageChange(currentValue, previousValue) {
-            if (previousValue === 0) {
-                return 0;
-            } else if ( currentValue == 0) {
+            if (previousValue === 0 || 
+                currentValue === 0 || 
+                previousValue === null || 
+                currentValue === null || 
+                previousValue === undefined || 
+                currentValue === undefined) {
                 return 0;
             }
             return ((currentValue - previousValue) / previousValue) * 100;
@@ -470,8 +492,90 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             myChart.data.datasets[0].data = [spaces.occupied_spaces, spaces.max_spaces - spaces.occupied_spaces];
             myChart.update();
         }
+
+        const parkingSettingsRef = ref(database, 'parking_payment_settings');
+            
+        // Retrieve and display the data from Firebase
+        onValue(parkingSettingsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                document.getElementById('initial-hours').value = data['initial_hours'];
+                document.getElementById('initial-hours-payment-amount').value = data['initial_payment'];
+                document.getElementById('incremental-payment-amount').value = data['incremental_payment'];
+            }
+        });
+
+        document.getElementById('submit-button').addEventListener('click', () => {
+            const initialHours = document.getElementById('initial-hours').value;
+            const initialPayment = document.getElementById('initial-hours-payment-amount').value;
+            const incrementalPayment = document.getElementById('incremental-payment-amount').value;
+
+            onValue(parkingSettingsRef, (snapshot) => {
+                const currentData = snapshot.val() || {};
+
+                const updatedData = {
+                    ...currentData,
+                    'initial_hours': parseInt(initialHours),
+                    'initial_payment': parseInt(initialPayment),
+                    'incremental_payment': parseInt(incrementalPayment)
+                };
+
+                runTransaction(parkingSettingsRef, (currentData) => {
+                    return updatedData;
+                })
+                    .then(() => {
+                        console.log('Data updated successfully!');
+                    })
+                    .catch((error) => {
+                        console.error('Error updating data:', error);
+                    });
+            });
+        });
+
+        function updateMaxSpaces(newMaxSpaces) {
+            const updateData = {
+                max_spaces: newMaxSpaces
+            };
+
+            runTransaction(parkingRef, (currentData) => {
+                if (currentData) {
+                    currentData.max_spaces = newMaxSpaces;
+                }
+                return currentData;
+            })
+            .then(() => {
+                console.log('Maximum spaces updated successfully');
+            })
+            .catch((error) => {
+                console.error('Failed to update maximum spaces:', error);
+            });
+        }
+        // Handle form submission
+        $('#editMaxSpacesForm').on('submit', function(e) {
+            e.preventDefault();
+            const newMaxSpaces = parseInt($('#max_spaces').val());
+            $('#maxSpaces').text('Maximum Spaces: ' + newMaxSpaces);
+            updateMaxSpaces(newMaxSpaces);
+        });
     </script>
-    <!-- jQuery and Bootstrap JS -->
+    <script>
+    const openButton = document.querySelector('[data-open-modal]');
+    const closeButton = document.querySelector('[data-close-modal]');
+    const modal = document.querySelector('[data-modal]');
+
+    // Show dialog when the button is clicked
+    openButton.addEventListener('click', () => {
+        modal.style.display = 'block';
+        modal.showModal();
+    });
+
+    // Close dialog when the close button is clicked
+    closeButton.addEventListener('click', () => {
+        modal.style.display = 'none';
+        modal.close();
+    });
+    </script>
+        <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js" integrity="sha384-JZR6Spejh4U02d8jOt6vLEHfe/JQGiRRSQQxSfFWpi1MquVdAyjUar5+76PVCmYl" crossorigin="anonymous"></script>
