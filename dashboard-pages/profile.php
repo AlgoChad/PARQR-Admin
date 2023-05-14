@@ -22,6 +22,8 @@ if (!isset($_SESSION['user_id'])) {
     ]);
 
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
+    $email = $adminDoc['email'];
+    $_SESSION['admin_email'] = $email;
 
 ?>
 <!DOCTYPE html>
@@ -159,11 +161,10 @@ if (!isset($_SESSION['user_id'])) {
                                 <img src="../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
                             </div>
                         </a>
-                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" href="#" title="Change your Password">
+                        <a id="changePasswordLink" class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" title="Change your Password">
                             <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
                                 <img src="../assets/profile-icons/Security.png" class="img-responsive" style="width: 30px; height: 30px;">
                             </div>
-                            
                             <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">
                                 <span style="font-size: 18px; font-weight: bold; color: black;">Security</span>
                                 <span style="color: gray;">Change Password</span>
@@ -203,24 +204,6 @@ if (!isset($_SESSION['user_id'])) {
                             <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">    
                                 <span style="font-size: 18px; font-weight: bold; color: black;">Log out</span>
                                 <span style="color: gray;">Log out your account</span>
-                            </div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>            
-                            <div style="flex: 1;"></div>                                    
-                            <div style="flex: 1;">
-                                <img src="../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
-                            </div>
-                        </a>
-                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" href="#" title="Support this app">
-                            <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
-                                <img src="../assets/profile-icons/Help.png" class="img-responsive" style="width: 30px; height: 30px;">    
-                            </div>
-                            <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">
-                                <span style="font-size: 18px; font-weight: bold; color: black;">Help & Support</span>
-                                <span style="color: gray;">Support App</span>
                             </div>
                             <div style="flex: 1;"></div>
                             <div style="flex: 1;"></div>
@@ -273,6 +256,41 @@ if (!isset($_SESSION['user_id'])) {
             </div>
         </div>
     </div>
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
+        import { getDatabase } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+        import { getAuth, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-auth.js";
+        // Your web app's Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBLqTYCYZm0XTxWG0uabY0oolAwb-8XK08",
+            authDomain: "parqr-8d2fd.firebaseapp.com",
+            databaseURL: "https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app",
+            projectId: "parqr-8d2fd",
+            storageBucket: "parqr-8d2fd.appspot.com",
+            messagingSenderId: "267085407338",
+            appId: "1:267085407338:web:4c70ca4740d6a1d8919613"
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const database = getDatabase(app);
+        const auth = getAuth(app);
+
+        document.getElementById('changePasswordLink').addEventListener('click', function(e) {
+            e.preventDefault();
+            
+            const email = "<?php echo $_SESSION['admin_email']; ?>";
+            sendPasswordResetEmail(auth, email)
+                .then(() => {
+                    console.log("Password reset email sent successfully");
+                    // Optionally, you can display a success message or perform other actions
+                })
+                .catch((error) => {
+                    console.error("Failed to send password reset email:", error);
+                    // Optionally, you can display an error message or perform other error handling
+                });
+        });
+    </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>
