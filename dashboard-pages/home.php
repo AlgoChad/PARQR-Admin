@@ -234,14 +234,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <button data-open-modal class="btn">
                                 <img src="../assets/home-icons/Menu.png" alt="">
                             </button>
-                            <dialog data-modal style="display: none; border: none;">
-                                <p id="maxSpaces">Maximum Spaces: </p>
+                            <dialog data-modal style="display: none; border: none;">    
                                 <form id="editMaxSpacesForm" method="post">
-                                    <label for="max_spaces">Edit Maximum Spaces:</label>
-                                    <input type="number" id="max_spaces" name="max_spaces" value="">
-                                    <button type="submit">Save</button>
+                                    <div class="form-group">
+                                        <label for="max_spaces">Edit Maximum Spaces:</label>
+                                        <input type="number" id="max_spaces" class="form-control" name="max_spaces" value="">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="slot_spaces">Change the Number of parking slot:</label>
+                                        <input type="number" id="slot_spaces" class="form-control" name="slot_spaces" value="">
+                                    </div>
+                                    <div style="display: flex; flex-direction: row;">
+                                        <button data-close-modal style="border: none;" class="btn">Close</button>
+                                        <div style="flex: 1;"></div>
+                                        <button style="border: none;" type="submit" class="btn">Save</button>
+                                    </div>
                                 </form>
-                                <button data-close-modal style="border: none;" class="btn">Close</button>
                             </dialog>
                             </div>
                             <div style="text-align: center;">
@@ -532,14 +540,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             });
         });
 
-        function updateMaxSpaces(newMaxSpaces) {
-            const updateData = {
-                max_spaces: newMaxSpaces
-            };
-
+        function updateMaxSpaces(newMaxSpaces, newSlotSpaces) {
             runTransaction(parkingRef, (currentData) => {
                 if (currentData) {
                     currentData.max_spaces = newMaxSpaces;
+                    currentData.occupied_spaces = newSlotSpaces;
                 }
                 return currentData;
             })
@@ -550,12 +555,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 console.error('Failed to update maximum spaces:', error);
             });
         }
+
         // Handle form submission
         $('#editMaxSpacesForm').on('submit', function(e) {
             e.preventDefault();
             const newMaxSpaces = parseInt($('#max_spaces').val());
             $('#maxSpaces').text('Maximum Spaces: ' + newMaxSpaces);
-            updateMaxSpaces(newMaxSpaces);
+            const newSlotSpaces = parseInt($('#slot_spaces').val());
+            $('#slotSpaces').text('Slot Spaces: ' + newSlotSpaces);
+            updateMaxSpaces(newMaxSpaces, newSlotSpaces);
         });
     </script>
     <script>
