@@ -169,7 +169,7 @@ if (!isset($_SESSION['user_id'])) {
                         </div>
                     </div>
                     <div class="d-flex justify-content-end" style="margin-top: 10px;">
-                        <button class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: #213A5C; color: white; transform: scale(1.2);">ADD</button>
+                        <button class="btn ml-auto" type="submit" style="font-size: 24px; background-color: #213A5C; color: white; transform: scale(1.2);">ADD</button>
                     </div>
                 </form>
             </div>

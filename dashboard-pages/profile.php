@@ -142,8 +142,8 @@ if (!isset($_SESSION['user_id'])) {
                     <div style="flex: 1;"></div>
                 </div>
                 <div style="display: flex; flex-direction: row; align-items: center; justify-content: center; margin-top: 20px; border-top: 1px solid gray;">
-                    <div class="col-md-6" style="border-right: 1px solid gray; padding-top: 20px;">                
-                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left; " href="#" title="Edit your profile">
+                    <div class="col-md-6" style="border-right: 1px solid gray;">                
+                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left; " href="profile-screens/edit_profile.php" title="Edit your profile">
                             <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
                                 <img src="../assets/profile-icons/EditProfile.png" class="img-responsive" style="width: 30px; height: 30px;">
                             </div>
@@ -234,7 +234,7 @@ if (!isset($_SESSION['user_id'])) {
                             </div>
                         </a>
                     </div>
-                    <div class="col-md-6" style="padding-left: 50px;">
+                    <div class="col-md-6" style="padding-left: 50px; padding-top: 20px;">
                         <div style="display: flex; flex-direction: column; margin-bottom: 25px;">
                             <span style="font-size: 24px; font-weight: bold;">Name</span>
                             <span><?php echo $adminDoc['name']; ?></span>
