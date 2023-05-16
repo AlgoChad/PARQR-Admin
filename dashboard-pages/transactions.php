@@ -145,29 +145,57 @@ $data = $database->getReference('transactions')->getValue();
                 <div class="row justify-content-center">
                      <div class="col-md-12">
                         <div class="col-md-12">
+                            <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
+                                <span style="flex: 1;">Name</span>
+                                <div style="flex: 2;"></div>
+                                <div style="flex: 2;"></div>
+                                <div style="flex: 1;">
+                                    <span>Date</span>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <div style="flex: 1;">
+                                    <span>Time</span>
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <div style="flex: 1;">
+                                    <span>Amount</span>
+                                </div>
+                            </div>
                             <div>
-                                <?php foreach ($data as $info) : ?>
-                                    <?php if (!empty($info)) : ?>
-                                        <div>
-                                            <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; border: 1px solid #000; padding: 10px; border-radius: 10px;">
-                                                <div>
-                                                    <img src="<?php echo isset($profile_image_url) ? $profile_image_url : '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
-                                                </div>
-                                                <div style="flex: 1; margin-left: 20px">
-                                                    <h5><?php echo $info['user_name']; ?></h5>
-                                                </div>
-                                                <div style="flex: 1;"></div>
-                                                <div style="flex: 1;">
-                                                    <h5><?php echo $info['date']; ?></h5>
-                                                </div>
-                                                <div style="flex: 1;"></div>
-                                                <div style="flex: 1;">
-                                                    <h5><?php echo $info['payment']; ?></h5>
+                                <?php if ($data !== null) : ?>
+                                    <?php foreach ($data as $info) : ?>
+                                        <?php if (!empty($info)) : ?>
+                                            <div>
+                                                <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; padding: 10px; border-radius: 10px; background-color: #ebedf0;">
+                                                    <div>
+                                                        <img src="<?php echo isset($info['profile_picture']) ? $info['profile_picture'] : '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
+                                                    </div>
+                                                    <div style="flex: 1; padding-left: 20px; text-align: start;">
+                                                        <h5><?php echo $info['user_name']; ?></h5>
+                                                    </div>
+                                                    <div style="flex: 1;"></div>
+                                                    <div style="flex: 1;">
+                                                        <h5><?php echo date('F d, Y', strtotime($info['date'])); ?></h5>
+                                                    </div>
+                                                    <div style="flex: 1;">
+                                                        <h5><?php 
+                                                            $start_time = strtotime($info['start_time']);
+                                                            $duration = $info['duration']; // Assuming duration is in seconds
+
+                                                            // Add duration to start time (in seconds)
+                                                            $end_time = $start_time + ($duration * 1000);
+                                                            $formatted_end_time = date('h:i A', $end_time);
+                                                            echo date('h:i A', strtotime($info['date'])) . "-" . $formatted_end_time; ?></h5>
+                                                    </div>
+                                                    <div></div>
+                                                    <div style="flex: 0.85;">
+                                                        <h5><?php echo "₱" . $info['payment']; ?></h5>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                    <?php endif; ?>
-                                <?php endforeach; ?>
+                                        <?php endif; ?>
+                                    <?php endforeach; ?>
+                                <?php endif; ?>
                             </div>
                         </div>
                     </div>

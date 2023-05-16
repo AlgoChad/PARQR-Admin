@@ -152,8 +152,8 @@ $docs = $collection->documents();
                     </a>
                 </div>
                 <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 20px;">
-                    <div style="width: 90%; border-radius: 20px; border: 1px solid black; padding: 5px;">
-                        <input type="text" style="width: 90%; margin-left: 5px; border: none;" placeholder="Search...">
+                    <div style="width: 90%; border-radius: 20px; background-color: #ebedf0; 5px;">
+                        <input type="text" style="width: 90%; margin: 10px; border: none; background-color: #ebedf0;" placeholder="Search...">
                     </div>
                     <div style="flex: 1;"></div>
                     <div class="dropdown">
@@ -173,10 +173,13 @@ $docs = $collection->documents();
                             <div>
                                 <?php foreach ($docs as $doc) : ?>
                                     <?php if ($doc->exists()) : ?>
+                                        <?php
+                                            $profilePicture = isset($doc['profile_picture']) ? $doc['profile_picture'] : null;
+                                        ?>
                                         <div>
-                                            <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; border: 1px solid #000; padding: 10px; border-radius: 10px;">
+                                            <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; background-color: #ebedf0; padding: 10px; border-radius: 10px;">
                                                 <div>
-                                                    <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
+                                                    <img src="<?php echo $profilePicture ?? '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
                                                 </div>
                                                 <div style="flex: 1; margin-left: 20px">
                                                     <h5><?php echo $doc->get('name'); ?></h5>

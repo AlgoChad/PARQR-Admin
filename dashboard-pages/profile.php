@@ -215,6 +215,24 @@ if (!isset($_SESSION['user_id'])) {
                                 <img src="../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
                             </div>
                         </a>
+                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" href="profile-screens/feedback_page.php" title="Log out your account">
+                            <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
+                                <img src="../assets/profile-icons/Help.png" class="img-responsive" style="width: 30px; height: 30px;">   
+                            </div> 
+                            <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">    
+                                <span style="font-size: 18px; font-weight: bold; color: black;">Feedback & Support</span>
+                                <span style="color: gray;">User's Feedback</span>
+                            </div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>            
+                            <div style="flex: 1;"></div>                                    
+                            <div style="flex: 1;">
+                                <img src="../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
+                            </div>
+                        </a>
                         <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" href="#" title="About PARQR">
                             <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
                                 <img src="../assets/profile-icons/AboutApp.png" class="img-responsive" style="width: 30px; height: 30px;">        
@@ -283,10 +301,12 @@ if (!isset($_SESSION['user_id'])) {
             sendPasswordResetEmail(auth, email)
                 .then(() => {
                     console.log("Password reset email sent successfully");
+                    alert("Password reset email sent successfully");
                     // Optionally, you can display a success message or perform other actions
                 })
                 .catch((error) => {
                     console.error("Failed to send password reset email:", error);
+                    alert("Failed to send password reset email:", error);
                     // Optionally, you can display an error message or perform other error handling
                 });
         });

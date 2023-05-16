@@ -452,7 +452,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
 
         function displayTodayrevenue(todayRevenue, yesterdayRevenue){
-            $('#today-income').text("+" + todayRevenue);
+            $('#today-income').text(todayRevenue);
             const revenueChangePercentage = calculatePercentageChange(todayRevenue, yesterdayRevenue);
             displayPercentageChange('#today-income-percentage', revenueChangePercentage);
         }
