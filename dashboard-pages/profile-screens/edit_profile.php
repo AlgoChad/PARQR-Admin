@@ -140,7 +140,7 @@ if (!isset($_SESSION['user_id'])) {
                             </div>
                         </div>
                         <div class="form-group">
-                            <label style="font-size: 24px; color: #213A5C;">Addres</label>
+                            <label style="font-size: 24px; color: #213A5C;">Address</label>
                             <input type="text" name="address" class="form-control py-3" required value="<?php echo $adminDoc['address']; ?>">
                         </div>
                         <div style="display: flex; flow-direction: row; flex: 1;">

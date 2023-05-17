@@ -175,17 +175,42 @@ $data = $database->getReference('transactions')->getValue();
                                                     </div>
                                                     <div style="flex: 1;"></div>
                                                     <div style="flex: 1;">
-                                                        <h5><?php echo date('F d, Y', strtotime($info['date'])); ?></h5>
+                                                        <h5><?php 
+                                                        if ($info['top_up']) {
+                                                            $formattedDate = DateTime::createFromFormat('m/d/Y', $info['formattedDate'])->format('M d, Y');
+                                                            echo $formattedDate;
+                                                        } else {
+                                                            echo date('F d, Y', strtotime($info['date'])); 
+                                                        }
+                                                        ?></h5>
                                                     </div>
                                                     <div style="flex: 1;">
-                                                        <h5><?php 
-                                                            $start_time = strtotime($info['start_time']);
-                                                            $duration = $info['duration']; // Assuming duration is in seconds
+                                                        <h5>
+                                                            <?php
+                                                            if ($info['top_up']) {
+                                                                echo $info['formattedTime'];
+                                                            } else {
+                                                                $start_time_iso8601 = $info['date'];
+                                                                $duration = $info['duration']; // Assuming $info['duration'] is in seconds
 
-                                                            // Add duration to start time (in seconds)
-                                                            $end_time = $start_time + ($duration * 1000);
-                                                            $formatted_end_time = date('h:i A', $end_time);
-                                                            echo date('h:i A', strtotime($info['date'])) . "-" . $formatted_end_time; ?></h5>
+                                                                // Convert the start time from ISO 8601 format to Unix timestamp
+                                                                $start_time_unix = strtotime($start_time_iso8601);
+
+                                                                // Set the timezone to Philippines
+                                                                date_default_timezone_set('Asia/Manila');
+
+                                                                // Calculate the end time by adding the duration to the start time
+                                                                $end_time_unix = $start_time_unix + $duration;
+
+                                                                // Format the start time and end time in the desired format (e.g., 7:28 am - 7:28 am)
+                                                                $start_time_formatted = date('g:i A', $start_time_unix);
+                                                                $end_time_formatted = date('g:i A', $end_time_unix);
+
+                                                                // Print the formatted start time and end time
+                                                                echo $start_time_formatted . ' - ' . $end_time_formatted;
+                                                            }
+                                                            ?>
+                                                        </h5>
                                                     </div>
                                                     <div></div>
                                                     <div style="flex: 0.85;">

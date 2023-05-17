@@ -412,14 +412,22 @@ $spaces = $database->getReference('parking_availability')->getValue();
     }
     // Function to display the transaction data
     function displayTransaction(transaction) {
-        var date = new Date(transaction.date);
-        var formattedDate = date.toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric'});
-        var formattedStartTime = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-        var formattedEndTime = new Date(formattedStartTime + transaction.duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+        var formattedDate, formattedStartTime, formattedEndTime;
+        if (transaction.date !== undefined) {
+            var date = new Date(transaction.date);
+            formattedDate = date.toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric'});
+            formattedStartTime = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            formattedEndTime = new Date(formattedStartTime + transaction.duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+            $('#date').text(formattedDate);
+            $('#time').text(formattedStartTime + ' - ' + formattedEndTime);
+        } else {
+            formattedDate = transaction.formattedDate;
+            formattedStartTime = transaction.formattedTime;
+            $('#date').text(formattedDate);
+            $('#time').text(formattedStartTime);
+        }
         $('#user-name').text(transaction.user_name);
         $('#car-plate').text(transaction.plate_no);
-        $('#date').text(formattedDate);
-        $('#time').text(formattedStartTime + ' - ' + formattedEndTime);
         $('#payment').text(transaction.payment);
     }
     </script>
