@@ -166,7 +166,8 @@ $data = array_reverse($dataRef)
                                 <div style="flex: 1;"></div>
                             </div>
                             <div>
-                                <?php if ($data !== null) : ?>
+                                <?php if ($dataRef !== null) : 
+                                        $data = array_reverse($dataRef)?>
                                     <?php foreach ($data as $info) : ?>
                                         <?php if (!empty($info)) : ?>
                                             <div>

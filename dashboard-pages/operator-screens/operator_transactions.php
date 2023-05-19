@@ -37,8 +37,7 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
     $operatorDoc = $firestore->collection('operators')->document($currentID)->snapshot()->data();
     $path = 'operators/'. $currentID.'/transactions';
-    $dataRef = $database->getReference($path)->getValue();
-    $data = array_reverse($dataRef)
+    $dataRef = $database->getReference($path)->getValue();   
 ?>
 <!DOCTYPE html>
 <html>
@@ -175,7 +174,8 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                 </div>
                             </div>
                             <div>
-                                <?php if ($data !== null) : ?>
+                                <?php if ($dataRef !== null) : 
+                                    $data = array_reverse($dataRef);?>
                                     <?php foreach ($data as $key => $info) : ?>
                                         <?php if (!empty($info)) : ?>
                                             <?php
