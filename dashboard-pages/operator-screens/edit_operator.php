@@ -21,7 +21,9 @@ if (!isset($_SESSION['user_id'])) {
         'databaseId' => $databaseId,
     ]);
 
+    $currentID =$_GET['id'];
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
+    $operatorDoc = $firestore->collection('operators')->document($currentID)->snapshot()->data();
 ?>
 <!DOCTYPE html>
 <html>
@@ -124,29 +126,25 @@ if (!isset($_SESSION['user_id'])) {
                 </ul>
             </div>
             <!-- Main Content -->
-            <div class="col-md-10 py-4 px-5" style="overflow-y: scroll; height: calc(100vh);">
-                <h1 style="color: #213A5C;">Add Parking Operators</h1>
-                <h3 style="color: #213A5C;">Parking Operators/Add Operator</h3>
-                <form method="POST" action="/php/register_operator_action.php" enctype="multipart/form-data">
+            <div class="col-md-10 py-4 px-5" style="overflow-y: scroll; height: calc(100vh);">                    
+                    <h1 style="color: #213A5C;">Parking Operators</h1>
+                    <h4 style="color: #213A5C;">Parking Operators / Profile / Edit Profile</h4>
+                <form method="POST" action="/php/edit_operator.php" enctype="multipart/form-data">
                     <div class="py-4">
                         <div style="display: flex; flow-direction: row; width: 100%;">
-                            <div class="form-group" style="flex: 1; margin-right: 100px;">
-                                <label style="font-size: 24px; color: #213A5C;">First Name</label>
-                                <input type="text" name="first_name" class="form-control py-3" required>
-                            </div>
                             <div class="form-group" style="flex: 1;">
-                                <label style="font-size: 24px; color: #213A5C;">Last Name</label>    
-                                <input type="text" name="last_name" class="form-control py-3" required> 
+                                <label style="font-size: 24px; color: #213A5C;">First Name</label>
+                                <input type="text" name="name" class="form-control py-3" required value="<?php echo $operatorDoc['name']; ?>">
                             </div>
                         </div>
                         <div class="form-group">
                             <label style="font-size: 24px; color: #213A5C;">Address</label>
-                            <input type="text" name="address" class="form-control py-3" required>
+                            <input type="text" name="address" class="form-control py-3" required value="<?php echo $operatorDoc['address']; ?>">
                         </div>
                         <div style="display: flex; flow-direction: row; flex: 1;">
                             <div class="form-group" style="flex: 1; margin-right: 100px;">
                                 <label style="font-size: 24px; color: #213A5C;">Contact Number</label>
-                                <input type="text" name="phone_number" class="form-control py-3" required>
+                                <input type="text" name="phone_number" class="form-control py-3" required value="<?php echo $operatorDoc['phone_number']; ?>">
                             </div>
                             <div class="form-group" style="flex: 1;">
                                 <label style="font-size: 24px; color: #213A5C;">Profile Picture</label>
@@ -155,21 +153,12 @@ if (!isset($_SESSION['user_id'])) {
                         </div>
                         <div class="form-group">
                             <label style="font-size: 24px; color: #213A5C;">Email Address</label>
-                            <input type="email" name="email" class = "file form-control py-3" required>
-                        </div>
-                        <div style="display: flex; flow-direction: row; flex: 1;">
-                            <div class="form-group" style="flex: 1; margin-right: 100px;">
-                                <label style="font-size: 24px; color: #213A5C;">Password</label>
-                                <input type="password" name="password" class = "form-control py-3" required>
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label style="font-size: 24px; color: #213A5C;">Verify Password</label>
-                                <input type="password" name="verify_password" class = "form-control py-3" required>
-                            </div>
+                            <input type="email" name="email" class = "file form-control py-3" required value="<?php echo $operatorDoc['email']; ?>">
+                            <input type="text" name="id" name="id"class = "file form-control py-3" required value="<?php echo $currentID; ?>" style="display: none;">
                         </div>
                     </div>
                     <div class="d-flex justify-content-end" style="margin-top: 10px;">
-                        <button class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: #213A5C; color: white; transform: scale(1.2);">ADD</button>
+                        <button class="btn ml-auto" type="submit" style="font-size: 24px; background-color: #213A5C; color: white; transform: scale(1.2);">Update</button>
                     </div>
                 </form>
             </div>

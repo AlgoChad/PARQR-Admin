@@ -347,9 +347,9 @@ if (!isset($_SESSION['user_id'])) {
         });
     }
 
-    function updateLineChartData(registerCount) {
-        const labels = Object.keys(registerCount).slice(-7);
-        const data = Object.values(registerCount).slice(-7);
+    function updateLineChartData(revenueData) {
+        const labels = Object.keys(revenueData).slice(-7);
+        const data = Object.values(revenueData).map(obj => obj.revenue).slice(-7);
 
         // Update the chart labels and data
         Line.data.labels = labels;
@@ -359,6 +359,7 @@ if (!isset($_SESSION['user_id'])) {
         Line.update();
     }
 
+
     const peakListRef = ref(database, 'peak_parking');
     
     onValue(peakListRef, (snapshot) => {
@@ -367,13 +368,14 @@ if (!isset($_SESSION['user_id'])) {
         updateBarChartData1(peakListData);
     })
 
-    const registerCountRef = ref(database, 'user_register_count');
+    const revenueRef = ref(database, 'transaction_count_revenue');
 
-    onValue(registerCountRef, (snapshot) => {
-        const registerCountData = snapshot.val() || {};
-        updateLineChartData(registerCountData);
+    onValue(revenueRef, (snapshot) => {
+        const revenueData = snapshot.val() || {};
+        updateLineChartData(revenueData);
     })
 
+    
     </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>

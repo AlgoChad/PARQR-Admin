@@ -170,7 +170,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div style="display: flex; flex-direction: row;">
                     <div style=" width: 100%;">
                         <div style="display: flex; flex-direction: row;">
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">Today's Income</span>
                                     <div>
@@ -181,7 +181,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Income.png" alt="">
                             </div>
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">Today's Users</span>
                                     <div>
@@ -193,7 +193,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <img src="../assets/home-icons/Users.png" alt="">
                             </div>
                         </div>
-                        <div style="background-color: #fef8e6; height: 600px; padding: 20px; margin: 20px; border-radius: 15px;">
+                        <div style="background-color: #fef8e6; height: 600px; padding: 20px; margin: 20px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="display: flex; flex-direction: row; padding-bottom: 10px;">
                                 <span style="font-size: 26px; color: #213A5C;">Parking Spaces</span>
                             </div>
@@ -204,7 +204,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     </div>
                     <div style="width: 100%;">
                         <div style="display: flex; flex-direction: row;">
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">New User</span>
                                     <div>
@@ -215,7 +215,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Clients.png" alt="">
                             </div>
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%;">
+                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
                                     <span style="font-size: 10px;">Total Sales</span>
                                     <div>
@@ -227,14 +227,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <img src="../assets/home-icons/Sales.png" alt="">
                             </div>
                         </div>
-                        <div style="background-color: #ebedf0; height: 600px; padding: 20px; margin: 20px; border-radius: 15px;">
+                        <div style="background-color: #ebedf0; height: 600px; padding: 20px; margin: 20px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="display: flex; flex-direction: row;">
                                 <span style="font-size: 26px; color: #213A5C;">Total Number of Parking Spaces</span>
                             <div style="flex: 1;"></div>
                             <button data-open-modal class="btn">
                                 <img src="../assets/home-icons/Menu.png" alt="">
                             </button>
-                            <dialog data-modal style="display: none; border: none;">    
+                            <dialog data-modal style="display: none; border: none; border-radius: 10px;">    
                                 <form id="editMaxSpacesForm" method="post">
                                     <div class="form-group">
                                         <label for="max_spaces">Edit Maximum Spaces:</label>
@@ -256,11 +256,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <span id="total-space"style="font-size: 150px; font-weight: bold;"></span>
                             </div>
                             <div style="display: flex; flex-direction: row; justify-content: center;">
-                                <div style="display: flex; flex-direction: column; background-color: #F3BB01; padding: 40px; margin: 20px; border-radius: 15px; text-align: center;">
+                                <div style="display: flex; flex-direction: column; background-color: #F3BB01; padding: 40px; margin: 20px; border-radius: 15px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                     <span style="color: white;">Occupied</span>
                                     <span id="occupied" style="font-size: 100px; font-weight: bold;"></span>
                                 </div>
-                                <div style="display: flex; flex-direction: column; background-color: #213A5C; padding: 40px; margin: 20px; border-radius: 15px; text-align: center;">
+                                <div style="display: flex; flex-direction: column; background-color: #213A5C; padding: 40px; margin: 20px; border-radius: 15px; text-align: center; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                     <span style="color: white;">Available</span>
                                     <span id="available" style="font-size: 100px; color: white; font-weight: bold;"></span>
                                 </div>
@@ -276,7 +276,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="flex: 1;"></div>
                     </div>
                     <div style="display: flex; flex-direction: row;">
-                        <div style="display: flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%;">
+                        <div style="display: flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="padding: 20px;">
                                     <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 200px; width: 200px; border-radius: 15px;">
                             </div>
@@ -286,7 +286,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 <span style="padding-top: 10px; font-size: 16px;">Hired since <?php echo $operatorDoc['hired_by'] ?></span> 
                             </div>
                         </div>
-                        <div style="margin: 20px; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%;">
+                        <div style="margin: 20px; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="margin: 10px;">
                                 <div class="form-group">
                                     <label>Initial Hours:</label>

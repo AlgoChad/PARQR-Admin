@@ -24,7 +24,6 @@ $db = new FirestoreClient([
 // Retrieve data from Firestore
 $collection = $db->collection('operators');
 $docs = $collection->documents();
-
 ?>
 <?php
     require_once '../vendor/autoload.php';
@@ -147,17 +146,20 @@ $docs = $collection->documents();
                         <h2>Parking Operators</h1>
                     </div>
                     <div style="flex: 1;"></div>
-                    <a class="btn" style="background-color: #213A5C; color: white;" href="operator-screens/register_operator.php">
+                    <a class="btn" style="background-color: #213A5C; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" href="operator-screens/register_operator.php">
                         <span>New operator</span>
                     </a>
                 </div>
                 <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 20px;">
-                    <div style="width: 90%; border-radius: 20px; background-color: #ebedf0; 5px;">
-                        <input type="text" style="width: 90%; margin: 10px; border: none; background-color: #ebedf0;" placeholder="Search...">
-                    </div>
+                    <div style="width: 100%; border-radius: 20px; background-color: #ebedf0; 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                        <form method="GET" action="operators.php">                            
+                            <input type="text" name="search" style="margin: 10px; border: none; background-color: #ebedf0;" placeholder="Search...">
+                            <button type="submit" style="display: none;">Search</button>
+                            </form>
+                        </div>
                     <div style="flex: 1;"></div>
                     <div class="dropdown">
-                        <button class="btn dropdown-toggle" style="background-color: #213A5C; color: white;" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        <button class="btn dropdown-toggle" style="background-color: #213A5C; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
                             Filter
                         </button>
                         <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
@@ -167,6 +169,21 @@ $docs = $collection->documents();
                         </div>
                     </div>
                 </div>
+                <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
+                                <span style="flex: 1; font-weight: bold; font-size: 24px; color: #213A5C;">Name</span>
+                                <div style="flex: 2;"></div>
+                                <div style="flex: 2;"></div>
+                                <div style="flex: 1;">
+                                    <span style="font-weight: bold; font-size: 24px; color: #213A5C;">Operator ID</span>
+                                </div>
+                                <div style="flex: 0.8;"></div>
+                                <div style="flex: 1;"> 
+                                </div>
+                                <div style="flex: 1;"></div>
+                                <div style="flex: 1.5;">
+                                    <span style="font-weight: bold; font-size: 24px; color: #213A5C;">Hire Date</span>
+                                </div>
+                            </div>
                 <div class="row justify-content-center">
                      <div class="col-md-12">
                         <div class="col-md-12">
@@ -174,26 +191,34 @@ $docs = $collection->documents();
                                 <?php foreach ($docs as $doc) : ?>
                                     <?php if ($doc->exists()) : ?>
                                         <?php
-                                            $profilePicture = isset($doc['profile_picture']) ? $doc['profile_picture'] : null;
+                                        // Filter the data based on search query
+                                        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+                                        $name = strtolower($doc['name']);
+                                        if (empty($searchQuery) || strpos($name, strtolower($searchQuery)) !== false) :
                                         ?>
-                                        <div>
-                                            <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; background-color: #ebedf0; padding: 10px; border-radius: 10px;">
-                                                <div>
-                                                    <img src="<?php echo $profilePicture ?? '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
-                                                </div>
-                                                <div style="flex: 1; margin-left: 20px">
-                                                    <h5><?php echo $doc->get('name'); ?></h5>
-                                                </div>
-                                                <div style="flex: 1;"></div>
-                                                <div style="flex: 1;">
-                                                    <h5 style="font-size: 16;"><?php echo $doc->get('operator_id'); ?></h5>
-                                                </div>
-                                                <div style="flex: 1;"></div>
-                                                <div style="flex: 1;">
-                                                    <h5 style="font-size: 16;"><?php echo $doc->get('hired_by'); ?></h5>
-                                                </div>
+                                            <?php
+                                                $currentID = $doc->id();
+                                                $profilePicture = isset($doc['profile_picture']) ? $doc['profile_picture'] : null;
+                                            ?>
+                                            <div>
+                                                <a class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; background-color: #ebedf0; padding: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" href="operator-screens/operator_profile.php?id=<?php echo $currentID; ?>">
+                                                    <div>
+                                                        <img src="<?php echo $profilePicture ?? '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
+                                                    </div>
+                                                    <div style="flex: 1; margin-left: 20px">
+                                                        <h5><?php echo $doc->get('name'); ?></h5>
+                                                    </div>
+                                                    <div style="flex: 1;"></div>
+                                                    <div style="flex: 1;">
+                                                        <h5 style="font-size: 16;"><?php echo $doc->get('operator_id'); ?></h5>
+                                                    </div>
+                                                    <div style="flex: 1;"></div>
+                                                    <div style="flex: 1;">
+                                                        <h5 style="font-size: 16;"><?php echo $doc->get('hired_by'); ?></h5>
+                                                    </div>
+                                                </a>
                                             </div>
-                                        </div>
+                                        <?php endif; ?>
                                     <?php endif; ?>
                                 <?php endforeach; ?>
                             </div>

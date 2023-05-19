@@ -148,7 +148,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                 </div>
                 <div style="display: flex; flex-direction: row;">
                     <div  style="width: 100%;">
-                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px;">
+                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="border-bottom: 1px solid lightgray; padding-bottom: 10px;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Today's Activity</span>
                             </div>
@@ -169,7 +169,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                                 </div>
                             </div>
                         </div>
-                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px;">
+                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Transactions</span>
                                 <div style="flex: 1;"></div>
@@ -193,7 +193,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                                 </div>
                             </div>
                         </div>
-                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px;">
+                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Operators</span>
                                 <div style="flex: 1;"></div>
@@ -214,7 +214,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                         </div>
                     </div>
                     <div class="col-md-7" style="width: 100%;">
-                        <div style="background-color: white; padding: 20px; margin-top: 20px; margin-bottom: 20px; height: 530px; border-radius: 15px;">
+                        <div style="background-color: white; padding: 20px; margin-top: 20px; margin-bottom: 20px; height: 530px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Statistics</span>
                                 <div style="flex: 1;"></div>
@@ -226,7 +226,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                                 <canvas id="Chart" ></canvas>
                             </div>
                         </div>
-                        <div style="background-color: white; padding: 20px; height: 255px; border-radius: 15px;">
+                        <div style="background-color: white; padding: 20px; height: 255px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Total Customers</span>
                             </div>
@@ -416,8 +416,8 @@ $spaces = $database->getReference('parking_availability')->getValue();
         if (transaction.date !== undefined) {
             var date = new Date(transaction.date);
             formattedDate = date.toLocaleDateString('en-US', {month: '2-digit', day: '2-digit', year: 'numeric'});
-            formattedStartTime = date.toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
-            formattedEndTime = new Date(formattedStartTime + transaction.duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
+            formattedStartTime = new Date(transaction.start_time).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+            formattedEndTime = new Date(transaction.start_time + transaction.duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' })
             $('#date').text(formattedDate);
             $('#time').text(formattedStartTime + ' - ' + formattedEndTime);
         } else {

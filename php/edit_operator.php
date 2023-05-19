@@ -27,9 +27,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         'databaseId' => $databaseId,
     ]);
 
-    $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id']);
+    $operatorDoc = $firestore->collection('operators')->document($_POST['id']);
 
-    $adminDoc->update([
+    $operatorDoc->update([
         ['path' => 'name', 'value' => $name],
         ['path' => 'address', 'value' => $address],
         ['path' => 'phone_number', 'value' => $phoneNumber],
@@ -46,12 +46,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $fileName = $_SESSION['user_id'] . '.' . $fileExtension;
         $object = $bucket->upload(
             fopen($file['tmp_name'], 'r'),
-            ['name' => 'admin_profiles/' . $fileName]
+            ['name' => 'operator_profiles/' . $fileName]
         );
         $downloadUrl = $object->signedUrl(new DateTime('+10 years'));
 
         // Update profile picture URL in Firestore
-        $adminDoc->update([
+        $operatorDoc->update([
             ['path' => 'profile_picture', 'value' => $downloadUrl],
         ]);
     } else {
@@ -60,7 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     }
 
     // Redirect back to the profile page or any other desired location
-    header('Location: ../dashboard-pages/profile.php');
+    header("Location: ../dashboard-pages/operator-screens/operator_profile.php?id=" . $_POST['id']);
     exit;
 }
 ?>

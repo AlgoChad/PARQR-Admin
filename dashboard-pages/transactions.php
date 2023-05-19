@@ -18,7 +18,8 @@ use Kreait\Firebase\Auth;
 $factory = (new Factory)->withServiceAccount('../firebase.json');
 $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-southeast1.firebasedatabase.app')->createDatabase();
 
-$data = $database->getReference('transactions')->getValue();
+$dataRef = $database->getReference('transactions')->getValue();
+$data = array_reverse($dataRef)
 ?>
 <?php
     require_once '../vendor/autoload.php';
@@ -143,16 +144,17 @@ $data = $database->getReference('transactions')->getValue();
                     </div>
                 </div>
                 <div class="row justify-content-center">
-                     <div class="col-md-12">
-                        <div class="col-md-12">
+                     <div class="col-md-12" style="display: flex; flex-direction: row;">
+                        <div id="resizableDiv" class="col-md-12">
                             <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
                                 <span style="flex: 1;">Name</span>
                                 <div style="flex: 2;"></div>
                                 <div style="flex: 2;"></div>
+                                <div style="flex: 1;"></div>
                                 <div style="flex: 1;">
                                     <span>Date</span>
                                 </div>
-                                <div style="flex: 1;"></div>
+                                <div style="flex: 1.7;"></div>
                                 <div style="flex: 1;">
                                     <span>Time</span>
                                 </div>
@@ -160,13 +162,15 @@ $data = $database->getReference('transactions')->getValue();
                                 <div style="flex: 1;">
                                     <span>Amount</span>
                                 </div>
+                                <div style="flex: 1;"></div>
+                                <div style="flex: 1;"></div>
                             </div>
                             <div>
                                 <?php if ($data !== null) : ?>
                                     <?php foreach ($data as $info) : ?>
                                         <?php if (!empty($info)) : ?>
                                             <div>
-                                                <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; padding: 10px; border-radius: 10px; background-color: #ebedf0;">
+                                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; padding: 10px; border-radius: 10px; background-color: #ebedf0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                                                     <div>
                                                         <img src="<?php echo isset($info['profile_picture']) ? $info['profile_picture'] : '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
                                                     </div>
@@ -180,6 +184,7 @@ $data = $database->getReference('transactions')->getValue();
                                                             $formattedDate = DateTime::createFromFormat('m/d/Y', $info['formattedDate'])->format('M d, Y');
                                                             echo $formattedDate;
                                                         } else {
+                                                            date_default_timezone_set('Asia/Manila');
                                                             echo date('F d, Y', strtotime($info['date'])); 
                                                         }
                                                         ?></h5>
@@ -190,19 +195,19 @@ $data = $database->getReference('transactions')->getValue();
                                                             if ($info['top_up']) {
                                                                 echo $info['formattedTime'];
                                                             } else {
-                                                                $start_time_iso8601 = $info['date'];
-                                                                $duration = $info['duration']; // Assuming $info['duration'] is in seconds
+                                                                $start_time_ms = $info['start_time'];
+                                                                $duration = $info['duration'] * 1000; // Convert duration from seconds to milliseconds
 
-                                                                // Convert the start time from ISO 8601 format to Unix timestamp
-                                                                $start_time_unix = strtotime($start_time_iso8601);
+                                                                // Convert the start time from milliseconds to Unix timestamp
+                                                                $start_time_unix = round($start_time_ms / 1000); // Remove milliseconds precision
 
                                                                 // Set the timezone to Philippines
                                                                 date_default_timezone_set('Asia/Manila');
 
-                                                                // Calculate the end time by adding the duration to the start time
-                                                                $end_time_unix = $start_time_unix + $duration;
+                                                                // Calculate the end time by adding the duration (in milliseconds) to the start time
+                                                                $end_time_unix = $start_time_unix + ($duration / 1000); // Convert duration back to seconds
 
-                                                                // Format the start time and end time in the desired format (e.g., 7:28 am - 7:28 am)
+                                                                // Format the start time and end time in the desired format (e.g., 8:31 am - 6:51 pm)
                                                                 $start_time_formatted = date('g:i A', $start_time_unix);
                                                                 $end_time_formatted = date('g:i A', $end_time_unix);
 
@@ -212,10 +217,13 @@ $data = $database->getReference('transactions')->getValue();
                                                             ?>
                                                         </h5>
                                                     </div>
-                                                    <div></div>
+                                                    
                                                     <div style="flex: 0.85;">
                                                         <h5><?php echo "₱" . $info['payment']; ?></h5>
                                                     </div>
+                                                    <button class="btn" onclick="toggleDivVisibility(<?php echo htmlspecialchars(json_encode($info), ENT_QUOTES, 'UTF-8'); ?>); resizeDiv();">
+                                                        <img src="../assets/home-icons/Menu.png" alt="">
+                                                    </button>
                                                 </div>
                                             </div>
                                         <?php endif; ?>
@@ -223,11 +231,144 @@ $data = $database->getReference('transactions')->getValue();
                                 <?php endif; ?>
                             </div>
                         </div>
+                        <div id="toggleDiv" style="display: none; align-items: center; justify-content: center; background-color: #fefcf2; width: 100%; margin-right: 20px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);"> </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+    <script>
+        function toggleDivVisibility(info) {
+            console.log(info);
+            var infoDiv = document.getElementById("toggleDiv");
+            var profilePicture = document.getElementById("profilePicture");
+
+            if (infoDiv.style.display === "none") {
+                // Retrieve the data from the info object and display it in the toggleDiv
+                var html;
+                if(info.top_up) {
+                    console.log('do something')
+                    var name = info.user_name;
+                    var operator = info.operator_name;
+                    var plateNo = info.plate_no;
+                    var payment = info.payment;
+                    var referenceNumber = info.reference_number;
+                    var profilePictureSrc = info.src ? info.src : '../assets/PARQR-White.png';
+                    html = `<div style="display: flex; flex-direction: column; align-items: center; justify-content:-top:  center;">
+                                <img src="${profilePictureSrc}" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 100px; height: 100px; margin-top: 30px;">
+                                <span style="font-size: 24px; font-weight: bold; color: #213A5C; margin-top: 20px;">${name}</span>
+                                <span style="font-size: 24px; color: #213A5C;">Transaction Details</span>
+                                <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
+                                <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                                    <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                        <span style="font-size: 16px; color: lightgray;">Plate no</span>
+                                        <span style="font-size: 16px; color: gray;">${plateNo}</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                        <span style="font-size: 16px; color: lightgray;">Operator</span>
+                                        <span style="font-size: 16px; color: gray;">${operator}</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
+                                        <span style="font-size: 16px; color: lightgray;">Payment</span>
+                                        <span style="font-size: 16px; color: gray;">${"+₱" + payment}</span>
+                                    </div>
+                                    <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
+                                    <div style="display: flex; flex-direction: row; margin-bottom: 30px; justify-content: space-between; width: 90%;">
+                                        <span style="font-size: 16px; color: lightgray;">Reference Number</span>
+                                        <span style= "font-size: 16px; color: gray;">${referenceNumber}</span>
+                                    </div>
+                                </div 
+                            <div>`;
+                    
+                } else {
+                    var name = info.user_name;
+                    var plateNo = info.plate_no;
+                    var date = new Date(info.date).toLocaleDateString('en-US', { month: 'long', day: '2-digit', year: 'numeric' });
+                    var time = new Date(info.start_time).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' });
+                    var operator = info.operator_name;
+                    var endTime = new Date(info.start_time + info.duration * 1000).toLocaleTimeString([], { hour: 'numeric', minute: '2-digit' });
+                    var durationInSeconds = (new Date(info.start_time + info.duration * 1000) - new Date(info.start_time)) / 1000;
+                    var durationInMinutes = Math.floor(durationInSeconds / 60);
+                    var durationInHours = Math.floor(durationInMinutes / 60);
+                    var discount = info.discount;
+                    var payment = info.payment;
+                    var referenceNumber = info.reference_number;
+                    var profilePictureSrc = info.src ? info.src : '../assets/PARQR-White.png';
+
+                    let durationText;
+                    if (durationInHours < 1) {
+                        const remainingSeconds = Math.round(durationInSeconds % 60);
+                        durationText = `0 mins ${remainingSeconds} secs`;
+                    } else {
+                        durationText = `${durationInHours} hours ${durationInMinutes % 60} min`;
+                    }
+
+                    html = `<div style="display: flex; flex-direction: column; align-items: center; justify-content:-top:  center;">
+                                    <img src="${profilePictureSrc}" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 100px; height: 100px; margin-top: 30px;">
+                                    <span style="font-size: 24px; font-weight: bold; color: #213A5C; margin-top: 20px;">${name}</span>
+                                    <span style="font-size: 24px; color: #213A5C;">Transaction Details</span>
+                                    <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
+                                    <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Plate no</span>
+                                            <span style="font-size: 16px; color: gray;">${plateNo}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Date</span>
+                                            <span style="font-size: 16px; color: gray;">${date}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Time</span>
+                                            <span style="font-size: 16px; color: gray;">${time}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Operator</span>
+                                            <span style="font-size: 16px; color: gray;">${operator}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Hours Parked</span>
+                                            <span style="font-size: 16px; color: gray;">${time + " - " + endTime}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Duration</span>
+                                            <span style="font-size: 16px; color: gray;">${durationText}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Discount</span>
+                                            <span style="font-size: 16px; color: gray;">${discount}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Payment</span>
+                                            <span style="font-size: 16px; color: gray;">${"+₱" + payment}</span>
+                                        </div>
+                                        <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 30px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: lightgray;">Reference Number</span>
+                                            <span style= "font-size: 16px; color: gray;">${referenceNumber}</span>
+                                        </div>
+                                    </div 
+                                <div>`;
+                }
+                infoDiv.innerHTML = html;
+                infoDiv.style.display = "block";
+            } else {
+                infoDiv.style.display = "none";
+            }
+        }
+
+        function resizeDiv() {
+            var toggleDiv = document.getElementById("toggleDiv");
+            var resizableDiv = document.getElementById("resizableDiv");
+
+            if (toggleDiv.style.display === "none") {
+                resizableDiv.classList.remove("col-md-9");
+                resizableDiv.classList.add("col-md-12");
+            } else {
+                resizableDiv.classList.remove("col-md-12");
+                resizableDiv.classList.add("col-md-9");
+            }
+        }
+    </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js" integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q" crossorigin="anonymous"></script>

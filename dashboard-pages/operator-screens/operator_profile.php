@@ -21,7 +21,9 @@ if (!isset($_SESSION['user_id'])) {
         'databaseId' => $databaseId,
     ]);
 
+    $currentID =$_GET['id'];
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
+    $operatorDoc = $firestore->collection('operators')->document($currentID)->snapshot()->data();
 ?>
 <!DOCTYPE html>
 <html>
@@ -125,53 +127,68 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <!-- Main Content -->
             <div class="col-md-10 py-4 px-5" style="overflow-y: scroll; height: calc(100vh);">
-                <h1 style="color: #213A5C;">Add Parking Operators</h1>
-                <h3 style="color: #213A5C;">Parking Operators/Add Operator</h3>
-                <form method="POST" action="/php/register_operator_action.php" enctype="multipart/form-data">
-                    <div class="py-4">
-                        <div style="display: flex; flow-direction: row; width: 100%;">
-                            <div class="form-group" style="flex: 1; margin-right: 100px;">
-                                <label style="font-size: 24px; color: #213A5C;">First Name</label>
-                                <input type="text" name="first_name" class="form-control py-3" required>
-                            </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label style="font-size: 24px; color: #213A5C;">Last Name</label>    
-                                <input type="text" name="last_name" class="form-control py-3" required> 
-                            </div>
+                <h1 style="color: #213A5C;">Parking Operators</h1>
+                <h4 style="color: #213A5C;">Parking Operators / Profile</h4>
+                <div style="margin: 10px;">
+                    <div style="display: flex; flex-direction: row; margin-top: 20px;">
+                        <div style="flex: 1;">
+                            <img src="<?php echo isset($operatorDoc['profile_picture']) ? $operatorDoc['profile_picture'] : '../../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 150px; height: 150px;">
+                        </div>    
+                        <div style="display: flex; flex-direction: column; padding: 25px; width: 100%;">
+                            <span style="color: #213A5C; font-size: 24px; font-weight: bold;"><?php echo $operatorDoc['name']; ?></span>
+                            <span style="color: #213A5C;"><?php echo $operatorDoc['operator_id']; ?></span>
+                            <span style="color: #213A5C; font-weight: bold;">Hired Since <?php echo DateTime::createFromFormat('m/d/Y', $operatorDoc['hired_by'])->format('M d, Y'); ?></span>
                         </div>
-                        <div class="form-group">
-                            <label style="font-size: 24px; color: #213A5C;">Address</label>
-                            <input type="text" name="address" class="form-control py-3" required>
-                        </div>
-                        <div style="display: flex; flow-direction: row; flex: 1;">
-                            <div class="form-group" style="flex: 1; margin-right: 100px;">
-                                <label style="font-size: 24px; color: #213A5C;">Contact Number</label>
-                                <input type="text" name="phone_number" class="form-control py-3" required>
+                    </div>
+                    <div style="margin: 20px;">
+                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left; background-color: #ebedf0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);" href="operator_transactions.php?id=<?php echo $currentID; ?>" title="Edit your profile">
+                            <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
+                                <img src="../../assets/profile-icons/EditProfile.png" class="img-responsive" style="width: 30px; height: 30px;">
                             </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label style="font-size: 24px; color: #213A5C;">Profile Picture</label>
-                                <input type="file" name="file" class="form-control py-3">
+                            <div style="display: flex; flex-direction: column; margin: 10px; width: 50%">
+                                <span style="font-size: 18px; font-weight: bold; color: black;">Activities</span>
+                                <span style="color: gray;">View the Activities made by the Operator</span>
                             </div>
-                        </div>
-                        <div class="form-group">
-                            <label style="font-size: 24px; color: #213A5C;">Email Address</label>
-                            <input type="email" name="email" class = "file form-control py-3" required>
-                        </div>
-                        <div style="display: flex; flow-direction: row; flex: 1;">
-                            <div class="form-group" style="flex: 1; margin-right: 100px;">
-                                <label style="font-size: 24px; color: #213A5C;">Password</label>
-                                <input type="password" name="password" class = "form-control py-3" required>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>            
+                            <div style="flex: 1;"></div>                          
+                            <div style="flex: 1;">
+                                <img src="../../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
                             </div>
-                            <div class="form-group" style="flex: 1;">
-                                <label style="font-size: 24px; color: #213A5C;">Verify Password</label>
-                                <input type="password" name="verify_password" class = "form-control py-3" required>
+                        </a>
+                    </div>
+                    <div >
+                        <div style="padding-left: 50px;">
+                            <div style="display: flex; flex-direction: column; margin-bottom: 25px;">
+                                <span style="font-size: 24px; color: gray;">Name</span>
+                                <span style="font-size: 24px;"><?php echo $operatorDoc['name']; ?></span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; margin-bottom: 25px;">
+                                <span style="font-size: 24px; color: gray;">Address</span>
+                                <span style="font-size: 24px;"><?php echo $operatorDoc['address']; ?></span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; margin-bottom: 25px;">
+                                <span style="font-size: 24px; color: gray;">Contact Number</span>
+                                <span style="font-size: 24px;"><?php echo $operatorDoc['phone_number']; ?></span>
+                            </div>
+                            <div style="display: flex; flex-direction: column; margin-bottom: 25px;">
+                                <span style="font-size: 24px; color: gray;">Email Address</span>
+                                <span style="font-size: 24px;"><?php echo $operatorDoc['email']; ?></span>
                             </div>
                         </div>
                     </div>
-                    <div class="d-flex justify-content-end" style="margin-top: 10px;">
-                        <button class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: #213A5C; color: white; transform: scale(1.2);">ADD</button>
+                    <div class="d-flex justify-content-end" style="display: flex; flex-direction: row;">
+                        <div style="margin: 30px;">
+                            <a class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: white; color: #213A5C; transform: scale(1.2);" href="edit_operator.php?id=<?php echo $currentID; ?>">Edit</a>
+                        </div>
+                        <div style="margin: 30px;">
+                            <a class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: red; color: white; transform: scale(1.2);">Archive</a>
+                        </div>
                     </div>
-                </form>
+                </div>
             </div>
         </div>
     </div>
