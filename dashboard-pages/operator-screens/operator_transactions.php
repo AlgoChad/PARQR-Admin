@@ -263,7 +263,7 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
 
                                                                     // Format the start time and end time in the desired format (e.g., 8:31 am - 6:51 pm)
                                                                     $startTime = date('g:i A', round($start_time_unix));
-                                                                    $startTime = date('g:i A', round($end_time_unix));
+                                                                    $endTime = date('g:i A', round($end_time_unix));
 
                                                                 // Print the formatted start time and end time
             
