@@ -106,11 +106,11 @@ $spaces = $database->getReference('parking_availability')->getValue();
                         <div style="flex: 1;">
                             <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" 
                                 class="img-responsive rounded-circle" 
-                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;">
+                                style="background-color: #213A5C; width: 100px; height: 100px; border-radius: 50%;">
                         </div>
                         <div style="margin-left: 10px">
-                            <span style="font-size: 14; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
-                            <p class="mb-0">Admin</p>
+                            <span style="font-size: 18px; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
+                            <p class="mb-0" style="font-size: 16px;">Admin</p>
                         </div>
                     </a>
                 </div>

@@ -104,11 +104,11 @@ $docs = $collection->documents();
                         <div style="flex: 1;">
                             <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" 
                                 class="img-responsive rounded-circle" 
-                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;">
+                                style="background-color: #213A5C; width: 100px; height: 100px; border-radius: 50%;">
                         </div>
                         <div style="margin-left: 10px">
-                            <span style="font-size: 14; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
-                            <p class="mb-0">Admin</p>
+                            <span style="font-size: 18px; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
+                            <p class="mb-0" style="font-size: 16px;">Admin</p>
                         </div>
                     </a>
                 </div>
@@ -151,9 +151,9 @@ $docs = $collection->documents();
                     </a>
                 </div>
                 <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 20px;">
-                    <div style="width: 100%; border-radius: 20px; background-color: #ebedf0; 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                    <div style="width: 93%; border-radius: 20px; background-color: #ebedf0; 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                         <form method="GET" action="operators.php">                            
-                            <input type="text" name="search" style="margin: 10px; border: none; background-color: #ebedf0;" placeholder="Search...">
+                            <input type="text" name="search" style="margin: 10px; border: none; background-color: #ebedf0; width: auto; width: 93%;" placeholder="Search...">
                             <button type="submit" style="display: none;">Search</button>
                             </form>
                         </div>

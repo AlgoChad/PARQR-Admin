@@ -88,14 +88,14 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
                 <div class="profile">
                     <a href="profile.php" class="nav-link d-flex align-items-center">
-                        <div style="flex: 1;">
+                    <div style="flex: 1;">
                             <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" 
                                 class="img-responsive rounded-circle" 
-                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;">
+                                style="background-color: #213A5C; width: 100px; height: 100px; border-radius: 50%;">
                         </div>
                         <div style="margin-left: 10px">
-                            <span style="font-size: 14; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
-                            <p class="mb-0">Admin</p>
+                            <span style="font-size: 18px; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
+                            <p class="mb-0" style="font-size: 16px;">Admin</p>
                         </div>
                     </a>
                 </div>
@@ -197,30 +197,12 @@ if (!isset($_SESSION['user_id'])) {
                                 <img src="../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
                             </div>
                         </a>
-                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" href="../php/logout.php" title="Log out your account">
-                            <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
-                                <img src="../assets/profile-icons/Logout.png" class="img-responsive" style="width: 30px; height: 30px;">   
-                            </div> 
-                            <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">    
-                                <span style="font-size: 18px; font-weight: bold; color: black;">Log out</span>
-                                <span style="color: gray;">Log out your account</span>
-                            </div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1;"></div>            
-                            <div style="flex: 1;"></div>                                    
-                            <div style="flex: 1;">
-                                <img src="../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
-                            </div>
-                        </a>
                         <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" href="profile-screens/feedback_page.php" title="Log out your account">
                             <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
                                 <img src="../assets/profile-icons/Help.png" class="img-responsive" style="width: 30px; height: 30px;">   
                             </div> 
                             <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">    
-                                <span style="font-size: 18px; font-weight: bold; color: black;">Feedback & Support</span>
+                                <span style="font-size: 18px; font-weight: bold; color: black;">Feedback</span>
                                 <span style="color: gray;">User's Feedback</span>
                             </div>
                             <div style="flex: 1;"></div>
@@ -240,6 +222,24 @@ if (!isset($_SESSION['user_id'])) {
                             <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">
                                 <span style="font-size: 18px; font-weight: bold; color: black;">About App</span>
                                 <span style="color: gray;">About PARQR</span>
+                            </div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>
+                            <div style="flex: 1;"></div>            
+                            <div style="flex: 1;"></div>                                    
+                            <div style="flex: 1;">
+                                <img src="../assets/profile-icons/right.png" class="img-responsive" style="width: auto; height: 25px;">    
+                            </div>
+                        </a>
+                        <a class="btn" style="display: flex; flex-direction: row; align-items: center; width: 100%; text-align: left;" href="../php/logout.php" title="Log out your account">
+                            <div style="background-color: lightgray; border-radius: 50%; padding: 10px;">
+                                <img src="../assets/profile-icons/Logout.png" class="img-responsive" style="width: 30px; height: 30px;">   
+                            </div> 
+                            <div style="display: flex; flex-direction: column; margin-left: 30px; width: 50%">    
+                                <span style="font-size: 18px; font-weight: bold; color: black;">Log out</span>
+                                <span style="color: gray;">Log out your account</span>
                             </div>
                             <div style="flex: 1;"></div>
                             <div style="flex: 1;"></div>

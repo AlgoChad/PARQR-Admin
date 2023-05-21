@@ -102,13 +102,13 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                 <div class="profile">
                     <a href="../profile.php" class="nav-link d-flex align-items-center">
                         <div style="flex: 1;">
-                            <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" 
+                            <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../../assets/PARQR-White.png'; ?>" 
                                 class="img-responsive rounded-circle" 
-                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;">
+                                style="background-color: #213A5C; width: 100px; height: 100px; border-radius: 50%;">
                         </div>
                         <div style="margin-left: 10px">
-                            <span style="font-size: 14; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
-                            <p class="mb-0">Admin</p>
+                            <span style="font-size: 18px; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
+                            <p class="mb-0" style="font-size: 16px;">Admin</p>
                         </div>
                     </a>
                 </div>
@@ -153,14 +153,18 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                             <div style="width: 100%; border-radius: 20px; background-color: #ebedf0; 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <form method="GET" action="operator_transactions.php">
                                     <input type="hidden" name="id" value="<?php echo $currentID; ?>">
-                                    <input type="text" name="search" style="margin: 10px; border: none; background-color: #ebedf0;" placeholder="Search...">
+                                    <input type="text" name="search" style="margin: 10px; border: none; background-color: #ebedf0; width: 95%;" placeholder="Search...">
                                     <button type="submit" style="display: none;">Search</button>
                                 </form>
                             </div>
                             <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
                                 <span style="flex: 1;">Name</span>
                                 <div style="flex: 2;"></div>
-                                <div style="flex: 2;"></div>
+                                <div style="flex: 2.2;"></div>
+                                <div >
+                                    <span>Transaction Type</span>
+                                </div>
+                                <div style="flex: 1.3;"></div>
                                 <div style="flex: 1;">
                                     <span>Date</span>
                                 </div>
@@ -169,7 +173,7 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                     <span>Time</span>
                                 </div>
                                 <div style="flex: 1;"></div>
-                                <div style="flex: 1.5;">
+                                <div style="flex: 1.8;">
                                     <span>Amount</span>
                                 </div>
                             </div>
@@ -192,15 +196,25 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                         <div style="flex: 1; padding-left: 20px; text-align: start;">
                                                             <h5><?php echo $info['user_name']; ?></h5>
                                                         </div>
-                                                        <div style="flex: 1;"></div>
+                                                        <div style="flex: .8;"></div>
+                                                        <div style="flex: 1;">
+                                                        <h5>
+                                                            <?php
+                                                                if ($info['top_up']) {
+                                                                    echo "Top-up";
+                                                                } else {
+                                                                    echo "Parking";
+                                                                }
+                                                             ?>
+                                                        </h5>
+                                                        </div>
                                                         <div style="flex: 1;">
                                                             <h5><?php 
-                                                            if ($info['top_up']) {
-                                                                $formattedDate = DateTime::createFromFormat('m/d/Y', $info['formattedDate'])->format('M d, Y');
-                                                                echo $formattedDate;
+                                                            if ($info['top_up']) {                                                            
+                                                                echo $info['formattedDate'];
                                                             } else {
                                                                 date_default_timezone_set('Asia/Manila');
-                                                                echo date('M d, Y', strtotime($info['date'])); 
+                                                                echo date('m/d/Y', strtotime($info['date']));
                                                             }
                                                             ?></h5>
                                                         </div>
@@ -273,7 +287,7 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                     $referenceNumber = $info['reference_number'];
                                                                     $profilePictureSrc = isset($info['profile_picture']) ? $info['profile_picture'] : '../../assets/PARQR-White.png';
 
-                                                                    $durationInSeconds = $end_time_unix - $start_time_unix;
+                                                                    $durationInSeconds = round($end_time_unix - $start_time_unix);
                                                                     $durationInMinutes = floor($durationInSeconds / 60);
                                                                     $durationInHours = floor($durationInMinutes / 60);
 
@@ -340,10 +354,6 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                         <span style="font-size: 24px; color: #213A5C;">Transaction Details</span>
                                                                         <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                                                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
-                                                                            <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                                                                <span style="font-size: 16px; color: lightgray;">Plate no</span>
-                                                                                <span style="font-size: 16px; color: gray;">'.$plateNo.'</span>
-                                                                            </div>
                                                                             <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                                                                 <span style="font-size: 16px; color: lightgray;">Operator</span>
                                                                                 <span style="font-size: 16px; color: gray;">'.$operator.'</span>

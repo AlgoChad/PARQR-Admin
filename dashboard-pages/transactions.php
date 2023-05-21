@@ -101,11 +101,11 @@ $data = array_reverse($dataRef)
                         <div style="flex: 1;">
                             <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" 
                                 class="img-responsive rounded-circle" 
-                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;">
+                                style="background-color: #213A5C; width: 100px; height: 100px; border-radius: 50%;">
                         </div>
                         <div style="margin-left: 10px">
-                            <span style="font-size: 14; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
-                            <p class="mb-0">Admin</p>
+                            <span style="font-size: 18px; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
+                            <p class="mb-0" style="font-size: 16px;">Admin</p>
                         </div>
                     </a>
                 </div>
@@ -137,7 +137,7 @@ $data = array_reverse($dataRef)
                 </ul>
             </div>
             <!-- Main Content -->
-            <div class="col-md-10" style="overflow-y: scroll; height: calc(100vh);">
+            <div class="col-md-10" style="overflow-y: auto;">
                 <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 30px;">
                     <div style="flex: 1;">
                         <h2>Transactions</h1>
@@ -164,8 +164,9 @@ $data = array_reverse($dataRef)
                                 </div>
                                 <div style="flex: 1;"></div>
                                 <div style="flex: 1;"></div>
+                                <div style="flex: 0.4;"></div>
                             </div>
-                            <div>
+                            <div style="overflow-y: scroll; height: calc(80vh);">
                                 <?php if ($dataRef !== null) : 
                                         $data = array_reverse($dataRef)?>
                                     <?php foreach ($data as $info) : ?>
@@ -177,21 +178,21 @@ $data = array_reverse($dataRef)
                                                     </div>
                                                     <div style="flex: 1; padding-left: 20px; text-align: start;">
                                                         <h5><?php echo $info['user_name']; ?></h5>
-                                                    </div>
-                                                    <div style="flex: 1;"></div>
+                                                    </div>              
+                                                    <div style="flex: 1;"></div>                                      
                                                     <div style="flex: 1;">
-                                                        <h5><?php 
+                                                        <h5 style="font-size: 18px;"><?php 
                                                         if ($info['top_up']) {
-                                                            $formattedDate = DateTime::createFromFormat('m/d/Y', $info['formattedDate'])->format('M d, Y');
-                                                            echo $formattedDate;
+                                                            
+                                                            echo $info['formattedDate'];
                                                         } else {
                                                             date_default_timezone_set('Asia/Manila');
-                                                            echo date('F d, Y', strtotime($info['date'])); 
+                                                            echo date('m/d/Y', strtotime($info['date']));
                                                         }
                                                         ?></h5>
-                                                    </div>
+                                                    </div>                                                    
                                                     <div style="flex: 1;">
-                                                        <h5>
+                                                        <h5 style="font-size: 18px;">
                                                             <?php
                                                             if ($info['top_up']) {
                                                                 echo $info['formattedTime'];
@@ -217,10 +218,9 @@ $data = array_reverse($dataRef)
                                                             }
                                                             ?>
                                                         </h5>
-                                                    </div>
-                                                    
-                                                    <div style="flex: 0.85;">
-                                                        <h5><?php echo "₱" . $info['payment']; ?></h5>
+                                                    </div>                                                    
+                                                    <div style="flex: 1;">
+                                                        <h5 style="font-size: 18px;"><?php echo "₱" . $info['payment']; ?></h5>
                                                     </div>
                                                     <button class="btn" onclick="toggleDivVisibility(<?php echo htmlspecialchars(json_encode($info), ENT_QUOTES, 'UTF-8'); ?>); resizeDiv();">
                                                         <img src="../assets/home-icons/Menu.png" alt="">
@@ -261,10 +261,6 @@ $data = array_reverse($dataRef)
                                 <span style="font-size: 24px; color: #213A5C;">Transaction Details</span>
                                 <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
-                                    <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                        <span style="font-size: 16px; color: lightgray;">Plate no</span>
-                                        <span style="font-size: 16px; color: gray;">${plateNo}</span>
-                                    </div>
                                     <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                         <span style="font-size: 16px; color: lightgray;">Operator</span>
                                         <span style="font-size: 16px; color: gray;">${operator}</span>

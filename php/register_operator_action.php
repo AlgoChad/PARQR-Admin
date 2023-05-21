@@ -15,7 +15,8 @@ use Google\Cloud\Firestore\FirestoreClient;
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     // Get the user's details from the form
-    $name           = $_POST['name'];
+    $first_name     = $_POST['first_name'];
+    $last_name      = $_POST['last_name'];
     $email          = $_POST['email'];
     $password       = $_POST['password'];
     $address        = $_POST['address'];
@@ -44,7 +45,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $operatorId = $current_date->format("Y").str_pad($count+1, 2, '0', STR_PAD_LEFT);
 
     $newUser = [
-        'name' => $name,
+        'name' => $first_name." ".$last_name,
         'email' => $email,
         'address' => $address,
         'phone_number' => $phoneNumber,

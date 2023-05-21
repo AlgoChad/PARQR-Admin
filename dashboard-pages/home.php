@@ -123,15 +123,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 </div>
                 <div class="profile">
                     <a href="profile.php" class="nav-link d-flex align-items-center">
-                        <div style="flex: 1;">
+                    <div style="flex: 1;">
                             <img src="<?php echo $adminDoc['profile_picture'] ? $adminDoc['profile_picture'] : '../assets/PARQR-White.png'; ?>" 
                                 class="img-responsive rounded-circle" 
-                                style="background-color: #213A5C; width: 50px; height: 50px; border-radius: 50%;"
-                            >
+                                style="background-color: #213A5C; width: 100px; height: 100px; border-radius: 50%;">
                         </div>
                         <div style="margin-left: 10px">
-                            <span style="font-size: 14; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
-                            <p class="mb-0">Admin</p>
+                            <span style="font-size: 18px; font-weight: bold;" class="mb-0"><?php echo $adminDoc['name']; ?></span>
+                            <p class="mb-0" style="font-size: 16px;">Admin</p>
                         </div>
                     </a>
                 </div>
@@ -241,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <input type="number" id="max_spaces" class="form-control" name="max_spaces" value="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="slot_spaces">Change the Number of parking slot:</label>
+                                        <label for="slot_spaces">Change the Number of Occupied parking slot:</label>
                                         <input type="number" id="slot_spaces" class="form-control" name="slot_spaces" value="">
                                     </div>
                                     <div style="display: flex; flex-direction: row;">
