@@ -182,8 +182,7 @@ $data = array_reverse($dataRef)
                                                     <div style="flex: 1;"></div>                                      
                                                     <div style="flex: 1;">
                                                         <h5 style="font-size: 18px;"><?php 
-                                                        if ($info['top_up']) {
-                                                            
+                                                        if ($info['top_up']) {                                                            
                                                             echo $info['formattedDate'];
                                                         } else {
                                                             date_default_timezone_set('Asia/Manila');

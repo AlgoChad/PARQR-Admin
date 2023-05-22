@@ -166,7 +166,9 @@ if (!isset($_SESSION['user_id'])) {
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Average Time</span>
                             </div>
                             <div style="height: 80%;">
-                                
+                                <center>
+                                    <div style="margin: 40px;"id="average-time"></div>
+                                </center>
                             </div>
                         </div>
                     </div>
@@ -359,7 +361,6 @@ if (!isset($_SESSION['user_id'])) {
         Line.update();
     }
 
-
     const peakListRef = ref(database, 'peak_parking');
     
     onValue(peakListRef, (snapshot) => {
@@ -374,6 +375,49 @@ if (!isset($_SESSION['user_id'])) {
         const revenueData = snapshot.val() || {};
         updateLineChartData(revenueData);
     })
+
+    // Assuming you have already initialized Firebase and obtained a reference to the database
+
+    // Fetch the data from the 'transactions' path in the Firebase Realtime Database
+    const transactionsRef = ref(database, 'transactions');
+    onValue(transactionsRef, (snapshot) => {
+    const data = snapshot.val(); // Retrieve the data as an object
+
+    const averageDuration = calculateAverageDuration(Object.values(data)); // Assuming the data is stored as an object with unique keys
+    console.log(averageDuration);
+
+    const averageTimeElement = document.querySelector('#average-time');
+    averageTimeElement.innerHTML = `
+                                    <div style="height: 80%;">
+                                        <span style="font-size: 42px; font-weight: bold; color: #213A5C;">${averageDuration} seconds<span>
+                                    </div>`;
+    });
+
+    console.log(averageDuration)
+
+    function calculateAverageDuration(data) {
+        const currentDate = new Date().toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+        });
+
+        const durations = data.filter(item => {
+            const itemDate = new Date(item.date).toLocaleDateString('en-US', {
+            year: 'numeric',
+            month: '2-digit',
+            day: '2-digit'
+            });
+
+            return itemDate === currentDate && item.duration; // Filter items with matching date and non-zero duration
+        }).map(item => item.duration);
+
+        const sum = durations.reduce((total, duration) => total + duration, 0);
+        const average = sum / durations.length || 0; // Calculate average duration or set it to 0 if no durations
+
+        return average.toFixed(2); // Return average duration rounded to 2 decimal places
+    }
+
 
     
     </script>
