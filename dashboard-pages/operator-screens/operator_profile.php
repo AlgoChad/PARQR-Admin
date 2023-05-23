@@ -128,7 +128,11 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Main Content -->
             <div class="col-md-10 py-4 px-5" style="overflow-y: scroll; height: calc(100vh);">
                 <h1 style="color: #213A5C;">Parking Operators</h1>
-                <h4 style="color: #213A5C;">Parking Operators / Profile</h4>
+                <div style="display: flex; flex-direction: row;">
+                    <a href="../operators.php"><h4 style="color: #213A5C;">Parking Operators</h4></a>
+                    <h4 style="margin-left: 5px; margin-right: 5px;">/</h4>
+                    <a href=""><h4 style="color: #213A5C;"> Profile</h4></a>
+                </div>
                 <div style="margin: 10px;">
                     <div style="display: flex; flex-direction: row; margin-top: 20px;">
                         <div style="flex: 1;">
@@ -137,7 +141,7 @@ if (!isset($_SESSION['user_id'])) {
                         <div style="display: flex; flex-direction: column; padding: 25px; width: 100%;">
                             <span style="color: #213A5C; font-size: 24px; font-weight: bold;"><?php echo $operatorDoc['name']; ?></span>
                             <span style="color: #213A5C;"><?php echo $operatorDoc['operator_id']; ?></span>
-                            <span style="color: #213A5C; font-weight: bold;">Hired Since <?php echo DateTime::createFromFormat('m/d/Y', $operatorDoc['hired_by'])->format('M d, Y'); ?></span>
+                            <span style="color: #213A5C; font-weight: bold;">Hired Since <?php echo DateTime::createFromFormat('d/m/Y', $operatorDoc['hired_by'])->format('M d, Y'); ?></span>
                         </div>
                     </div>
                     <div style="margin: 20px;">

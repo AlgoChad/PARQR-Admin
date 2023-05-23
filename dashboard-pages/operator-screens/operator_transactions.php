@@ -144,7 +144,13 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                 <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 30px;">
                     <div style="flex: 1;">
                         <h1 style="color: #213A5C;">Parking Operators</h1>
-                        <h4 style="color: #213A5C;">Parking Operators / Profile / Operator Activities</h4>
+                        <div style="display: flex; flex-direction: row;">
+                            <a href="../operators.php"><h4 style="color: #213A5C;">Parking Operators</h4></a>
+                            <h4 style="margin-left: 5px; margin-right: 5px; color: #213A5C;">/</h4>
+                            <a href="operator_profile.php?id=<?php echo $currentID; ?>"><h4 style="color: #213A5C;"> Profile</h4></a>
+                            <h4 style="margin-left: 5px; margin-right: 5px; color: #213A5C;">/</h4>
+                            <a href=""><h4 style="color: #213A5C;">Operator Activities</h4></a>
+                        </div>
                     </div>
                 </div>
                 <div class="row justify-content-center">
