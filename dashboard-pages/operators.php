@@ -140,7 +140,7 @@ $docs = $collection->documents();
                 </ul>
             </div>
             <!-- Main Content -->
-            <div class="col-md-10">
+            <div class="col-md-10" style="overflow-y: auto; height: calc(100vh);">
                 <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 30px;">
                     <div style="flex: 1;">
                         <h2>Parking Operators</h1>
