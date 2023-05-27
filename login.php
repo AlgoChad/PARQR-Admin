@@ -80,7 +80,7 @@ include 'php/login_action.php';
                 <input type="password" name="password" class="form-control" required>
               </div> 
               <div class="form-group text-center">
-                <a href="register.php">Forgot Password?</a>
+                <a href="php/forgot_password.php">Forgot Password?</a>
               </div>
               <div class="form-group text-right">
                 <button class="btn btn-primary btn-block" name="submit">Login</button>

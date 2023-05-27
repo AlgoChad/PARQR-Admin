@@ -150,24 +150,15 @@ $docs = $collection->documents();
                         <span>New operator</span>
                     </a>
                 </div>
-                <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 20px;">
-                    <div style="width: 93%; border-radius: 20px; background-color: #ebedf0; 5px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-                        <form method="GET" action="operators.php">                            
-                            <input type="text" name="search" style="margin: 10px; border: none; background-color: #ebedf0; width: auto; width: 93%;" placeholder="Search...">
-                            <button type="submit" style="display: none;">Search</button>
-                            </form>
+                <div style="padding-left: 30px; padding-right: 30px; padding-top: 20px;">
+                    <form method="GET" action="operators.php" style="display: flex; flex-direction: row; align-items: center;">
+                        <div style="flex-grow: 1; max-width: 80vw; border-radius: 20px; background-color: #ebedf0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <input type="text" name="search" style="padding: 10px; border: none; background-color: transparent; width: 100%;" placeholder="Search...">
                         </div>
-                    <div style="flex: 1;"></div>
-                    <div class="dropdown">
-                        <button class="btn dropdown-toggle" style="background-color: #213A5C; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                            Filter
+                        <button class="btn" style="margin-left: 10px; background-color: #213A5C; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" type="submit">
+                            Search
                         </button>
-                        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                            <a class="dropdown-item" href="#">Option 1</a>
-                            <a class="dropdown-item" href="#">Option 2</a>
-                            <a class="dropdown-item" href="#">Option 3</a>
-                        </div>
-                    </div>
+                    </form>
                 </div>
                 <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
                                 <span style="flex: 1; font-weight: bold; font-size: 24px; color: #213A5C;">Name</span>
