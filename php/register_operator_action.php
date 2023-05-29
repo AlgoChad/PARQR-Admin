@@ -55,7 +55,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usersCollection->document($uid)->set($newUser);
 
     // Redirect the user to a success page
-    echo "Signup successful";
+    echo '<script>alert("This is an alert message!");</script>';
     header('Location: ../dashboard-pages/operators.php');
     exit;
 }
