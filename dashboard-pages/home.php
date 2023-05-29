@@ -240,7 +240,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                         <input type="number" id="max_spaces" class="form-control" name="max_spaces" value="">
                                     </div>
                                     <div class="form-group">
-                                        <label for="slot_spaces">Change the Number of Occupied parking slot:</label>
+                                        <label for="slot_spaces">Change the Number of Occupied parking space:</label>
                                         <input type="number" id="slot_spaces" class="form-control" name="slot_spaces" value="">
                                     </div>
                                     <div style="display: flex; flex-direction: row;">
@@ -559,8 +559,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $('#editMaxSpacesForm').on('submit', function(e) {
             e.preventDefault();
             const newMaxSpaces = parseInt($('#max_spaces').val());
-            $('#maxSpaces').text('Maximum Spaces: ' + newMaxSpaces);
             const newSlotSpaces = parseInt($('#slot_spaces').val());
+
+            if (newSlotSpaces > newMaxSpaces) {
+                alert('Slot spaces cannot exceed the maximum spaces');
+                return;
+            }
+
+            $('#maxSpaces').text('Maximum Spaces: ' + newMaxSpaces);
             $('#slotSpaces').text('Slot Spaces: ' + newSlotSpaces);
             updateMaxSpaces(newMaxSpaces, newSlotSpaces);
         });

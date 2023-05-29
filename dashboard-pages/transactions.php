@@ -146,6 +146,16 @@ $data = array_reverse($dataRef)
                 <div class="row justify-content-center">
                      <div class="col-md-12" style="display: flex; flex-direction: row;">
                         <div id="resizableDiv" class="col-md-12">
+                            <div style="padding-left: 30px; padding-right: 30px; padding-top: 20px;">
+                                <form method="GET" action="transactions.php" style="display: flex; flex-direction: row; align-items: center;">
+                                    <div style="flex-grow: 1; max-width: 80vw; border-radius: 20px; background-color: #ebedf0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                                        <input type="text" name="search" style="padding: 10px; border: none; background-color: transparent; width: 100%;" placeholder="Search...">
+                                    </div>
+                                    <button class="btn" style="margin-left: 10px; background-color: #213A5C; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" type="submit">
+                                        Search
+                                    </button>
+                                </form>
+                            </div>
                             <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
                                 <span style="flex: 1;">Name</span>
                                 <div style="flex: 2;"></div>
@@ -171,6 +181,12 @@ $data = array_reverse($dataRef)
                                         $data = array_reverse($dataRef)?>
                                     <?php foreach ($data as $info) : ?>
                                         <?php if (!empty($info)) : ?>
+                                            <?php
+                                            // Filter the data based on search query
+                                            $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+                                            $name = strtolower($info['user_name']);
+                                            if (empty($searchQuery) || strpos($name, strtolower($searchQuery)) !== false) :
+                                            ?>
                                             <div>
                                                 <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; padding: 10px; border-radius: 10px; background-color: #ebedf0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                                                     <div>
@@ -226,6 +242,7 @@ $data = array_reverse($dataRef)
                                                     </button>
                                                 </div>
                                             </div>
+                                            <?php endif; ?>
                                         <?php endif; ?>
                                     <?php endforeach; ?>
                                 <?php endif; ?>
