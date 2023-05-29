@@ -60,7 +60,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || isset($POST_['submit'])) {
         $downloadUrl = $object->signedUrl(new DateTime('+10 years'));
     } else {
         $downloadUrl = null;
-        echo "error";
     }
     
     $newUser = [

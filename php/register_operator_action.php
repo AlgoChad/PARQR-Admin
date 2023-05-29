@@ -44,6 +44,22 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $count = $usersCollection->documents()->size();
     $operatorId = $current_date->format("Y").str_pad($count+1, 2, '0', STR_PAD_LEFT);
 
+    // Upload the profile picture to Firebase Storage
+    if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
+        $storage = $factory->createStorage();
+        $bucket = $storage->getBucket();
+        $file = $_FILES['file'];
+        $fileExtension = pathinfo($file['name'], PATHINFO_EXTENSION);
+        $fileName = $uid . '.' . $fileExtension;
+        $object = $bucket->upload(
+            fopen($file['tmp_name'], 'r'),
+            ['name' => 'operator_profiles/' . $fileName]
+        );
+        $downloadUrl = $object->signedUrl(new DateTime('+10 years'));
+    } else {
+        $downloadUrl = null;
+    }
+
     $newUser = [
         'name' => $first_name." ".$last_name,
         'email' => $email,
@@ -51,15 +67,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         'phone_number' => $phoneNumber,
         'hired_by' => $current_date->format("d/m/Y"),
         'operator_id' => $operatorId,
+        'profile_picture' => $downloadUrl,
     ];
     $usersCollection->document($uid)->set($newUser);
 
-    // Redirect the user to a success page
     $condition = true;
-
+    // Redirect the user to a success page
     if ($condition) {
         // Generate JavaScript code to display an alert and redirect
-        echo '<script>alert("Operator Register Success!"); window.location.href="../dashboard-pages/operators.php";</script>';
+        echo '<script>alert("Admin Register Success!"); window.location.href="../dashboard-pages/operator.php";</script>';
     }
     exit;
 }
