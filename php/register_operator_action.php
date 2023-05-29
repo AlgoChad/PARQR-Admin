@@ -55,8 +55,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $usersCollection->document($uid)->set($newUser);
 
     // Redirect the user to a success page
-    echo '<script>alert("This is an alert message!");</script>';
-    header('Location: ../dashboard-pages/operators.php');
+    $condition = true;
+
+    if ($condition) {
+        // Generate JavaScript code to display an alert and redirect
+        echo '<script>alert("Operator Register Success!"); window.location.href="../dashboard-pages/operators.php";</script>';
+    }
     exit;
 }
 ?>

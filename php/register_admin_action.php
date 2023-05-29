@@ -73,8 +73,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || isset($POST_['submit'])) {
     $usersCollection->document($uid)->set($newUser);
 
     // Redirect the user to a success page
-    echo "Signup successful";
-    header('Location: ../dashboard-pages/profile.php');
+    if ($condition) {
+        // Generate JavaScript code to display an alert and redirect
+        echo '<script>alert("Admin Register Success!"); window.location.href="../dashboard-pages/profile.php";</script>';
+    }
     exit;
 }
 ?>
