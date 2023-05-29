@@ -275,14 +275,21 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="flex: 1;"></div>
                     </div>
                     <div style="display: flex; flex-direction: row;">
-                        <div style="display: flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-                            <div style="padding: 20px;">
-                                    <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 200px; width: 200px; border-radius: 15px;">
+                        <div style="display: flex-direction: column; flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: flex-end; padding-top: 20px;">
+                                <a class="btn" style="color: white; border-radius: 20px; padding-right: 30px; padding-left: 30px; margin-right: 15px;" href="operators.php">
+                                    <img src="../assets/home-icons/Menu.png" alt="">
+                                </a>
                             </div>
-                            <div style="display: flex; flex-direction: column; padding: 40px; justify-content: center;">
-                                <span style="font-size: 32px; font-weight: bold;"><?php echo $operatorDoc['name'] ?></span>
-                                <span style="font-size: 24px;"><?php echo $operatorDoc['phone_number'] ?></span>
-                                <span style="padding-top: 10px; font-size: 16px;">Hired since <?php echo $operatorDoc['hired_by'] ?></span> 
+                            <div style="display: flex; align-items: center;">
+                                <div style="padding: 20px;">
+                                        <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 200px; width: 200px; border-radius: 15px;">
+                                </div>
+                                <div style="display: flex; flex-direction: column; padding: 40px; justify-content: center;">
+                                    <span style="font-size: 32px; font-weight: bold;"><?php echo $operatorDoc['name'] ?></span>
+                                    <span style="font-size: 24px;"><?php echo $operatorDoc['phone_number'] ?></span>
+                                    <span style="padding-top: 10px; font-size: 16px;">Hired since <?php echo $operatorDoc['hired_by'] ?></span> 
+                                </div>
                             </div>
                         </div>
                         <div style="margin: 20px; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
