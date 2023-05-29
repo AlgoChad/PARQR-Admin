@@ -39,7 +39,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
      // Update email in Firebase Authentication
     try {
         $userProperties = [
-            'displayName' => $name,
             'email' => $email,
         ];
         $updatedUser = $auth->updateUser($_SESSION['user_id'], $userProperties);

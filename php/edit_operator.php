@@ -36,6 +36,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ['path' => 'email', 'value' => $email],
     ]);
 
+    try {
+        $userProperties = [
+            'email' => $newEmail, // Replace $newEmail with the new email address variable
+        ];
+        $updatedUser = $auth->updateUser($_POST['id'], $userProperties);
+        // Email updated successfully
+    } catch (Exception $e) {
+        // Handle error
+        echo 'Error updating email: ' . $e->getMessage();
+        exit;
+    }
+    
+
     // Handle profile picture upload (if provided)
     if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
         $storage = $factory->createStorage();
