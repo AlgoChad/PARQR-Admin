@@ -176,7 +176,7 @@ $data = array_reverse($dataRef)
                                 <div style="flex: 1;"></div>
                                 <div style="flex: 0.4;"></div>
                             </div>
-                            <div style="overflow-y: scroll; height: calc(80vh);">
+                            <div style="overflow-y: scroll; height: calc(75vh);">
                                 <?php if ($dataRef !== null) : 
                                         $data = array_reverse($dataRef)?>
                                     <?php foreach ($data as $info) : ?>

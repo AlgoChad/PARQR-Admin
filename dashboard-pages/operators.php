@@ -143,7 +143,7 @@ $docs = $collection->documents();
             <div class="col-md-10" style="overflow-y: auto; height: calc(100vh);">
                 <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 30px;">
                     <div style="flex: 1;">
-                        <h2>Parking Operators</h1>
+                        <h2 style="color: #213A5C;">Parking Operators</h2>
                     </div>
                     <div style="flex: 1;"></div>
                     <a class="btn" style="background-color: #213A5C; color: white; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" href="operator-screens/register_operator.php">
@@ -178,9 +178,9 @@ $docs = $collection->documents();
                 <div class="row justify-content-center">
                      <div class="col-md-12">
                         <div class="col-md-12">
-                            <div>
+                            <div style="overflow-y: scroll; height: calc(30vh);">
                                 <?php foreach ($docs as $doc) : ?>
-                                    <?php if ($doc->exists()) : ?>
+                                    <?php if ($doc->exists() && (!isset($doc['archive']) || $doc['archive'] === false)) : ?>
                                         <?php
                                         // Filter the data based on search query
                                         $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
@@ -188,8 +188,8 @@ $docs = $collection->documents();
                                         if (empty($searchQuery) || strpos($name, strtolower($searchQuery)) !== false) :
                                         ?>
                                             <?php
-                                                $currentID = $doc->id();
-                                                $profilePicture = isset($doc['profile_picture']) ? $doc['profile_picture'] : null;
+                                            $currentID = $doc->id();
+                                            $profilePicture = isset($doc['profile_picture']) ? $doc['profile_picture'] : null;
                                             ?>
                                             <div>
                                                 <a class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; background-color: #ebedf0; padding: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" href="operator-screens/operator_profile.php?id=<?php echo $currentID; ?>">
@@ -197,15 +197,53 @@ $docs = $collection->documents();
                                                         <img src="<?php echo $profilePicture ?? '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
                                                     </div>
                                                     <div style="flex: 1; margin-left: 20px">
-                                                        <h5><?php echo $doc->get('name'); ?></h5>
+                                                        <h5><?php echo $doc['name']; ?></h5>
                                                     </div>
                                                     <div style="flex: 1;"></div>
                                                     <div style="flex: 1;">
-                                                        <h5 style="font-size: 16;"><?php echo $doc->get('operator_id'); ?></h5>
+                                                        <h5 style="font-size: 16;"><?php echo $doc['operator_id']; ?></h5>
                                                     </div>
                                                     <div style="flex: 1;"></div>
                                                     <div style="flex: 1;">
-                                                        <h5 style="font-size: 16;"><?php echo $doc->get('hired_by'); ?></h5>
+                                                        <h5 style="font-size: 16;"><?php echo $doc['hired_by']; ?></h5>
+                                                    </div>
+                                                </a>
+                                            </div>
+                                        <?php endif; ?>
+                                    <?php endif; ?>
+                                <?php endforeach; ?>
+                            </div>
+                            <div style="display: flex; flex-direction: justify-content: center; row; align-items: center; padding-right: 30px; padding-left: 30px; padding-top: 30px;">
+                                <h3 style="color: #213A5C;">Archived Operators</h3>
+                            </div>
+                            <div style="overflow-y: scroll; height: calc(30vh);">
+                                <?php foreach ($docs as $doc) : ?>
+                                    <?php if ($doc->exists() && (isset($doc['archive']) && $doc['archive'] === true)) : ?>
+                                        <?php
+                                        // Filter the data based on search query
+                                        $searchQuery = isset($_GET['search']) ? $_GET['search'] : '';
+                                        $name = strtolower($doc['name']);
+                                        if (empty($searchQuery) || strpos($name, strtolower($searchQuery)) !== false) :
+                                        ?>
+                                            <?php
+                                            $currentID = $doc->id();
+                                            $profilePicture = isset($doc['profile_picture']) ? $doc['profile_picture'] : null;
+                                            ?>
+                                            <div>
+                                                <a class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; background-color: #ebedf0; padding: 10px; border-radius: 10px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);" href="operator-screens/operator_profile.php?id=<?php echo $currentID; ?>">
+                                                    <div>
+                                                        <img src="<?php echo $profilePicture ?? '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
+                                                    </div>
+                                                    <div style="flex: 1; margin-left: 20px">
+                                                        <h5><?php echo $doc['name']; ?></h5>
+                                                    </div>
+                                                    <div style="flex: 1;"></div>
+                                                    <div style="flex: 1;">
+                                                        <h5 style="font-size: 16;"><?php echo $doc['operator_id']; ?></h5>
+                                                    </div>
+                                                    <div style="flex: 1;"></div>
+                                                    <div style="flex: 1;">
+                                                        <h5 style="font-size: 16;"><?php echo $doc['hired_by']; ?></h5>
                                                     </div>
                                                 </a>
                                             </div>

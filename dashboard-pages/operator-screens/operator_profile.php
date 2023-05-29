@@ -21,9 +21,29 @@ if (!isset($_SESSION['user_id'])) {
         'databaseId' => $databaseId,
     ]);
 
-    $currentID =$_GET['id'];
+    $currentID = $_GET['id'];
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
     $operatorDoc = $firestore->collection('operators')->document($currentID)->snapshot()->data();
+
+
+// Assuming you have already set up the necessary Firebase configurations and initialized Firestore
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    // Retrieve the current operator ID from wherever it's store
+    $operatorID = $_GET['id'];
+    // Get the operator document from Firestore
+    $operatorDoc = $firestore->collection('operators')->document($operatorID);
+    
+    try {
+        // Update the operator document with the "archive" field set to true
+        $operatorDoc->update([
+            ['path' => 'archive', 'value' => true],
+        ]);
+        
+        echo '<script>alert("Operator archived successfully."); window.location.href="../operators.php";</script>';
+    } catch (\Google\Cloud\Core\Exception\GoogleException $e) {
+        echo 'Error archiving operator: ' . $e->getMessage();
+    }
+}
 ?>
 <!DOCTYPE html>
 <html>
@@ -188,9 +208,11 @@ if (!isset($_SESSION['user_id'])) {
                         <div style="margin: 30px;">
                             <a class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: white; color: #213A5C; transform: scale(1.2);" href="edit_operator.php?id=<?php echo $currentID; ?>">Edit</a>
                         </div>
-                        <div style="margin: 30px;">
-                            <a class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: red; color: white; transform: scale(1.2);">Archive</a>
-                        </div>
+                        <form method="post" action="operator_profile.php?id=<?php echo $currentID; ?>">
+                            <div style="margin: 30px;">
+                                <button class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: red; color: white; transform: scale(1.2);" >Archive</button>
+                            </div>
+                        </form>
                     </div>
                 </div>
             </div>
