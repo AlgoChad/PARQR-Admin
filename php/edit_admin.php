@@ -36,6 +36,20 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ['path' => 'email', 'value' => $email],
     ]);
 
+     // Update email in Firebase Authentication
+    try {
+        $userProperties = [
+            'displayName' => $name,
+            'email' => $email,
+        ];
+        $updatedUser = $auth->updateUser($_SESSION['user_id'], $userProperties);
+        // Email updated successfully
+    } catch (Exception $e) {
+        // Handle error
+        echo 'Error updating email: ' . $e->getMessage();
+        exit;
+    }
+
     // Handle profile picture upload (if provided)
     if (isset($_FILES['file']) && $_FILES['file']['error'] == UPLOAD_ERR_OK) {
         $storage = $factory->createStorage();

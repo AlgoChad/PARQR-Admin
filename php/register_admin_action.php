@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' || isset($POST_['submit'])) {
     ];
     $usersCollection->document($uid)->set($newUser);
 
+    $condition = true;
     // Redirect the user to a success page
     if ($condition) {
         // Generate JavaScript code to display an alert and redirect
