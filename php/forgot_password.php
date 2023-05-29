@@ -6,12 +6,13 @@ session_start();
 use Kreait\Firebase\Factory;
 use Kreait\Firebase\Auth;
 
+$factory = (new Factory)->withServiceAccount('../firebase.json');
+$auth = $factory->createAuth();
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $email = $_POST['email'];
 
     try {
-        $auth = $firebase->getAuth();
         $auth->sendPasswordResetLink($email);
 
         // Password reset link has been sent successfully
@@ -21,6 +22,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         echo 'An error occurred. Please try again later.';
     }
 }
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -98,7 +100,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <form method="post" action="forgot_password.php" enctype="multipart/form-data">
             <div class="form-group">
                 <label for="email">Enter Your Email:</label>
-                <input class="form-control" type="email" name="email" id="email" required>
+                <input style="width: 94%;" class="form-control" type="email" name="email" id="email" required>
             </div>
             <div class="form-group">
                 <button type="submit" name="submit" class="btn">Reset Password</button>
