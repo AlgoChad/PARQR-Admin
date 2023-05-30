@@ -126,7 +126,12 @@ if (!isset($_SESSION['user_id'])) {
             <!-- Main Content -->
             <div class="col-md-10 py-4 px-5" style="overflow-y: scroll; height: calc(100vh);">
                 <h1 style="color: #213A5C;">Add Parking Operators</h1>
-                <h3 style="color: #213A5C;">Parking Operators/Add Operator</h3>
+                    <div style="display: flex; flex-direction: row;">
+                        <a href="../operators.php"><h4 style="color: #213A5C;">Parking Operators</h4></a>
+                        <h4 style="margin-left: 5px; margin-right: 5px; color: #213A5C;">/</h4>
+                        <a href=""><h4 style="color: #213A5C;"> Add Parking Operator</h4></a>
+
+                    </div> 
                 <form method="POST" action="/php/register_operator_action.php" enctype="multipart/form-data">
                     <div class="py-4">
                         <div style="display: flex; flow-direction: row; width: 100%;">
