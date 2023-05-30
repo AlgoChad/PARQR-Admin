@@ -49,7 +49,6 @@ $spaces = $database->getReference('parking_availability')->getValue();
     }
 
     $operatorDoc = end($operatorsData);
-    print_r($operatorDoc);
     $profilePicture = isset($operatorDoc['profile_picture']) ? $operatorDoc['profile_picture'] : '../assets/PARQR-White.png';
 ?>
 <!DOCTYPE html>
