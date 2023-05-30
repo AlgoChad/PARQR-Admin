@@ -163,7 +163,7 @@ $docs = $collection->documents();
                 <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
                                 <span style="flex: 1; font-weight: bold; font-size: 24px; color: #213A5C;">Name</span>
                                 <div style="flex: 2;"></div>
-                                <div style="flex: 2;"></div>
+                                <div style="flex: 2.5;"></div>
                                 <div style="flex: 1;">
                                     <span style="font-weight: bold; font-size: 24px; color: #213A5C;">ID</span>
                                 </div>
