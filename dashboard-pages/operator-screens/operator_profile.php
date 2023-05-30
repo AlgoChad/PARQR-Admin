@@ -28,22 +28,47 @@ if (!isset($_SESSION['user_id'])) {
 
 // Assuming you have already set up the necessary Firebase configurations and initialized Firestore
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    // Retrieve the current operator ID from wherever it's store
+    // Retrieve the current operator ID from wherever it's stored
     $operatorID = $_GET['id'];
     // Get the operator document from Firestore
     $operatorDoc = $firestore->collection('operators')->document($operatorID);
     
     try {
-        // Update the operator document with the "archive" field set to true
+        // Retrieve the operator document data
+        $operatorData = $operatorDoc->snapshot()->data();
+        
+        // Check if the 'archive' field exists
+        if (isset($operatorData['archive'])) {
+            // Retrieve the current value of 'archive' field
+            $archiveValue = $operatorData['archive'];
+            
+            // Update the 'archive' field based on its current state
+            if ($archiveValue === false) {
+                $archiveValue = true;
+            } else {
+                $archiveValue = false;
+            }
+        } else {
+            // If 'archive' field doesn't exist, set it to true
+            $archiveValue = true;
+        }
+        
+        // Update the operator document with the new value of 'archive' field
         $operatorDoc->update([
-            ['path' => 'archive', 'value' => true],
+            ['path' => 'archive', 'value' => $archiveValue],
         ]);
         
-        echo '<script>alert("Operator archived successfully."); window.location.href="../operators.php";</script>';
+        if ($archiveValue === true) {
+            echo '<script>alert("Operator archived successfully."); window.location.href="../operators.php";</script>';
+        } else {
+            echo '<script>alert("Operator unarchived successfully."); window.location.href="../operators.php";</script>';
+        }
     } catch (\Google\Cloud\Core\Exception\GoogleException $e) {
-        echo 'Error archiving operator: ' . $e->getMessage();
+        echo 'Error updating archive status: ' . $e->getMessage();
     }
 }
+
+
 ?>
 <!DOCTYPE html>
 <html>
@@ -210,7 +235,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                         <form method="post" action="operator_profile.php?id=<?php echo $currentID; ?>">
                             <div style="margin: 30px;">
-                                <button class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: red; color: white; transform: scale(1.2);" >Archive</button>
+                                <?php if ((!isset($operatorDoc['archive']) || $operatorDoc['archive'] === false)) : ?>
+                                    <button class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: red; color: white; transform: scale(1.2);">Archive</button>
+                                <?php else: ?>
+                                    <button class="btn ml-auto" type="submit" style="font-size: 24px; font-weight: bold; background-color: red; color: white; transform: scale(1.2);">Unarchive</button>
+                                <?php endif; ?>
                             </div>
                         </form>
                     </div>
