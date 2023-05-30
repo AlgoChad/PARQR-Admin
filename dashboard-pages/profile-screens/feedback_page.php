@@ -130,7 +130,7 @@ if (!isset($_SESSION['user_id'])) {
                         <img src="../../assets/leftArrow.png" style="">
                     </a>
                     <div style="flex: 1;">
-                        <h2>Transactions</h1>
+                        <h2>Feedback</h1>
                     </div>
                 </div>
                 <ul id="feedback-list"></ul>
