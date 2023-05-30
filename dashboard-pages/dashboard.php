@@ -38,7 +38,18 @@ $spaces = $database->getReference('parking_availability')->getValue();
 
     $adminDoc = $firestore->collection('admin')->document($_SESSION['user_id'])->snapshot()->data();
     $collection = $firestore->collection('operators');
-    $operatorDoc = $collection->document('W1NPHituB1VZehbJoZXoqxx2GMF3')->snapshot()->data();
+    $operatorsData = [];
+
+    // Query the documents
+    $operatorQuery = $collection->orderBy('hired_by', 'DESC')->limit(1)->documents();
+
+    // Loop through the documents and store the data in an array
+    foreach ($operatorQuery as $document) {
+        $operatorsData[] = $document->data();
+    }
+
+    $operatorDoc = end($operatorsData);
+    print_r($operatorDoc);
     $profilePicture = isset($operatorDoc['profile_picture']) ? $operatorDoc['profile_picture'] : '../assets/PARQR-White.png';
 ?>
 <!DOCTYPE html>
