@@ -165,7 +165,7 @@ $docs = $collection->documents();
                                 <div style="flex: 2;"></div>
                                 <div style="flex: 2;"></div>
                                 <div style="flex: 1;">
-                                    <span style="font-weight: bold; font-size: 24px; color: #213A5C;">Operator ID</span>
+                                    <span style="font-weight: bold; font-size: 24px; color: #213A5C;">ID</span>
                                 </div>
                                 <div style="flex: 0.8;"></div>
                                 <div style="flex: 1;"> 
