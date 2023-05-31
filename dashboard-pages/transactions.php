@@ -160,7 +160,10 @@ $data = array_reverse($dataRef)
                                 <span style="flex: 1;">Name</span>
                                 <div style="flex: 2;"></div>
                                 <div style="flex: 2;"></div>
-                                <div style="flex: 1;"></div>
+                                <div>
+                                    <span>Transaction Type</span>
+                                </div>
+                                <div style="flex: 1.3;"></div>
                                 <div style="flex: 1;">
                                     <span>Date</span>
                                 </div>
@@ -195,7 +198,18 @@ $data = array_reverse($dataRef)
                                                     <div style="flex: 1; padding-left: 20px; text-align: start;">
                                                         <h5><?php echo $info['user_name']; ?></h5>
                                                     </div>              
-                                                    <div style="flex: 1;"></div>                                      
+                                                    <div style="flex: .8;"></div>  
+                                                    <div style="flex: 1;">
+                                                        <h5>
+                                                            <?php
+                                                                if ($info['top_up']) {
+                                                                    echo "Top-up";
+                                                                } else {
+                                                                    echo "Parking";
+                                                                }
+                                                             ?>
+                                                        </h5>
+                                                    </div>               
                                                     <div style="flex: 1;">
                                                         <h5 style="font-size: 18px;"><?php 
                                                         if ($info['top_up']) {                                                            
