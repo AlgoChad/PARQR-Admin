@@ -75,7 +75,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // Redirect the user to a success page
     if ($condition) {
         // Generate JavaScript code to display an alert and redirect
-        echo '<script>alert("Admin Register Success!"); window.location.href="../dashboard-pages/operator.php";</script>';
+        echo '<script>alert("Admin Register Success!"); window.location.href="../dashboard-pages/operators.php";</script>';
     }
     exit;
 }
