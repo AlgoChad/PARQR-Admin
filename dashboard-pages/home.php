@@ -284,7 +284,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="flex: 1.6;"></div>
                             <h2 style="color: #213A5C;">Payment</h1>
                             <div style="flex: 1;"></div>
-                            <h2 style="color: #213A5C;">Payment</h1>
+                            <h2 style="color: #213A5C;">Discount</h1>
                             <div style="flex: 1;"></div>
                     </div>
                     <div style="display: flex; flex-direction: row;">
@@ -558,18 +558,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Retrieve and display the data from Firebase
         onValue(parkingSettingsRef, (snapshot) => {
-            data = snapshot.val();
+        data = snapshot.val();
             if (data) {
                 document.getElementById('initial-hours').value = data['initial_hours'];
                 document.getElementById('initial-hours-payment-amount').value = data['initial_payment'];
                 document.getElementById('incremental-payment-amount').value = data['incremental_payment'];
-                const discountType = data['discount_type'] || {};
-                document.getElementById('discount-type').value = discountType['type'];
-                document.getElementById('discount-by').value = discountType['discount_by'];
-                document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : 0;
-                document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : 0;
             }
         });
+
+        // Function to handle the change event of the discount-type dropdown picker
+        function handleDiscountTypeChange() {
+        const discountTypeValue = document.getElementById('discount-type').value;
+        const discountType = data[discountTypeValue] || {};
+
+        document.getElementById('discount-by').value = discountType['discount_by'];
+        document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : 0;
+        document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : 0;
+        }
+
+        // Attach the event listener to the discount-type dropdown picker
+        document.getElementById('discount-type').addEventListener('change', handleDiscountTypeChange);
 
         const submitPaymentButton = document.getElementById('submit-button-payment');
         submitPaymentButton.addEventListener('click', submitPaymentSettings);
