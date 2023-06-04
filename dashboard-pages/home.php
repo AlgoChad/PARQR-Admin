@@ -586,7 +586,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     return updatedData;
                 })
                     .then(() => {
-                        console.log('Data updated successfully!');
+                        alert("Parking Payment Settings updated successfully!");
                     })
                     .catch((error) => {
                         console.error('Error updating data:', error);
@@ -616,7 +616,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     return updatedData;
                 })
                     .then(() => {
-                        console.log('Data updated successfully!');
+                        alert("Parking Discount Settings updated successfully!");
                     })
                     .catch((error) => {
                         console.error('Error updating data:', error);
