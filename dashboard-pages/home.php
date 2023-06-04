@@ -567,62 +567,71 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
 
-        document.getElementById('submit-button-payment').addEventListener('click', () => {
-            const initialHours = document.getElementById('initial-hours').value;
-            const initialPayment = document.getElementById('initial-hours-payment-amount').value;
-            const incrementalPayment = document.getElementById('incremental-payment-amount').value;
+        const submitPaymentButton = document.getElementById('submit-button-payment');
+        submitPaymentButton.addEventListener('click', submitPaymentSettings);
 
-            onValue(parkingSettingsRef, (snapshot) => {
-                const currentData = snapshot.val() || {};
+        function submitPaymentSettings() {
+        const initialHours = document.getElementById('initial-hours').value;
+        const initialPayment = document.getElementById('initial-hours-payment-amount').value;
+        const incrementalPayment = document.getElementById('incremental-payment-amount').value;
 
-                const updatedData = {
-                    ...currentData,
-                    'initial_hours': parseInt(initialHours),
-                    'initial_payment': parseInt(initialPayment),
-                    'incremental_payment': parseInt(incrementalPayment)
-                };
+        onValue(parkingSettingsRef, (snapshot) => {
+            const currentData = snapshot.val() || {};
 
-                runTransaction(parkingSettingsRef, (currentData) => {
-                    return updatedData;
-                })
-                    .then(() => {
-                        alert("Parking Payment Settings updated successfully!");
-                    })
-                    .catch((error) => {
-                        console.error('Error updating data:', error);
-                    });
+            const updatedData = {
+            ...currentData,
+            'initial_hours': parseInt(initialHours),
+            'initial_payment': parseInt(initialPayment),
+            'incremental_payment': parseInt(incrementalPayment)
+            };
+
+            runTransaction(parkingSettingsRef, (currentData) => {
+            return updatedData;
+            })
+            .then(() => {
+                alert("Parking Payment Settings updated successfully!");
+                submitPaymentButton.removeEventListener('click', submitPaymentSettings);
+            })
+            .catch((error) => {
+                console.error('Error updating data:', error);
             });
         });
+        }
 
-        document.getElementById('submit-button-discount').addEventListener('click', () => {
-            const discountType = document.getElementById('discount-type').value;
-            const discountBy = document.getElementById('discount-by').value;
-            const discountAmount = document.getElementById('discount-amount').value;
-            const costfreeAmount = document.getElementById('costfree-amount').value;
+        const submitDiscountButton = document.getElementById('submit-button-discount');
+        submitDiscountButton.addEventListener('click', submitDiscountSettings);
 
-            onValue(parkingSettingsRef, (snapshot) => {
-                const currentData = snapshot.val() || {};
+        function submitDiscountSettings() {
+        const discountType = document.getElementById('discount-type').value;
+        const discountBy = document.getElementById('discount-by').value;
+        const discountAmount = document.getElementById('discount-amount').value;
+        const costfreeAmount = document.getElementById('costfree-amount').value;
 
-                const updatedData = {
-                    ...currentData,
-                    [discountType]: {
-                        'discount_by': discountBy,
-                        'amount': parseInt(discountAmount),
-                        'costfree_amount': parseInt(costfreeAmount)
-                    }
-                };
+        onValue(parkingSettingsRef, (snapshot) => {
+            const currentData = snapshot.val() || {};
 
-                runTransaction(parkingSettingsRef, (currentData) => {
-                    return updatedData;
-                })
-                    .then(() => {
-                        alert("Parking Discount Settings updated successfully!");
-                    })
-                    .catch((error) => {
-                        console.error('Error updating data:', error);
-                    });
+            const updatedData = {
+            ...currentData,
+            [discountType]: {
+                'discount_by': discountBy,
+                'amount': parseInt(discountAmount),
+                'costfree_amount': parseInt(costfreeAmount)
+            }
+            };
+
+            runTransaction(parkingSettingsRef, (currentData) => {
+            return updatedData;
+            })
+            .then(() => {
+                alert("Parking Discount Settings updated successfully!");
+                submitDiscountButton.removeEventListener('click', submitDiscountSettings);
+            })
+            .catch((error) => {
+                console.error('Error updating data:', error);
             });
         });
+        }
+
 
         function updateMaxSpaces(newMaxSpaces, newSlotSpaces) {
             runTransaction(parkingRef, (currentData) => {
