@@ -164,6 +164,10 @@ $data = array_reverse($dataRef)
                                     <span>Transaction Type</span>
                                 </div>
                                 <div style="flex: 1.3;"></div>
+                                <div>
+                                    <span>Discount</span>
+                                </div>
+                                <div style="flex: 1.3;"></div>
                                 <div style="flex: 1;">
                                     <span>Date</span>
                                 </div>
@@ -209,7 +213,28 @@ $data = array_reverse($dataRef)
                                                                 }
                                                              ?>
                                                         </h5>
-                                                    </div>               
+                                                    </div>
+                                                    <div style="flex: 1;">
+                                                        <h5>
+                                                            <?php
+                                                                if (!$info['top_up']) {
+                                                                    if ($info['discount'] == "pwd") {
+                                                                        echo "PWD";
+                                                                    } elseif ($info['discount'] == "senior_citizen") {
+                                                                        echo "Senior Citizen";
+                                                                    } elseif ($info['discount'] == "pregnant") {
+                                                                        echo "Pregnant";
+                                                                    } elseif ($info['discount'] == "student") {
+                                                                        echo "Student";
+                                                                    } else {
+                                                                        echo "None";
+                                                                    }
+                                                                    } else {
+                                                                        echo "None";
+                                                                }
+                                                            ?>        
+                                                        </h5>
+                                                    </div>       
                                                     <div style="flex: 1;">
                                                         <h5 style="font-size: 18px;"><?php 
                                                         if ($info['top_up']) {                                                            
@@ -292,16 +317,20 @@ $data = array_reverse($dataRef)
                                 <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                 <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
                                     <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                        <span style="font-size: 16px; color: lightgray;">Operator</span>
+                                        <span style="font-size: 16px; color: gray;">Transaction Type</span>
+                                        <span style="font-size: 16px; color: gray;">Top-up</span>
+                                    </div>
+                                    <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                        <span style="font-size: 16px; color: gray;">Operator</span>
                                         <span style="font-size: 16px; color: gray;">${operator}</span>
                                     </div>
                                     <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
-                                        <span style="font-size: 16px; color: lightgray;">Payment</span>
+                                        <span style="font-size: 16px; color: gray;">Payment</span>
                                         <span style="font-size: 16px; color: gray;">${"+₱" + payment}</span>
                                     </div>
                                     <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                     <div style="display: flex; flex-direction: row; margin-bottom: 30px; justify-content: space-between; width: 90%;">
-                                        <span style="font-size: 16px; color: lightgray;">Reference Number</span>
+                                        <span style="font-size: 16px; color: gray;">Reference Number</span>
                                         <span style= "font-size: 16px; color: gray;">${referenceNumber}</span>
                                     </div>
                                 </div 
@@ -337,41 +366,45 @@ $data = array_reverse($dataRef)
                                     <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                     <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Plate no</span>
+                                            <span style="font-size: 16px; color: gray;">Transaction Type</span>
+                                            <span style="font-size: 16px; color: gray;">Parking</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: gray;">Plate no</span>
                                             <span style="font-size: 16px; color: gray;">${plateNo}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Date</span>
+                                            <span style="font-size: 16px; color: gray;">Date</span>
                                             <span style="font-size: 16px; color: gray;">${date}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Time</span>
+                                            <span style="font-size: 16px; color: gray;">Time</span>
                                             <span style="font-size: 16px; color: gray;">${time}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Operator</span>
+                                            <span style="font-size: 16px; color: gray;">Operator</span>
                                             <span style="font-size: 16px; color: gray;">${operator}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Hours Parked</span>
+                                            <span style="font-size: 16px; color: gray;">Hours Parked</span>
                                             <span style="font-size: 16px; color: gray;">${time + " - " + endTime}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Duration</span>
+                                            <span style="font-size: 16px; color: gray;">Duration</span>
                                             <span style="font-size: 16px; color: gray;">${durationText}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Discount</span>
+                                            <span style="font-size: 16px; color: gray;">Discount</span>
                                             <span style="font-size: 16px; color: gray;">${discount}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Payment</span>
+                                            <span style="font-size: 16px; color: gray;">Payment</span>
                                             <span style="font-size: 16px; color: gray;">${"+₱" + payment}</span>
                                         </div>
                                         <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 30px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: lightgray;">Reference Number</span>
-                                            <span style= "font-size: 16px; color: gray;">${referenceNumber}</span>
+                                            <span style="font-size: 16px; color: gray;">Reference Number</span>
+                                            <span style="font-size: 16px; color: gray;">${referenceNumber}</span>
                                         </div>
                                     </div 
                                 <div>`;

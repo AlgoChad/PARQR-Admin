@@ -312,6 +312,10 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                         <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                                                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
                                                                             <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                                                                <span style="font-size: 16px; color: lightgray;">Transaction Type</span>
+                                                                                <span style="font-size: 16px; color: gray;">Parking</span>
+                                                                            </div>
+                                                                            <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                                                                 <span style="font-size: 16px; color: lightgray;">Plate no</span>
                                                                                 <span style="font-size: 16px; color: gray;">'.$plateNo.'</span>
                                                                             </div>
@@ -360,6 +364,10 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                         <span style="font-size: 24px; color: #213A5C;">Transaction Details</span>
                                                                         <div style="width: 90%; border-top: 1px solid gray; margin-bottom: 20px;"></div>
                                                                         <div style="display: flex; flex-direction: column; align-items: center; justify-content: center; width: 100%;">
+                                                                            <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                                                                <span style="font-size: 16px; color: lightgray;">Transaction Type</span>
+                                                                                <span style="font-size: 16px; color: gray;">Top-up</span>
+                                                                            </div>
                                                                             <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                                                                 <span style="font-size: 16px; color: lightgray;">Operator</span>
                                                                                 <span style="font-size: 16px; color: gray;">'.$operator.'</span>
