@@ -551,10 +551,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         const parkingSettingsRef = ref(database, 'parking_payment_settings');
-            
+        let paymentDataSubmitted = false;
+        let discountDataSubmitted = false;
+        let data;
+
         // Retrieve and display the data from Firebase
         onValue(parkingSettingsRef, (snapshot) => {
-            const data = snapshot.val();
+            data = snapshot.val();
             if (data) {
                 document.getElementById('initial-hours').value = data['initial_hours'];
                 document.getElementById('initial-hours-payment-amount').value = data['initial_payment'];
@@ -571,65 +574,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         submitPaymentButton.addEventListener('click', submitPaymentSettings);
 
         function submitPaymentSettings() {
-        const initialHours = document.getElementById('initial-hours').value;
-        const initialPayment = document.getElementById('initial-hours-payment-amount').value;
-        const incrementalPayment = document.getElementById('incremental-payment-amount').value;
+            if (paymentDataSubmitted) {
+                return; // Data has already been submitted, return early
+            }
 
-        onValue(parkingSettingsRef, (snapshot) => {
-            const currentData = snapshot.val() || {};
+            const initialHours = document.getElementById('initial-hours').value;
+            const initialPayment = document.getElementById('initial-hours-payment-amount').value;
+            const incrementalPayment = document.getElementById('incremental-payment-amount').value;
 
+            paymentDataSubmitted = true;
             const updatedData = {
-            ...currentData,
-            'initial_hours': parseInt(initialHours),
-            'initial_payment': parseInt(initialPayment),
-            'incremental_payment': parseInt(incrementalPayment)
+                ...data,
+                'initial_hours': parseInt(initialHours),
+                'initial_payment': parseInt(initialPayment),
+                'incremental_payment': parseInt(incrementalPayment)
             };
 
             runTransaction(parkingSettingsRef, (currentData) => {
-            return updatedData;
-            })
-            .then(() => {
-                alert("Parking Payment Settings updated successfully!");
-                submitPaymentButton.removeEventListener('click', submitPaymentSettings);
-            })
-            .catch((error) => {
+                return updatedData;
+            }).then(() => {
+                paymentDataSubmitted = false; // Clear the data submission flag
+            }).catch((error) => {
                 console.error('Error updating data:', error);
+                paymentDataSubmitted = false; // Clear the data submission flag
             });
-        });
+            alert("Parking Payment Settings updated successfully!");
         }
 
         const submitDiscountButton = document.getElementById('submit-button-discount');
         submitDiscountButton.addEventListener('click', submitDiscountSettings);
 
         function submitDiscountSettings() {
-        const discountType = document.getElementById('discount-type').value;
-        const discountBy = document.getElementById('discount-by').value;
-        const discountAmount = document.getElementById('discount-amount').value;
-        const costfreeAmount = document.getElementById('costfree-amount').value;
+            if (discountDataSubmitted) {
+                return; // Data has already been submitted, return early
+            }
 
-        onValue(parkingSettingsRef, (snapshot) => {
-            const currentData = snapshot.val() || {};
+            const discountType = document.getElementById('discount-type').value;
+            const discountBy = document.getElementById('discount-by').value;
+            const discountAmount = document.getElementById('discount-amount').value;
+            const costfreeAmount = document.getElementById('costfree-amount').value;
+
+            discountDataSubmitted = true;
 
             const updatedData = {
-            ...currentData,
-            [discountType]: {
-                'discount_by': discountBy,
-                'amount': parseInt(discountAmount),
-                'costfree_amount': parseInt(costfreeAmount)
-            }
+                ...data,
+                [discountType]: {
+                    'discount_by': discountBy,
+                    'amount': parseInt(discountAmount),
+                    'costfree_amount': parseInt(costfreeAmount)
+                }
             };
 
             runTransaction(parkingSettingsRef, (currentData) => {
-            return updatedData;
+                return updatedData;
             })
             .then(() => {
-                alert("Parking Discount Settings updated successfully!");
-                submitDiscountButton.removeEventListener('click', submitDiscountSettings);
+                discountDataSubmitted = false; // Clear the data submission flag
             })
             .catch((error) => {
                 console.error('Error updating data:', error);
+                discountDataSubmitted = false; // Clear the data submission flag
             });
-        });
+            alert("Parking Discount Settings updated successfully!");
         }
 
 
