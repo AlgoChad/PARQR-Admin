@@ -559,6 +559,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 document.getElementById('initial-hours').value = data['initial_hours'];
                 document.getElementById('initial-hours-payment-amount').value = data['initial_payment'];
                 document.getElementById('incremental-payment-amount').value = data['incremental_payment'];
+                const discountType = data['discount_type'] || {};
+                document.getElementById('discount-type').value = discountType['type'];
+                document.getElementById('discount-by').value = discountType['discount_by'];
+                document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : 0;
+                document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : 0;
             }
         });
 
@@ -587,19 +592,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         console.error('Error updating data:', error);
                     });
             });
-        });
-
-        
-        // Retrieve and display the data from Firebase
-        onValue(parkingSettingsRef, (snapshot) => {
-            const data = snapshot.val();
-            if (data) {
-                const discountType = data['discount_type'] || {};
-                document.getElementById('discount-type').value = discountType['type'];
-                document.getElementById('discount-by').value = discountType['discount_by'];
-                document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : 0;
-                document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : 0;
-            }
         });
 
         document.getElementById('submit-button-discount').addEventListener('click', () => {
