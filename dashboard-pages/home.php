@@ -597,8 +597,8 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 const discountType = data['discount_type'] || {};
                 document.getElementById('discount-type').value = discountType['type'];
                 document.getElementById('discount-by').value = discountType['discount_by'];
-                document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : " ";
-                document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : " ";
+                document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : 0;
+                document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : 0;
             }
         });
 
