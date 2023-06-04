@@ -166,9 +166,13 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                             <div style="display: flex; flex-direction: row;  margin: 20px; padding: 10px; border-radius: 10px;">
                                 <span style="flex: 1;">Name</span>
                                 <div style="flex: 2;"></div>
-                                <div style="flex: 2.2;"></div>
+                                <div style="flex: 1.8;"></div>
                                 <div >
                                     <span>Transaction Type</span>
+                                </div>
+                                <div style="flex: 1.3;"></div>
+                                <div>
+                                    <span>Discount</span>
                                 </div>
                                 <div style="flex: 1.3;"></div>
                                 <div style="flex: 1;">
@@ -213,6 +217,31 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                 }
                                                              ?>
                                                         </h5>
+                                                        </div>
+                                                        <div style="flex: 1;">
+                                                            <h5>
+                                                                <?php
+                                                                    if (!$info['top_up']) {
+                                                                        if(isset($info['discount'])) {
+                                                                            if ($info['discount'] == "pwd") {
+                                                                                echo "PWD";
+                                                                            } elseif ($info['discount'] == "senior_citizen") {
+                                                                                echo "Senior Citizen";
+                                                                            } elseif ($info['discount'] == "pregnant") {
+                                                                                echo "Pregnant";
+                                                                            } elseif ($info['discount'] == "student") {
+                                                                                echo "Student";
+                                                                            } else {
+                                                                                echo "None";
+                                                                            }
+                                                                        } else {
+                                                                            echo "None";
+                                                                        }
+                                                                    } else {
+                                                                            echo "None";
+                                                                    }
+                                                                ?>        
+                                                            </h5>
                                                         </div>
                                                         <div style="flex: 1;">
                                                             <h5><?php 

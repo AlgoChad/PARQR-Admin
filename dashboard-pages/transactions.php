@@ -218,21 +218,25 @@ $data = array_reverse($dataRef)
                                                         <h5>
                                                             <?php
                                                                 if (!$info['top_up']) {
-                                                                    if ($info['discount'] == "pwd") {
-                                                                        echo "PWD";
-                                                                    } elseif ($info['discount'] == "senior_citizen") {
-                                                                        echo "Senior Citizen";
-                                                                    } elseif ($info['discount'] == "pregnant") {
-                                                                        echo "Pregnant";
-                                                                    } elseif ($info['discount'] == "student") {
-                                                                        echo "Student";
+                                                                    if(isset($info['discount'])) {
+                                                                        if ($info['discount'] == "pwd") {
+                                                                            echo "PWD";
+                                                                        } elseif ($info['discount'] == "senior_citizen") {
+                                                                            echo "Senior Citizen";
+                                                                        } elseif ($info['discount'] == "pregnant") {
+                                                                            echo "Pregnant";
+                                                                        } elseif ($info['discount'] == "student") {
+                                                                            echo "Student";
+                                                                        } else {
+                                                                            echo "None";
+                                                                        }
                                                                     } else {
                                                                         echo "None";
                                                                     }
-                                                                    } else {
-                                                                        echo "None";
+                                                                } else {
+                                                                    echo "None";
                                                                 }
-                                                            ?>        
+                                                            ?>          
                                                         </h5>
                                                     </div>       
                                                     <div style="flex: 1;">
