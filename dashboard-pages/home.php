@@ -328,8 +328,9 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <label for="discount-type">Discount Type:</label>
                                     <select class="form-control" id="discount-type">
                                         <option value="senior_citizen">Senior Citizen</option>
-                                        <option value="student">Student</option>
                                         <option value="pwd">PWD</option>
+                                        <option value="pregnant">Pregnant</option>
+                                        <option value="student">Student</option>
                                     </select>
                                 </div>
                                 <div style="display: flex; flex-direction: row;">
