@@ -281,11 +281,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     <div style="display: flex; padding-left: 25px; padding-top: 30px;">
                             <h2 style="color: #213A5C;">Operator</h1>
                             <div style="flex: 1;"></div>
+                            <div style="flex: 1.6;"></div>
+                            <h2 style="color: #213A5C;">Payment</h1>
+                            <div style="flex: 1;"></div>
                             <h2 style="color: #213A5C;">Payment</h1>
                             <div style="flex: 1;"></div>
                     </div>
                     <div style="display: flex; flex-direction: row;">
-                        <div style="display: flex-direction: column; flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                        <div style="display: flex-direction: column; flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 225%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                             <div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: flex-end; padding-top: 20px;">
                                 <a class="btn" style="color: white; border-radius: 20px; padding-right: 30px; padding-left: 30px; margin-right: 15px;" href="operators.php">
                                     <img src="../assets/home-icons/Menu.png" alt="">
@@ -316,7 +319,37 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                     <label>Incremental Payment Amount (Per Hour):</label>
                                     <input type="text" class="form-control" id="incremental-payment-amount">
                                 </div>
-                                <button type="button" class="btn" id="submit-button" style="background-color: #213A5C; color: white;">Update</button>
+                                <button type="button" class="btn" id="submit-button-payment" style="background-color: #213A5C; color: white;">Update</button>
+                            </div>
+                        </div>
+                        <div style="margin: 20px; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <div style="margin: 10px;">
+                                <div class="form-group">
+                                    <label for="discount-type">Discount Type:</label>
+                                    <select class="form-control" id="discount-type">
+                                        <option value="senior_citizen">Senior Citizen</option>
+                                        <option value="student">Student</option>
+                                        <option value="pwd">PWD</option>
+                                    </select>
+                                </div>
+                                <div style="display: flex; flex-direction: row;">
+                                    <div class="form-group"style=" width: 100%;">
+                                        <label for="discount-type">Discount By:</label>
+                                        <select class="form-control" id="discount-by">
+                                            <option value="Percentage">Percentage</option>
+                                            <option value="Deduct">Fee Deduction</option>
+                                        </select>
+                                    </div>
+                                    <div class="form-group" style="margin-left: 5px; width: 100%;">
+                                        <label>Amount:</label>
+                                        <input type="text" class="form-control" id="discount-amount">
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label>Number of Cost free Hours:</label>
+                                    <input type="text" class="form-control" id="costfree-amount">
+                                </div>
+                                <button type="button" class="btn" id="submit-button-discount" style="background-color: #213A5C; color: white;">Update</button>
                             </div>
                         </div>
                     </div>
@@ -529,7 +562,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
         });
 
-        document.getElementById('submit-button').addEventListener('click', () => {
+        document.getElementById('submit-button-payment').addEventListener('click', () => {
             const initialHours = document.getElementById('initial-hours').value;
             const initialPayment = document.getElementById('initial-hours-payment-amount').value;
             const incrementalPayment = document.getElementById('incremental-payment-amount').value;
@@ -542,6 +575,49 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     'initial_hours': parseInt(initialHours),
                     'initial_payment': parseInt(initialPayment),
                     'incremental_payment': parseInt(incrementalPayment)
+                };
+
+                runTransaction(parkingSettingsRef, (currentData) => {
+                    return updatedData;
+                })
+                    .then(() => {
+                        console.log('Data updated successfully!');
+                    })
+                    .catch((error) => {
+                        console.error('Error updating data:', error);
+                    });
+            });
+        });
+
+        
+        // Retrieve and display the data from Firebase
+        onValue(parkingSettingsRef, (snapshot) => {
+            const data = snapshot.val();
+            if (data) {
+                const discountType = data['discount_type'] || {};
+                document.getElementById('discount-type').value = discountType['type'];
+                document.getElementById('discount-by').value = discountType['discount_by'];
+                document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : " ";
+                document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : " ";
+            }
+        });
+
+        document.getElementById('submit-button-discount').addEventListener('click', () => {
+            const discountType = document.getElementById('discount-type').value;
+            const discountBy = document.getElementById('discount-by').value;
+            const discountAmount = document.getElementById('discount-amount').value;
+            const costfreeAmount = document.getElementById('costfree-amount').value;
+
+            onValue(parkingSettingsRef, (snapshot) => {
+                const currentData = snapshot.val() || {};
+
+                const updatedData = {
+                    ...currentData,
+                    [discountType]: {
+                        'discount_by': discountBy,
+                        'amount': parseInt(discountAmount),
+                        'costfree_amount': parseInt(costfreeAmount)
+                    }
                 };
 
                 runTransaction(parkingSettingsRef, (currentData) => {

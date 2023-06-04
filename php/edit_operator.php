@@ -38,7 +38,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
     try {
         $userProperties = [
-            'email' => $newEmail, // Replace $newEmail with the new email address variable
+            'email' => $email, // Replace $email with the new email address variable
         ];
         $updatedUser = $auth->updateUser($_POST['id'], $userProperties);
         // Email updated successfully
