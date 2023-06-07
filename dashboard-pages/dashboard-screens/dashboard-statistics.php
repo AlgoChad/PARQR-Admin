@@ -269,7 +269,8 @@ if (!isset($_SESSION['user_id'])) {
                     borderColor: '#213A5C',
                     borderWidth: 2,
                     lineTension: 0.4,
-                    pointRadius: 0
+                    pointRadius: 4,
+                    pointBackgroundColor: '#213A5C'
             }]
         },
         options: {

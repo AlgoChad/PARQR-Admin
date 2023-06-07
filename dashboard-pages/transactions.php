@@ -202,14 +202,14 @@ $data = array_reverse($dataRef)
                                                     <div style="flex: 1; padding-left: 20px; text-align: start;">
                                                         <h5><?php echo $info['user_name']; ?></h5>
                                                     </div>              
-                                                    <div style="flex: .8;"></div>  
+                                                    <div style="flex: .7;"></div>  
                                                     <div style="flex: 1;">
                                                         <h5>
                                                             <?php
                                                                 if ($info['top_up']) {
                                                                     echo "Top-up";
                                                                 } else {
-                                                                    echo "Parking";
+                                                                    echo "Parking Pay";
                                                                 }
                                                              ?>
                                                         </h5>
