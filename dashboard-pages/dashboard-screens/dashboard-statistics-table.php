@@ -128,7 +128,7 @@ if (!isset($_SESSION['user_id'])) {
             </div>
             <!-- Main Content -->
             <div class="col-md-10" style="background-color: #203551; overflow-y: scroll; height: calc(100vh);">
-                <a href="../dashboard.php" class="btn" style="padding-right: 30px; padding-left: 30px; padding-top: 30px;">
+                <a href="dashboard-statistics.php" class="btn" style="padding-right: 30px; padding-left: 30px; padding-top: 30px;">
                     <img src="../../assets/leftArrow.png" style="filter: brightness(0) invert(1);">
                 </a>
                 <div style="background-color: white; padding: 20px; margin-bottom: 30px; margin-top: 20px; margin-left: 15px; margin-right: 15px; height: 800px; border-radius: 15px;">
