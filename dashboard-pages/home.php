@@ -555,7 +555,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         });
 
         function displayTodayrevenue(todayRevenue, yesterdayRevenue){
-            $('#today-income').text(todayRevenue);
+            var formattedRevenue = todayRevenue.toLocaleString('en-US');
+            var formattedRevenueWithCurrency = '₱ ' + formattedRevenue;
+
+            $('#today-income').text(formattedRevenueWithCurrency);
             const revenueChangePercentage = calculatePercentageChange(todayRevenue, yesterdayRevenue);
             displayPercentageChange('#today-income-percentage', revenueChangePercentage);
         }
@@ -567,7 +570,10 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         }
 
         function displayTotalRevenue(totalRevenue, yesterdayTotalRevenue){
-            $('#total-revenue').text(totalRevenue);
+            var formattedRevenue = totalRevenue.toLocaleString('en-US');
+            var formattedRevenueWithCurrency = '₱ ' + formattedRevenue;
+
+            $('#total-revenue').text(formattedRevenueWithCurrency);
             const totalRevenueChangePercentage = calculatePercentageChange(totalRevenue, yesterdayTotalRevenue);
             displayPercentageChange('#total-revenue-percentage', totalRevenueChangePercentage);
         }

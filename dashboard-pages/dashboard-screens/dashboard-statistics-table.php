@@ -254,9 +254,9 @@ if (!isset($_SESSION['user_id'])) {
 
                 html += '<tr>';
                 html += '<td style="border: 1px solid black; padding: 20px; color: #213A5C; font-weight: bold; font-size: 16px;">' + user.userName + '</td>';
-                html += '<td style="border: 1px solid black; padding: 20px; color: black; font-size: 16px;">' + user.longestHistory.operator_name + '</td>';
+                html += '<td style="border: 1px solid black; padding: 20px; color: black; font-weight: bold; font-size: 16px;">' + user.longestHistory.operator_name + '</td>';
                 html += '<td style="border: 1px solid black; padding: 20px; color: gray;">' + user.longestHistory.plate_no + '</td>';
-                html += '<td style="border: 1px solid black; padding: 20px; color: gray;">' + new Date(user.longestHistory.start_time).toDateString() + '</td>';
+                html += '<td style="border: 1px solid black; padding: 20px; color: gray;">' + new Date(user.longestHistory.start_time).toLocaleDateString([], { year: "numeric", month: "2-digit", day: '2-digit' }) + '</td>';
                 html += '<td style="border: 1px solid black; padding: 20px; color: gray;">' + new Date(user.longestHistory.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) + '</td>';
                 html += '<td style="border: 1px solid black; padding: 20px; color: gray;">' + durationText + '</td>';
                 html += '<td style="border: 1px solid black; padding: 20px; color: gray;">' + discountText + '</td>';
@@ -271,16 +271,11 @@ if (!isset($_SESSION['user_id'])) {
         html += '</div>';
         html += '</div>';
 
-
-
-
         // Update the innerHTML of the divElement
         divElement.innerHTML = html;
     }
 
    
-
-    
     </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>

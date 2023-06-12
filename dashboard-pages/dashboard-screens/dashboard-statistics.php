@@ -137,29 +137,29 @@ if (!isset($_SESSION['user_id'])) {
                             <div style="display: flex; flex-direction: row;">
                                 <div style="background-color: white; padding: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
                                     <h5 style="font-size: 16px;">Total Revenue</h5>
-                                    <h3>$66,000</h3>
+                                    <h3 id="total-revenue"></h3>
                                 </div>
                                 <div style="background-color: white; padding: 20px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
                                     <h5 style="font-size: 16px;">Total Income</h5>
-                                    <h3>$66,000</h3>
+                                    <h3 id="total-income"></h3>
                                 </div>
                                 <div style="background-color: white; padding: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
                                     <h5 style="font-size: 16px;">Total Amount of Discounts</h5>
-                                    <h3>$66,000</h3>
+                                    <h3 id="total-discount"></h3>
                                 </div>
                             </div>
                             <div style="display: flex; flex-direction: row;">
                                 <div style="background-color: white; padding: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
                                     <h5 style="font-size: 16px;">Total Top-up Amount</h5>
-                                    <h3>$66,000</h3>
+                                    <h3 id="total-topup"></h3>
                                 </div>
                                 <div style="background-color: white; padding: 20px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;  height: 100%; width: 100%; border-radius: 15px;">
                                     <h5 style="font-size: 16px;">Car Parking Income</h5>
-                                    <h3>$66,000</h3>
+                                    <h3 id="carparking-income"></h3>
                                 </div>
                                 <div style="background-color: white; padding: 20px; margin-bottom: 20px;  height: 100%; width: 100%; border-radius: 15px;">
                                     <h5 style="font-size: 16px;">Motorcycle Parking Income</h5>
-                                    <h3>$66,000</h3>
+                                    <h3 id="motorcycle-income"></h3>
                                 </div>
                             </div>
                         </div>
@@ -325,10 +325,10 @@ if (!isset($_SESSION['user_id'])) {
         data: {
             labels: ['Senior', 'PWD', 'Student', 'Pregnant', 'None'],
             datasets: [{
-                data: [20, 30, 20, 10, 20], // Placeholder data values
+                data: [0, 0, 0, 0, 0], // Placeholder data values
                 backgroundColor: ['#2475e2', '#a6cafa', '#5c7699', '#104388', '#90a0b7'], // Colors for each dataset
                 hoverBackgroundColor: ['#2475e2', '#a6cafa', '#5c7699', '#104388', '#90a0b7'], // Hover colors for each dataset
-                borderWidth: 0
+                borderWidth: 0,
             }]
         },
         options: {
@@ -340,7 +340,7 @@ if (!isset($_SESSION['user_id'])) {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'top',
+                        position: 'top',
                     labels: {
                         usePointStyle: true, // Display labels as circles
                         boxWidth: 10,
@@ -355,7 +355,8 @@ if (!isset($_SESSION['user_id'])) {
                                 label += ': ';
                             }
                             if (context.parsed) {
-                                label += context.parsed.toFixed(2) + '%';
+                                var percentage = (context.parsed / context.dataset.data.reduce((a, b) => a + b) * 100).toFixed(2);
+                                label += percentage + '%';
                             }
                             return label;
                         }
@@ -366,11 +367,12 @@ if (!isset($_SESSION['user_id'])) {
     });
 
 
-
     </script>
     <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
     import { getDatabase, ref, onValue, runTransaction } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-database.js";
+    import { getFirestore, collection, getDocs  } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-firestore.js";
+
 
     const firebaseConfig = {
         apiKey: "AIzaSyBLqTYCYZm0XTxWG0uabY0oolAwb-8XK08",
@@ -385,6 +387,10 @@ if (!isset($_SESSION['user_id'])) {
         // Initialize Firebase
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
+    const db = getFirestore(app);
+
+    const today = new Date().toISOString().slice(0, 10);
+    const yesterday = new Date(Date.now() - 864e5).toISOString().slice(0, 10);
 
     const usersRef = ref(database, 'users');
 
@@ -446,10 +452,10 @@ if (!isset($_SESSION['user_id'])) {
                 }
 
                 html += '<tr>';
-                html += '<td style="padding-right: 20px; font-weight: bold;">' + user.userName + '</td>';
-                html += '<td style="padding-right: 20px; padding-left: 20px;">' + new Date(user.longestHistory.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) + '</td>';
-                html += '<td style="padding-right: 20px; padding-left: 20px;">' + durationText + '</td>';
-                html += '<td style="padding-left: 20px; color: gray;">' + "₱" + user.longestHistory.payment + '</td>';
+                html += '<td style="padding-right: 20px; font-weight: bold; color: #213A5C;">' + user.userName + '</td>';
+                html += '<td style="padding-right: 20px; padding-left: 20px; color: gray;">' + new Date(user.longestHistory.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) + '</td>';
+                html += '<td style="padding-right: 20px; padding-left: 20px; color: gray;">' + durationText + '</td>';
+                html += '<td style="padding-left: 20px; color: #F3BB01;">' + "₱" + user.longestHistory.payment + '</td>';
                 html += '</tr>';
             }
         });
@@ -462,6 +468,227 @@ if (!isset($_SESSION['user_id'])) {
         divElement.innerHTML = html;
     }
 
+    let totalIncomeVal;
+    let totalRevenueVal;
+
+    function calculateTotalPaymentAmount(callback) {
+        let totalPaymentAmount = 0;
+
+        const transactionsRef = ref(database, "transactions");
+        onValue(transactionsRef, (snapshot) => {
+            const transactions = snapshot.val() || {};
+
+            for (const key in transactions) {
+                const transaction = transactions[key];
+                if (!transaction.top_up) {
+                    const paymentAmount = transaction.payment || 0;
+                    totalPaymentAmount += paymentAmount;
+                }
+            }
+
+            callback(totalPaymentAmount);
+        }, (error) => {
+            console.log('Error retrieving transactions: ', error);
+        });
+    }
+
+    function displayTotalIncome(totalRevenue, yesterdayTotalRevenue){
+        var formattedRevenue = totalRevenue.toLocaleString('en-US');
+        var formattedRevenueWithCurrency = '₱ ' + formattedRevenue;
+
+        totalIncomeVal = totalRevenue;
+        $('#total-income').text(formattedRevenueWithCurrency);
+        displayTotalDiscount();
+    }
+
+    calculateTotalPaymentAmount(displayTotalIncome);
+
+    function calculateTotalRevenue(callback) {
+    // Fetch parking payment settings from the 'parking_payment_settings' in RTDB
+        const paymentSettingsRef = ref(database, 'parking_payment_settings');
+        onValue(paymentSettingsRef, (snapshot) => {
+            const paymentSettings = snapshot.val();
+            const initialHours = paymentSettings.initial_hours || 0;
+            const initialPayment = paymentSettings.initial_payment || 0;
+            const incrementalPayment = paymentSettings.incremental_payment || 0;
+
+            let totalPaymentAmount = 0;
+
+            // Retrieve the 'transactions' data from RTDB
+            const transactionsRef = ref(database, 'transactions');
+            onValue(transactionsRef, (snapshot) => {
+            const transactions = snapshot.val();
+
+            // Iterate over the transactions
+            for (const transactionId in transactions) {
+                const transaction = transactions[transactionId];
+                const topUp = transaction.top_up || false;
+                const duration = transaction.duration || 0;
+
+                if (!topUp) {
+                    let paymentAmount = parseInt(initialPayment);
+
+                    const durationInHours = Math.floor(duration / (60 * 60));
+                    const durationInMinutes = Math.floor((duration % 3600) / 60);
+
+                    const additionalHours = durationInHours - parseInt(initialHours);
+
+                    if (additionalHours > 0) {
+                        paymentAmount += additionalHours * parseInt(incrementalPayment);
+                    }
+
+                    totalPaymentAmount += paymentAmount;
+                }
+            }
+
+            // Invoke the callback function with the total revenue
+            callback(totalPaymentAmount);
+            }, (error) => {
+            console.log('Error fetching transactions: ', error);
+            });
+        });
+    }
+
+    function displayTotalRevenue(totalRevenue) {
+        // Format the total revenue with currency symbol and commas
+        var formattedTotalRevenue = '₱ ' + totalRevenue.toLocaleString('en-US');
+        totalRevenueVal = totalRevenue;
+        // Update the text content of the element with the formatted total revenue
+        $('#total-revenue').text(formattedTotalRevenue);
+        displayTotalDiscount();
+    }
+
+    calculateTotalRevenue(displayTotalRevenue);
+
+    function displayTotalDiscount() {
+        if (typeof totalRevenueVal !== 'undefined' && typeof totalIncomeVal !== 'undefined') {
+            var formattedTotalDiscount = '₱ ' + (totalRevenueVal - totalIncomeVal).toLocaleString('en-US');
+            $('#total-discount').text(formattedTotalDiscount);
+        }
+    }
+
+    displayTotalDiscount(); //
+
+    async function calculateTotalTopUpAmount(callback) {
+        let totalAmount = 0;
+
+        try {
+            const querySnapshot = await getDocs(collection(db, "users"));
+
+            querySnapshot.forEach((doc) => {
+                const topUpHistory = doc.data().top_up_history || [];
+
+                topUpHistory.forEach((entry) => {
+                    const amount = entry.amount || 0;
+                    totalAmount += amount;
+                });
+            });
+
+            // Invoke the callback function with the updated total amount
+            callback(totalAmount);
+        } catch (error) {
+            console.log('Error retrieving top-up history: ', error);
+        }
+    }
+
+    function displayTotalTopUpAmount(totalAmount) {
+        var formattedTotalAmount = '₱ ' + totalAmount.toLocaleString('en-US');
+        $('#total-topup').text(formattedTotalAmount);
+    }
+
+    calculateTotalTopUpAmount(displayTotalTopUpAmount);
+
+    function calculateTotalCarPaymentAmount(callback) {
+        let totalPaymentAmount = 0;
+
+        const transactionsRef = ref(database, "transactions");
+        onValue(transactionsRef, (snapshot) => {
+            const transactions = snapshot.val() || {};
+
+            for (const key in transactions) {
+                const transaction = transactions[key];
+                if (!transaction.top_up && (!transaction.vehicle_type || transaction.vehicle_type === "car")) {
+                    const paymentAmount = transaction.payment || 0;
+                    totalPaymentAmount += paymentAmount;
+                }
+            }
+
+            callback(totalPaymentAmount);
+        }, (error) => {
+            console.log('Error retrieving transactions: ', error);
+        });
+    }
+
+    function displayTotalCarPaymentAmount(totalPaymentAmount) {
+        var formattedTotalAmount = '₱ ' + totalPaymentAmount.toLocaleString('en-US');
+        $('#carparking-income').text(formattedTotalAmount);
+    }
+
+    calculateTotalCarPaymentAmount(displayTotalCarPaymentAmount);
+
+    function calculateTotalMotorPaymentAmount(callback) {
+        let totalPaymentAmount = 0;
+
+        const transactionsRef = ref(database, "transactions");
+        onValue(transactionsRef, (snapshot) => {
+            const transactions = snapshot.val() || {};
+
+            for (const key in transactions) {
+                const transaction = transactions[key];
+                if (!transaction.top_up && transaction.vehicle_type === "motorcycle") {
+                    const paymentAmount = transaction.payment || 0;
+                    totalPaymentAmount += paymentAmount;
+                }
+            }
+
+            callback(totalPaymentAmount);
+        }, (error) => {
+            console.log('Error retrieving transactions: ', error);
+        });
+    }
+
+    function displayTotalMotorPaymentAmount(totalPaymentAmount) {
+        var formattedTotalAmount = '₱ ' + totalPaymentAmount.toLocaleString('en-US');
+        $('#motorcycle-income').text(formattedTotalAmount);
+    }
+
+    calculateTotalMotorPaymentAmount(displayTotalMotorPaymentAmount);
+
+    // Create an empty array to store the discount counts
+    const discountCounts = [0, 0, 0, 0, 0]; // Order: ['Senior', 'PWD', 'Student', 'Pregnant', 'None']
+
+    function calculateDiscountCounts(callback) {
+        const transactionsRef = ref(database, "transactions");
+        onValue(transactionsRef, (snapshot) => {
+            const transactions = snapshot.val() || {};
+
+            for (const key in transactions) {
+            const transaction = transactions[key];
+                const discount = transaction.discount || 'none';
+                const index = ['senior', 'pwd', 'student', 'pregnant', 'none'].indexOf(discount.toLowerCase());
+
+                if (index !== -1) {
+                    discountCounts[index] += 1;
+                }
+            }
+
+            callback(discountCounts);
+        }, (error) => {
+            console.log('Error retrieving transactions: ', error);
+        });
+    }
+
+    calculateDiscountCounts((discountCounts) => {
+        // Update the chart data with the discount counts
+        HalfDonut.data.datasets[0].data = discountCounts;
+
+        // Update the chart
+        HalfDonut.update();
+    });
+
+
+    calculateDiscountCounts(updateDiscountChart);
+    
 
     </script>
     <!-- jQuery and Bootstrap JS -->
