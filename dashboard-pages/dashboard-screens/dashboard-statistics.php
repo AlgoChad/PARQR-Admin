@@ -131,46 +131,70 @@ if (!isset($_SESSION['user_id'])) {
                 <a href="../dashboard.php" class="btn" style="padding-right: 30px; padding-left: 30px; padding-top: 30px;">
                     <img src="../../assets/leftArrow.png" style="filter: brightness(0) invert(1);">
                 </a>
-                <div style="display: flex; flex-direction: row;">
-                    <div  style="width: 100%;">
-                        <div style="background-color: white; padding: 20px; margin: 20px; height: 530px; border-radius: 15px;">
-                            <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
-                                <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Space Occupied</span>
-                                <div style="flex: 1;"></div>
+                <div style="display: flex; flex-direction: row; margin-top: 20px; margin-bottom: 20px;">
+                    <div class="col-md-7">
+                        <div>
+                            <div style="display: flex; flex-direction: row;">
+                                <div style="background-color: white; padding: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
+                                    <h5 style="font-size: 16px;">Total Revenue</h5>
+                                    <h3>$66,000</h3>
+                                </div>
+                                <div style="background-color: white; padding: 20px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
+                                    <h5 style="font-size: 16px;">Total Income</h5>
+                                    <h3>$66,000</h3>
+                                </div>
+                                <div style="background-color: white; padding: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
+                                    <h5 style="font-size: 16px;">Total Amount of Discounts</h5>
+                                    <h3>$66,000</h3>
+                                </div>
                             </div>
-                            <div style="height: 90%;">
-                                <canvas id="Chart" ></canvas>
+                            <div style="display: flex; flex-direction: row;">
+                                <div style="background-color: white; padding: 20px; margin-bottom: 20px; height: 100%; width: 100%; border-radius: 15px;">
+                                    <h5 style="font-size: 16px;">Total Top-up Amount</h5>
+                                    <h3>$66,000</h3>
+                                </div>
+                                <div style="background-color: white; padding: 20px; margin-left: 20px; margin-right: 20px; margin-bottom: 20px;  height: 100%; width: 100%; border-radius: 15px;">
+                                    <h5 style="font-size: 16px;">Car Parking Income</h5>
+                                    <h3>$66,000</h3>
+                                </div>
+                                <div style="background-color: white; padding: 20px; margin-bottom: 20px;  height: 100%; width: 100%; border-radius: 15px;">
+                                    <h5 style="font-size: 16px;">Motorcycle Parking Income</h5>
+                                    <h3>$66,000</h3>
+                                </div>
                             </div>
                         </div>
-                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px;">
-                            <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
-                                <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Total Income</span>
-                            </div>
-                            <div style="height: 80%;">
-                                <canvas id="Chart_1"></canvas>
+                        <div style="background-color: white; padding: 20px; height: 700px; width: 100%; border-radius: 15px;">
+                            <div style="height: 90%;">
+                                <h2>Total Summary of Parking Spaces</h2>
+                                <canvas id="Chart_0"></canvas>
                             </div>
                         </div>
                     </div>
-                    <div  style="width: 100%;">
-                        <div style="background-color: white; padding: 20px; margin: 20px; height: 530px; border-radius: 15px;">
-                            <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
-                                <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Space Available</span>
-                                <div style="flex: 1;"></div>
+                    <div class="col-md-5">
+                        <div style="background-color: white; padding: 20px; margin-bottom: 20px; margin-right: 20px; height: 47.9%; width: 100%; border-radius: 15px;">
+                            <span style="color: #213A5C; font-weight: bold; font-size: 24px; padding-bottom: 10px;">Longest Time Running</span>
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; padding: 10px;">
+                                <span style="flex: 2;">Name</span>
+                                <span style="flex: 1.5;">Start Time</span>
+                                <span style="flex: 1.5;">Duration</span>
+                                <span style="flex: 0.8;">Fee</span>
+                                
                             </div>
+                            <div id="list" style="overflow-y: scroll; height: calc(30vh); padding: 10px;"></div>
+                            <a class="btn" style="width: 100%; align-items: center; color: white; background-color: #213A5C; padding: 10px; margin-top: 10px;" href="dashboard-statistics-table.php">Full View</a>
+                        </div>
+                        <div style="background-color: white; padding: 20px; margin-right: 20px; height: 50%; width: 100%; border-radius: 15px;">
+                            <h2>Parked Users</h2>
                             <div style="height: 90%;">
-                                <canvas id="Chart_0" ></canvas>
+                                <canvas id="Chart_2"></canvas>
                             </div>
                         </div>
-                        <div style="background-color: white; padding: 20px; margin: 20px; height: 255px; border-radius: 15px;">
-                            <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
-                                <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Average Time</span>
-                            </div>
-                            <div style="height: 80%;">
-                                <center>
-                                    <div style="margin: 40px;"id="average-time"></div>
-                                </center>
-                            </div>
-                        </div>
+                    </div>
+                </div>
+                <div style="background-color: white; padding: 20px; margin-bottom: 30px; margin-left: 15px; margin-right: 15px; height: 500px; border-radius: 15px;" >
+                    <div style="height: 90%;">
+                        <h2>Total Sales</h2>
+                        <canvas id="Chart_1"></canvas>
                     </div>
                 </div>
             </div>
@@ -179,110 +203,39 @@ if (!isset($_SESSION['user_id'])) {
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-    var ctx = document.getElementById('Chart').getContext('2d');
-    var Bar = new Chart(ctx, {
+
+    var ctx1 = document.getElementById("Chart_0").getContext("2d");
+    var Bar = new Chart(ctx1, {
         type: 'bar',
         data: {
-            labels: [],
+            labels: ['MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT', 'SUN'],
             datasets: [{
-                label: 'Highest Space Occupied',
-                data: [],
-                backgroundColor: '#213A5C',
-                borderColor: '#F3BB01',
-                borderWidth: 1
-            }]
-        }, 
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y:{
-                    beginAtZero: true,
-                    grid: {
-                        display: false
-                    },
-                },
-                x: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom' // Adjust the legend position as needed
-                }
-            }
-        }
-    });
-
-    var ctx1 = document.getElementById('Chart_0').getContext('2d');
-    var Bar_0 = new Chart(ctx1, {
-        type: 'bar',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Available Spaces',
-                data: [],
-                backgroundColor: 'black',
-                borderColor: 'gray',
-                borderWidth: 1
-            }]
-        }, 
-        options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            scales: {
-                y:{
-                    beginAtZero: true,
-                    grid: {
-                        display: false
-                    },
-                },
-                x: {
-                    beginAtZero: true,
-                    grid: {
-                        display: false
-                    }
-                }
-            },
-            plugins: {
-                legend: {
-                    display: true,
-                    position: 'bottom' // Adjust the legend position as needed
-                }
-            }
-        }
-    });
-
-    var ctx2 = document.getElementById("Chart_1").getContext("2d");
-    var Line = new Chart(ctx2, {
-        type: 'line',
-        data: {
-            labels: [],
-            datasets: [{
-                label: 'Income Per Day',
-                data: [],
-                    backgroundColor: 'transparent',
-                    borderColor: '#213A5C',
-                    borderWidth: 2,
-                    lineTension: 0.4,
-                    pointRadius: 4,
-                    pointBackgroundColor: '#213A5C'
+                label: 'Cars',
+                data: [100, 150, 90, 80, 120, 70, 120], // Placeholder data values for the first color (7 days)
+                backgroundColor: '#f3bb01', // Color for the first dataset
+                borderColor: '#f3bb01',
+                borderWidth: 1,
+                borderRadius: 15
+            }, {
+                label: 'Motorcycle',
+                data: [80, 120, 70, 60, 100, 50, 100], // Placeholder data values for the second color (7 days)
+                backgroundColor: '#92a2b8', // Color for the second dataset
+                borderColor: '#92a2b8',
+                borderWidth: 1,
+                borderRadius: 15
+            }, {
+                label: 'Vacant',
+                data: [120, 70, 60, 100, 50, 100, 150], // Placeholder data values for the third color (7 days)
+                backgroundColor: '#3b414b', // Color for the third dataset
+                borderColor: '#3b414b',
+                borderWidth: 1,
+                borderRadius: 15
             }]
         },
         options: {
             responsive: true,
             maintainAspectRatio: false,
             scales: {
-                y:{
-                    beginAtZero: true,
-                    grid: {
-                        display: false
-                    },
-                },
                 x: {
                     beginAtZero: true,
                     grid: {
@@ -293,11 +246,127 @@ if (!isset($_SESSION['user_id'])) {
             plugins: {
                 legend: {
                     display: true,
-                    position: 'bottom' // Adjust the legend position as needed
+                    position: 'bottom',
+                    labels: {
+                        usePointStyle: true, // Display labels as circles
+                        boxWidth: 10, // Size of the circle
+                        padding: 20
+                    }
                 }
             }
-         }
+        }
     });
+
+    
+    var ctx2 = document.getElementById("Chart_1").getContext("2d");
+    var Line = new Chart(ctx2, {
+        type: 'line',
+        data: {
+            labels: ['Day 1', 'Day 2', 'Day 3', 'Day 4', 'Day 5', 'Day 6', 'Day 7'],
+            datasets: [{
+                label: 'Discount',
+                data: [100, 150, 90, 80, 120, 70, 120], // Placeholder data values for the first color (7 days)
+                backgroundColor: 'transparent',
+                borderColor: '#f3bb01', // Color for the first dataset
+                borderWidth: 2,
+                lineTension: 0.4,
+                pointRadius: 3,
+                pointBackgroundColor: 'black',
+                borderDash: [5, 5] // Make the line broken with dashes
+            }, {
+                label: 'Car Parking',
+                data: [80, 120, 70, 60, 100, 50, 100], // Placeholder data values for the second color (7 days)
+                backgroundColor: 'transparent',
+                borderColor: '#92a2b8', // Color for the second dataset
+                borderWidth: 2,
+                lineTension: 0.4,
+                pointRadius: 3,
+                pointBackgroundColor: 'black',
+                borderDash: [5, 5] // Make the line broken with dashes
+            }, {
+                label: 'Motorcycle Parking',
+                data: [120, 70, 60, 100, 50, 100, 150], // Placeholder data values for the third color (7 days)
+                backgroundColor: 'transparent',
+                borderColor: '#3b414b', // Color for the third dataset
+                borderWidth: 2,
+                lineTension: 0.4,
+                pointRadius: 2,
+                pointBackgroundColor: 'black',
+                borderDash: [5, 5] // Make the line broken with dashes
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            scales: {
+                x: {
+                    beginAtZero: true,
+                    grid: {
+                        display: false
+                    }
+                }
+            },
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top', // Adjust the legend position as needed
+                    labels: {
+                        usePointStyle: true, // Display labels as circles
+                        
+                    }
+                }
+            }
+        }
+    });
+
+    var ctx3 = document.getElementById('Chart_2').getContext('2d');
+    var HalfDonut = new Chart(ctx3, {
+        type: 'doughnut',
+        data: {
+            labels: ['Senior', 'PWD', 'Student', 'Pregnant', 'None'],
+            datasets: [{
+                data: [20, 30, 20, 10, 20], // Placeholder data values
+                backgroundColor: ['#2475e2', '#a6cafa', '#5c7699', '#104388', '#90a0b7'], // Colors for each dataset
+                hoverBackgroundColor: ['#2475e2', '#a6cafa', '#5c7699', '#104388', '#90a0b7'], // Hover colors for each dataset
+                borderWidth: 0
+            }]
+        },
+        options: {
+            responsive: true,
+            maintainAspectRatio: false,
+            cutout: '50%',
+            circumference: 180,
+            rotation: 270,
+            plugins: {
+                legend: {
+                    display: true,
+                    position: 'top',
+                    labels: {
+                        usePointStyle: true, // Display labels as circles
+                        boxWidth: 10,
+                        padding: 30
+                    }
+                },
+                tooltip: {
+                    callbacks: {
+                        label: function (context) {
+                            var label = context.label || '';
+                            if (label) {
+                                label += ': ';
+                            }
+                            if (context.parsed) {
+                                label += context.parsed.toFixed(2) + '%';
+                            }
+                            return label;
+                        }
+                    }
+                }
+            }
+        }
+    });
+
+
+
     </script>
     <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/9.21.0/firebase-app.js";
@@ -317,110 +386,83 @@ if (!isset($_SESSION['user_id'])) {
     const app = initializeApp(firebaseConfig);
     const database = getDatabase(app);
 
-    const today = new Date().toISOString().slice(0, 10);
-    const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
+    const usersRef = ref(database, 'users');
 
-    function updateBarChartData(peakList) {
-        const labels = Object.keys(peakList).slice(-7); // Get the dates as labels
-        const data = Object.values(peakList).slice(-7); // Get the data for each day
-
-        // Update the chart labels and data
-        Bar.data.labels = labels;
-        Bar.data.datasets[0].data = data;
-
-        // Update the chart
-        Bar.update();
-    }
-
-    function updateBarChartData1(peakList) {
-        const labels = Object.keys(peakList).slice(-7); // Get the dates as labels
-        const data = Object.values(peakList).slice(-7); // Get the data for each day
-
-        const parkingRef = ref(database, 'parking_availability');
-        onValue(parkingRef, (snapshot) => {
-            const parkingData = snapshot.val();
-            const maxSpaces = parkingData.max_spaces;
-
-            const updatedData = data.map((peak) => maxSpaces - peak);
-
-            Bar_0.data.labels = labels;
-            Bar_0.data.datasets[0].data = updatedData;
-
-            Bar_0.update();
-        });
-    }
-
-    function updateLineChartData(revenueData) {
-        const labels = Object.keys(revenueData).slice(-7);
-        const data = Object.values(revenueData).map(obj => obj.revenue).slice(-7);
-
-        // Update the chart labels and data
-        Line.data.labels = labels;
-        Line.data.datasets[0].data = data;
-
-        // Update the chart
-        Line.update();
-    }
-
-    const peakListRef = ref(database, 'peak_parking');
-    
-    onValue(peakListRef, (snapshot) => {
-        const peakListData = snapshot.val() || {};
-        updateBarChartData(peakListData);
-        updateBarChartData1(peakListData);
+    onValue(usersRef, (snapshot) => {
+        const usersData = snapshot.val() || {};
+        showUsersData(usersData)
     })
 
-    const revenueRef = ref(database, 'transaction_count_revenue');
+    function showUsersData(usersData) {
+        var divElement = document.querySelector('#list');
 
-    onValue(revenueRef, (snapshot) => {
-        const revenueData = snapshot.val() || {};
-        updateLineChartData(revenueData);
-    })
+        // Create an array of user objects
+        var usersArray = Object.entries(usersData).map(function([userId, userData]) {
+            var userName;
+            var longestHistory;
 
-    // Assuming you have already initialized Firebase and obtained a reference to the database
+            if (userData.parking_time_history) {
+                Object.values(userData.parking_time_history).forEach(function(data) {
+                    if (!longestHistory || data.duration > longestHistory.duration) {
+                        longestHistory = data;
+                        userName = data.user_name || ""; // Default value if user_name is undefined or null
+                    }
+                });
+            }
 
-    // Fetch the data from the 'transactions' path in the Firebase Realtime Database
-    const transactionsRef = ref(database, 'transactions');
-    onValue(transactionsRef, (snapshot) => {
-    const data = snapshot.val(); // Retrieve the data as an object
-
-    const averageDuration = calculateAverageDuration(Object.values(data)); // Assuming the data is stored as an object with unique keys
-    console.log(averageDuration);
-
-    const averageTimeElement = document.querySelector('#average-time');
-    averageTimeElement.innerHTML = `
-                                    <div style="height: 80%;">
-                                        <span style="font-size: 42px; font-weight: bold; color: #213A5C;">${averageDuration} seconds<span>
-                                    </div>`;
-    });
-
-    console.log(averageDuration)
-
-    function calculateAverageDuration(data) {
-        const currentDate = new Date().toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
+            return {
+                userId: userId,
+                userName: userName,
+                longestHistory: longestHistory
+            };
         });
 
-        const durations = data.filter(item => {
-            const itemDate = new Date(item.date).toLocaleDateString('en-US', {
-            year: 'numeric',
-            month: '2-digit',
-            day: '2-digit'
-            });
+        console.log(usersArray);
 
-            return itemDate === currentDate && item.duration; // Filter items with matching date and non-zero duration
-        }).map(item => item.duration);
+        // Sort the users based on the longest durations
+        usersArray.sort(function(a, b) {
+            var aDuration = a.longestHistory ? a.longestHistory.duration : 0;
+            var bDuration = b.longestHistory ? b.longestHistory.duration : 0;
+            return bDuration - aDuration;
+        });
 
-        const sum = durations.reduce((total, duration) => total + duration, 0);
-        const average = sum / durations.length || 0; // Calculate average duration or set it to 0 if no durations
+        var html = '<table>';
+       
+        html += '<tbody>';
 
-        return average.toFixed(2); // Return average duration rounded to 2 decimal places
+        // Generate the HTML content for each user and their longest history
+        usersArray.forEach(function(user) {
+            if (user && user.userName && user.longestHistory) {
+                var durationInSeconds = (new Date(user.longestHistory.start_time + user.longestHistory.duration * 1000) - new Date(user.longestHistory.start_time)) / 1000;
+                var durationInMinutes = Math.floor(durationInSeconds / 60);
+                var durationInHours = Math.floor(durationInMinutes / 60);
+                let durationText;
+
+                if (durationInHours < 1) {
+                    const remainingSeconds = Math.round(durationInSeconds % 60);
+                    durationText = `${durationInMinutes} mins ${remainingSeconds} secs`;
+                } else {
+                    durationText = `${durationInHours} hours ${durationInMinutes % 60} min`;
+                }
+
+                html += '<tr>';
+                html += '<td style="padding-right: 20px; font-weight: bold;">' + user.userName + '</td>';
+                html += '<td style="padding-right: 20px; padding-left: 20px;">' + new Date(user.longestHistory.start_time).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', hour12: true }) + '</td>';
+                html += '<td style="padding-right: 20px; padding-left: 20px;">' + durationText + '</td>';
+                html += '<td style="padding-left: 20px; color: gray;">' + "₱" + user.longestHistory.payment + '</td>';
+                html += '</tr>';
+            }
+        });
+
+        html += '</tbody>';
+        html += '</table>';
+
+
+        // Update the innerHTML of the divElement
+        divElement.innerHTML = html;
     }
 
 
-    
     </script>
     <!-- jQuery and Bootstrap JS -->
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js" integrity="sha384-KJ3o2DKtIkvYIK3UENzmM7KCkRr/rE9/Qpg6aAZGJwFDMVNA/XvoETpP5MPhJ6Ml" crossorigin="anonymous"></script>

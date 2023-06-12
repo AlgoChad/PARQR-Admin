@@ -179,26 +179,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <div style="display: flex; flex-direction: row;">
                     <div style=" width: 100%;">
                         <div style="display: flex; flex-direction: row;">
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
-                                    <span style="font-size: 10px;">Today's Income</span>
+                                    <span style="font-size: 14px;">Today's Income</span>
                                     <div>
-                                        <span id="today-income" style="font-size: 24px;"></span>
-                                        <span id="today-income-percentage" style="font-size: 12px;"></span>
+                                        <span id="today-income" style="font-size: 26px;"></span>
+                                        <span id="today-income-percentage" style="font-size: 14px;"></span>
                                     </div>
                                 </div>
-                                <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Income.png" alt="">
                             </div>
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
-                                    <span style="font-size: 10px;">Today's Users</span>
+                                    <span style="font-size: 14px;">Today's Users</span>
                                     <div>
-                                        <span id="today-users" style="font-size: 24px;"></span>
-                                        <span id="today-users-percentage" style="font-size: 12px;"></span>
+                                        <span id="today-users" style="font-size: 26px;"></span>
+                                        <span id="today-users-percentage" style="font-size: 14px;"></span>
                                     </div>
                                 </div>
-                                <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Users.png" alt="">
                             </div>
                         </div>
@@ -206,33 +204,35 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             <div style="display: flex; flex-direction: row; padding-bottom: 10px;">
                                 <span style="font-size: 26px; color: #213A5C;">Parking Spaces</span>
                             </div>
-                            <div style="height: 90%;">
-                                <canvas id="Chart"></canvas>
-                            </div>
+                            <div style="height: 100%; width: 100%; position: relative;">
+                                <canvas style="padding: 60px;" id="Chart"></canvas>
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-140%, -50%); text-align: center; z-index: 999;">
+                                    <span id="occupied-percentage" style="font-size: 28px; font-weight: bold;">%</span><br>
+                                    <span style="font-size: 20px;">Occupied</span>
+                                </div>
+                            </div>  
                         </div>
                     </div>
                     <div style="width: 100%;">
                         <div style="display: flex; flex-direction: row;">
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
-                                    <span style="font-size: 10px;">New User</span>
+                                    <span style="font-size: 14px;">New User</span>
                                     <div>
-                                        <span id="new-clients"style="font-size: 24px;"></span>
-                                        <span id="new-clients-percentage" style="font-size: 12px;"></span>
+                                        <span id="new-clients"style="font-size: 26px;"></span>
+                                        <span id="new-clients-percentage" style="font-size: 14px;"></span>
                                     </div>
                                 </div>
-                                <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Clients.png" alt="">
                             </div>
-                            <div style="display: flex; flex-direction: row; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; background-color: #EEEEEE; padding: 20px; margin: 20px; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
                                 <div style="display: flex; flex-direction: column;">
-                                    <span style="font-size: 10px;">Total Sales</span>
+                                    <span style="font-size: 14px;">Total Sales</span>
                                     <div>
-                                        <span id="total-revenue" style="font-size: 24px;"></span>
-                                        <span id="total-revenue-percentage" style="font-size: 12px;"></span>
+                                        <span id="total-revenue" style="font-size: 26px;"></span>
+                                        <span id="total-revenue-percentage" style="font-size: 14px;"></span>
                                     </div>
                                 </div>
-                                <div style="flex: 1;"></div>
                                 <img src="../assets/home-icons/Sales.png" alt="">
                             </div>
                         </div>
@@ -277,26 +277,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                         </div>
                     </div>
                 </div>
-                <div>
-                    <div style="display: flex; padding-left: 25px; padding-top: 30px;">
-                            <h2 style="color: #213A5C;">Operator</h1>
-                            <div style="flex: 1;"></div>
-                            <div style="flex: 1.6;"></div>
-                            <h2 style="color: #213A5C;">Payment</h1>
-                            <div style="flex: 1;"></div>
-                            <h2 style="color: #213A5C;">Discount</h1>
-                            <div style="flex: 1;"></div>
-                    </div>
-                    <div style="display: flex; flex-direction: row;">
-                        <div style="display: flex-direction: column; flex; align-items: center; padding-left: 30px; margin: 20px; background-color: #ebedf0; border-radius: 15px; width: 225%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-                            <div style="display: flex; flex-direction: row; align-items: flex-end; justify-content: flex-end; padding-top: 20px;">
-                                <a class="btn" style="color: white; border-radius: 20px; padding-right: 30px; padding-left: 30px; margin-right: 15px;" href="operators.php">
-                                    <img src="../assets/home-icons/Menu.png" alt="">
+                <div style="display: flex; flex-direction: row;">
+                    <div style="width: 100%;">
+                        <div style="display: flex-direction: column; flex; align-items: center; margin: 20px;">
+                            <div style="display: flex; flex-direction: row; justify-content: space-between; padding-top: 20px;">
+                                <h2 style="color: #213A5C;">Operator</h1>
+                                <a class="btn" style="padding: 10px; background-color: #213A5C; color: white; border-radius: 20px;" href="operators.php">
+                                     <span>View All</span>
                                 </a>
                             </div>
-                            <div style="display: flex; align-items: center;">
+                            <div style="display: flex; align-items: center; padding: 60px;">
                                 <div style="padding: 20px;">
-                                        <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 200px; width: 200px; border-radius: 15px;">
+                                    <img src="<?php echo $profilePicture; ?>" class="img-responsive" style="background-color: #213A5C; height: 200px; width: 200px; border-radius: 15px;">
                                 </div>
                                 <div style="display: flex; flex-direction: column; padding: 40px; justify-content: center;">
                                     <span style="font-size: 32px; font-weight: bold;"><?php echo $operatorDoc['name'] ?></span>
@@ -305,52 +297,68 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                 </div>
                             </div>
                         </div>
-                        <div style="margin: 20px; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-                            <div style="margin: 10px;">
-                                <div class="form-group">
-                                    <label>Initial Hours:</label>
-                                    <input type="number" class="form-control" id="initial-hours">
+                    </div>
+                    <div style="width: 100%;">
+                        <div style="display: flex; flex-direction: row;">
+                            <div style="width: 100%; margin: 20px; padding-top: 20px">
+                                <h2 style="color: #213A5C;">Payment</h1>
+                                <div style="width: 100%; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                                    <div style="margin: 10px;">
+                                        <div style="display: flex; flex-direction: row;">
+                                            <div class="form-group">
+                                                <label style="font-size: 14px;">Initial Hours:</label>
+                                                <input type="number" class="form-control" id="initial-hours">
+                                            </div>
+                                            <div class="form-group" style="margin-left: 5px;">
+                                                <label style="font-size: 14px;">Motorcycle Deduct:</label>
+                                                <input type="number" class="form-control" id="motorcycle-deduct">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 14px;">Initial Hours Payment:</label>
+                                            <input type="number" class="form-control" id="initial-hours-payment-amount">
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 14px;">Incremental Payment (Per Hour):</label>
+                                            <input type="number" class="form-control" id="incremental-payment-amount">
+                                        </div>
+                                        <button type="button" class="btn" id="submit-button-payment" style="background-color: #213A5C; color: white;">Update</button>
+                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Initial Hours Payment Amount:</label>
-                                    <input type="text" class="form-control" id="initial-hours-payment-amount">
-                                </div>
-                                <div class="form-group">
-                                    <label>Incremental Payment Amount (Per Hour):</label>
-                                    <input type="text" class="form-control" id="incremental-payment-amount">
-                                </div>
-                                <button type="button" class="btn" id="submit-button-payment" style="background-color: #213A5C; color: white;">Update</button>
                             </div>
-                        </div>
-                        <div style="margin: 20px; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-                            <div style="margin: 10px;">
-                                <div class="form-group">
-                                    <label for="discount-type">Discount Type:</label>
-                                    <select class="form-control" id="discount-type">
-                                        <option value="senior_citizen">Senior Citizen</option>
-                                        <option value="pwd">PWD</option>
-                                        <option value="pregnant">Pregnant</option>
-                                        <option value="student">Student</option>
-                                    </select>
-                                </div>
-                                <div style="display: flex; flex-direction: row;">
-                                    <div class="form-group"style=" width: 100%;">
-                                        <label for="discount-type">Discount By:</label>
-                                        <select class="form-control" id="discount-by">
-                                            <option value="Percentage">Percentage</option>
-                                            <option value="Deduct">Fee Deduction</option>
-                                        </select>
+                            <div style="width: 100%; margin: 20px; padding-top: 20px">
+                                <h2 style="color: #213A5C;">Discount</h1>
+                                <div style="width: 100%; padding: 20px; background-color: #ebedf0; border-radius: 15px; width: 100%; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
+                                    <div style="margin: 10px;">
+                                        <div class="form-group">
+                                            <label style="font-size: 14px;" for="discount-type">Discount Type:</label>
+                                            <select class="form-control" id="discount-type">
+                                                <option value="senior_citizen">Senior Citizen</option>
+                                                <option value="pwd">PWD</option>
+                                                <option value="pregnant">Pregnant</option>
+                                                <option value="student">Student</option>
+                                            </select>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row;">
+                                            <div class="form-group"style=" width: 100%;">
+                                                <label style="font-size: 14px;" for="discount-type">Discount By:</label>
+                                                <select class="form-control" id="discount-by">
+                                                    <option value="Percentage">Percentage</option>
+                                                    <option value="Deduct">Fee Deduction</option>
+                                                </select>
+                                            </div>
+                                            <div class="form-group" style="margin-left: 5px; width: 100%;">
+                                                <label style="font-size: 14px;">Amount:</label>
+                                                <input type="number" class="form-control" id="discount-amount">
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label style="font-size: 14px;">Number of Cost free Hours:</label>
+                                            <input type="number" class="form-control" id="costfree-amount">
+                                        </div>
+                                        <button type="button" class="btn" id="submit-button-discount" style="background-color: #213A5C; color: white;">Update</button>
                                     </div>
-                                    <div class="form-group" style="margin-left: 5px; width: 100%;">
-                                        <label>Amount:</label>
-                                        <input type="text" class="form-control" id="discount-amount">
-                                    </div>
                                 </div>
-                                <div class="form-group">
-                                    <label>Number of Cost free Hours:</label>
-                                    <input type="text" class="form-control" id="costfree-amount">
-                                </div>
-                                <button type="button" class="btn" id="submit-button-discount" style="background-color: #213A5C; color: white;">Update</button>
                             </div>
                         </div>
                     </div>
@@ -365,12 +373,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     var myChart = new Chart(ctx, {
         type: 'doughnut',
         data: {
-            labels: ['Occupied', 'Vacant'],
+            labels: ['Car', 'Motorcycle', 'Vacant'],
             datasets: [{
-                label: 'Parking Spaces',
-                data: [0, 0],
-                backgroundColor: ['#F3BB01', '#213A5C'],
+                label: 'Vehicle Distribution',
+                data: [0, 0, 0],
+                backgroundColor: ['#F3BB01', '#90a0b7', '#213A5C'],
                 borderWidth: 0,
+                borderRadius: 25,
+                cutout: '65%'
             }]
         },
         options: {
@@ -378,19 +388,57 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             maintainAspectRatio: false,
             plugins: {
                 legend: {
-                    position: 'bottom',
+                    position: 'right',
+                    labels: {
+                        generateLabels: function (chart) {
+                            var data = chart.data;
+                            if (data.labels.length && data.datasets.length) {
+                                return data.labels.map(function (label, i) {
+                                    var meta = chart.getDatasetMeta(0);
+                                    var style = meta.controller.getStyle(i);
+                                    var value = data.datasets[0].data[i];
+
+                                    // Add your custom text to the label
+                                    var labelText = label + ' (' + value + ')';
+
+                                    return {
+                                        text: labelText,
+                                        fillStyle: style.backgroundColor,
+                                        hidden: !chart.getDataVisibility(i),
+                                        lineCap: style.borderCapStyle,
+                                        lineDash: style.borderDash,
+                                        lineDashOffset: style.borderDashOffset,
+                                        lineJoin: style.borderJoinStyle,
+                                        lineWidth: style.borderWidth,
+                                        strokeStyle: style.borderColor,
+                                        pointStyle: style.pointStyle,
+                                        rotation: style.rotation
+                                    };
+                                });
+                            }
+                            return [];
+                        },
+                        usePointStyle: true, // Display labels as circles
+                        boxWidth: 10,
+                        padding: 30,
+                        font: {
+                            size: 20 // Increase the font size to 14 pixels
+                        }
+                    }
                 },
                 tooltip: {
                     callbacks: {
                         label: function (context) {
+                            console.log(context);
                             var dataset = context.dataset;
                             var data = dataset.data[context.dataIndex];
                             var total = dataset.data.reduce((acc, curr) => acc + curr);
                             var percentage = ((data / total) * 100).toFixed(2) + "%";
-                            return dataset.label + ": " + data + " (" + percentage + ")";
+                            return context.label + ": " + data + " (" + percentage + ")";
                         }
                     }
-                }
+                },
+                
             }
         }
     });
@@ -420,13 +468,18 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Get a reference to the data you want to retrieve
         const parkingRef = ref(database, 'parking_availability');
+        const activeRef = ref(database, 'activeCustomer');
         const peakParkingRef = ref(database, `peak_parking/${new Date().toISOString().slice(0, 10)}`);
 
         // Attach an event listener to get the data from parking availability
         onValue(parkingRef, (snapshot) => {
             const data = snapshot.val();
             const occupiedSpaces = data.occupied_spaces;
-            displaySpaces(data);
+            const activeSnapshot = onValue(activeRef, (snapshot) => {
+                const activeData = snapshot.val();
+                displaySpaces(data, activeData);
+            });
+            
 
             // Update the peak parking ref if current occupied spaces is greater than previous peak
             runTransaction(peakParkingRef, (currentPeak) => {
@@ -543,11 +596,26 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $(selector).text(percentageChange >= 0 ? "+" + percentageChangeText : percentageChangeText ).css("color", percentageChangeColor);
         }
 
-        function displaySpaces(spaces){
+        function displaySpaces(spaces, activeSpaces){
+            const percentage = 100 * (spaces.occupied_spaces / spaces.max_spaces)
+            let carCount = 0;
+            let motorcycleCount = 0;
+
+            for (const key in activeSpaces) {
+                const space = activeSpaces[key];
+                if (space.vehicle_type === "Car") {
+                    carCount++;
+                } else if (space.vehicle_type === "Motorcycle") {
+                    motorcycleCount++;
+                }
+            }
+
+            console.log(carCount);
+            $('#occupied-percentage').text(percentage+"%")
             $('#total-space').text(spaces.max_spaces);
             $('#available').text(spaces.max_spaces - spaces.occupied_spaces);
             $('#occupied').text(spaces.occupied_spaces);
-            myChart.data.datasets[0].data = [spaces.occupied_spaces, spaces.max_spaces - spaces.occupied_spaces];
+            myChart.data.datasets[0].data = [carCount, motorcycleCount, spaces.max_spaces - spaces.occupied_spaces];
             myChart.update();
         }
 
@@ -561,6 +629,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         data = snapshot.val();
             if (data) {
                 document.getElementById('initial-hours').value = data['initial_hours'];
+                document.getElementById('motorcycle-deduct').value = data['motorcycle_deduct'];
                 document.getElementById('initial-hours-payment-amount').value = data['initial_payment'];
                 document.getElementById('incremental-payment-amount').value = data['incremental_payment'];
             }
@@ -568,12 +637,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         // Function to handle the change event of the discount-type dropdown picker
         function handleDiscountTypeChange() {
-        const discountTypeValue = document.getElementById('discount-type').value;
-        const discountType = data[discountTypeValue] || {};
+            const discountTypeValue = document.getElementById('discount-type').value;
+            const discountType = data[discountTypeValue] || {};
 
-        document.getElementById('discount-by').value = discountType['discount_by'];
-        document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : 0;
-        document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : 0;
+            document.getElementById('discount-by').value = discountType['discount_by'];
+            document.getElementById('discount-amount').value = discountType['amount'] ? discountType['amount'] : 0;
+            document.getElementById('costfree-amount').value = discountType['costfree_amount'] ? discountType['costfree_amount'] : 0;
         }
 
         // Attach the event listener to the discount-type dropdown picker
@@ -590,13 +659,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const initialHours = document.getElementById('initial-hours').value;
             const initialPayment = document.getElementById('initial-hours-payment-amount').value;
             const incrementalPayment = document.getElementById('incremental-payment-amount').value;
+            const motorcycleDeduct = document.getElementById('motorcycle-deduct').value;
 
             paymentDataSubmitted = true;
             const updatedData = {
                 ...data,
                 'initial_hours': parseInt(initialHours),
                 'initial_payment': parseInt(initialPayment),
-                'incremental_payment': parseInt(incrementalPayment)
+                'incremental_payment': parseInt(incrementalPayment),
+                'motorcycle_deduct' : parseInt(motorcycleDeduct)
             };
 
             runTransaction(parkingSettingsRef, (currentData) => {
