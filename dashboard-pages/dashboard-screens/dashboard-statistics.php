@@ -744,13 +744,12 @@ if (!isset($_SESSION['user_id'])) {
     }
 
     calculateVehicleCounts((vehicleCounts) => {
-        console.log(vehicleCounts)
         const labels = Object.keys(vehicleCounts).slice(-7);
         const carsData = [];
         const motorcyclesData = [];
         const vacantData = [];
 
-        for (const date in vehicleCounts) {
+        for (const date of labels) {
             carsData.push(vehicleCounts[date].car);
             motorcyclesData.push(vehicleCounts[date].motorcycle);
             vacantData.push(vehicleCounts[date].vacant);
@@ -837,7 +836,6 @@ if (!isset($_SESSION['user_id'])) {
 
     calculateTotalSales((salesCounts) => {
         console.log(salesCounts);
-        
 
         const labels = Object.keys(salesCounts).slice(-7);
         const salesCarData = [];
