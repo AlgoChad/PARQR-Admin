@@ -663,7 +663,7 @@ if (!isset($_SESSION['user_id'])) {
             const transactions = snapshot.val() || {};
 
             for (const key in transactions) {
-            const transaction = transactions[key];
+                const transaction = transactions[key];
                 const discount = transaction.discount || 'none';
                 const index = ['senior', 'pwd', 'student', 'pregnant', 'none'].indexOf(discount.toLowerCase());
 
@@ -679,15 +679,91 @@ if (!isset($_SESSION['user_id'])) {
     }
 
     calculateDiscountCounts((discountCounts) => {
-        // Update the chart data with the discount counts
         HalfDonut.data.datasets[0].data = discountCounts;
-
-        // Update the chart
         HalfDonut.update();
     });
 
+    function calculateVehicleCounts(callback) {
+        const transactionsRef = ref(database, "transactions");
+        const maxSpacesRef = ref(database, "parking_availability/max_spaces");
 
-    calculateDiscountCounts(updateDiscountChart);
+        onValue(maxSpacesRef, (maxSpacesSnapshot) => {
+            const maxSpaces = maxSpacesSnapshot.val() || 0;
+
+            onValue(transactionsRef, (snapshot) => {
+                const transactions = snapshot.val() || {};
+
+                const vehicleCounts = {};
+
+                const today = new Date();
+                const oneDay = 24 * 60 * 60 * 1000;
+
+                for (const key in transactions) {
+                const transaction = transactions[key];
+
+                // Check if the transaction has a 'top_up' field and its value is false
+                if ('top_up' in transaction && !transaction.top_up) {
+                    const vehicleType = transaction.vehicle_type || 'car';
+                    const date = new Date(transaction.date);
+                    const dayIndex = Math.floor((today - date) / oneDay);
+
+                    const formattedDate = formatDate(date); // Format the date as needed (e.g., 06/13/2024)
+
+                    if (!(formattedDate in vehicleCounts)) {
+                        vehicleCounts[formattedDate] = {
+                            vacant: 0,
+                            car: 0,
+                            motorcycle: 0,
+                        };
+                    }
+
+                    if (vehicleType === 'car') {
+                        vehicleCounts[formattedDate].car += 1;
+                    } else if (vehicleType === 'motorcycle') {
+                        vehicleCounts[formattedDate].motorcycle += 1;
+                    }
+                }
+            }
+
+            // Calculate vacant spaces for each day
+            for (const date in vehicleCounts) {
+                const occupiedSpaces = vehicleCounts[date].car + vehicleCounts[date].motorcycle;
+                vehicleCounts[date].vacant = Math.max(maxSpaces - occupiedSpaces, 0);
+            }
+
+            callback(vehicleCounts);
+            }, (error) => {
+                console.log('Error retrieving transactions: ', error);
+            });
+        })
+    }
+
+    function formatDate(date) {
+        const options = { month: '2-digit', day: '2-digit', year: 'numeric' };
+        return date.toLocaleDateString('en-US', options); // Adjust the locale and options as needed
+    }
+
+    calculateVehicleCounts((vehicleCounts) => {
+        console.log(vehicleCounts)
+        const labels = Object.keys(vehicleCounts).slice(-7);
+        const carsData = [];
+        const motorcyclesData = [];
+        const vacantData = [];
+
+        for (const date in vehicleCounts) {
+            carsData.push(vehicleCounts[date].car);
+            motorcyclesData.push(vehicleCounts[date].motorcycle);
+            vacantData.push(vehicleCounts[date].vacant);
+        }
+
+        Bar.data.labels = labels;
+        Bar.data.datasets[0].data = carsData;
+        Bar.data.datasets[1].data = motorcyclesData;
+        Bar.data.datasets[2].data = vacantData;
+
+        Bar.update();
+    });
+
     
 
     </script>
