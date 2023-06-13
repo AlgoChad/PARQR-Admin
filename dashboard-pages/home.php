@@ -206,7 +206,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                             </div>
                             <div style="height: 100%; width: 100%; position: relative;">
                                 <canvas style="padding: 60px;" id="Chart"></canvas>
-                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-140%, -50%); text-align: center; z-index: 999;">
+                                <div style="position: absolute; top: 50%; left: 50%; transform: translate(-120%, -50%); text-align: center; z-index: 999;">
                                     <span id="occupied-percentage" style="font-size: 28px; font-weight: bold;">%</span><br>
                                     <span style="font-size: 20px;">Occupied</span>
                                 </div>
@@ -618,7 +618,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             }
 
             console.log(carCount);
-            $('#occupied-percentage').text(percentage+"%")
+            $('#occupied-percentage').text(percentage.toFixed(2) +" %")
             $('#total-space').text(spaces.max_spaces);
             $('#available').text(spaces.max_spaces - spaces.occupied_spaces);
             $('#occupied').text(spaces.occupied_spaces);
