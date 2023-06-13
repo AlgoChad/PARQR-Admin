@@ -240,7 +240,7 @@ $spaces = $database->getReference('parking_availability')->getValue();
                             <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px; justify-content: space-between;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Total Customers</span>
                                 <button class="btn" id="customButton">Custom</button>
-                                <dialog id="customRangeDialog" style="display: none;">
+                                <dialog id="customRangeDialog" style="display: none; border: none; background-color: #f0f0f0; border-radius: 15px;">
                                     <input class="btn" type="date" id="startDate"></input>
                                     <input class="btn" type="date" id="endDate"></input>
                                     <button class="btn" id="applyButton">Apply</button>

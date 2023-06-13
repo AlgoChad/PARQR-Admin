@@ -173,7 +173,7 @@ if (!isset($_SESSION['user_id'])) {
                                         <button class="btn" id="yearBtn">Monthly</button>
                                         <button class="btn" id="customRangeBtn">Custom</button>
                                     </div>
-                                    <dialog id="customRangeDialog" style="display: none; align-items: center;">
+                                    <dialog id="customRangeDialog" style="display: none; border: none; background-color: #f0f0f0; border-radius: 15px; ">
                                         <input class="btn" type="date" id="startDateBar">
                                         <input class="btn" type="date" id="endDateBar">
                                         <button class="btn" id="applyBtn">Apply</button>
@@ -215,7 +215,7 @@ if (!isset($_SESSION['user_id'])) {
                                 <button class="btn" id="yearBtnLineChart">12 Months</button>
                                 <button class="btn" id="customRangeBtnLineChart">Custom</button>
                             </div>
-                            <dialog id="customRangeDialogLineChart" style="display: none; align-items: center;">
+                            <dialog id="customRangeDialogLineChart" style="display: none; border: none; background-color: #f0f0f0; border-radius: 15px;">
                                 <input class="btn" type="date" id="startDate">
                                 <input class="btn" type="date" id="endDate">
                                 <button class="btn" id="applyBtnLineChart">Apply</button>
@@ -520,7 +520,7 @@ if (!isset($_SESSION['user_id'])) {
         });
     }
 
-    function displayTotalIncome(totalRevenue, yesterdayTotalRevenue){
+    function displayTotalIncome(totalRevenue){
         var formattedRevenue = totalRevenue.toLocaleString('en-US');
         var formattedRevenueWithCurrency = '₱ ' + formattedRevenue;
 
