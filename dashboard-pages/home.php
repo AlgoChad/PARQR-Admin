@@ -606,12 +606,13 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             const percentage = 100 * (spaces.occupied_spaces / spaces.max_spaces)
             let carCount = 0;
             let motorcycleCount = 0;
-
+            console.log(spaces)
+            console.log(activeSpaces)
             for (const key in activeSpaces) {
                 const space = activeSpaces[key];
-                if (space.vehicle_type === "Car") {
+                if (space.vehicle_type === "car") {
                     carCount++;
-                } else if (space.vehicle_type === "Motorcycle") {
+                } else if (space.vehicle_type === "motorcycle") {
                     motorcycleCount++;
                 }
             }

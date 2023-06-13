@@ -237,8 +237,15 @@ $spaces = $database->getReference('parking_availability')->getValue();
                             </div>
                         </div>
                         <div style="background-color: white; padding: 20px; height: 255px; border-radius: 15px; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);">
-                            <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px;">
+                            <div style="display: flex; flex-direction: row; border-bottom: 1px solid lightgray; padding-bottom: 10px; justify-content: space-between;">
                                 <span style="font-size: 26px; font-weight: bold; color: #213A5C;">Total Customers</span>
+                                <button class="btn" id="customButton">Custom</button>
+                                <dialog id="customRangeDialog" style="display: none;">
+                                    <input class="btn" type="date" id="startDate"></input>
+                                    <input class="btn" type="date" id="endDate"></input>
+                                    <button class="btn" id="applyButton">Apply</button>
+                                    <button class="btn" id="closeButton">Close</button>
+                                </dialog>
                             </div>
                             <div style="height: 80%;">
                                 <canvas id="Chart_1"></canvas>
@@ -351,7 +358,25 @@ $spaces = $database->getReference('parking_availability')->getValue();
     const today = new Date().toISOString().slice(0, 10);
     const transactionsCountAndRevenue = ref(database, 'transaction_count_revenue');
 
+    const registerCountRef = ref(database, 'user_register_count');
+    const peakListRef = ref(database, 'peak_parking');
+
     const parkingRef = ref(database, 'parking_availability');
+
+    let registerCount;
+    let peakList;
+
+    onValue(peakListRef, (snapshot) => {
+        const peakListData = snapshot.val() || {};
+        peakList = peakListData;
+        updateBarChartData(peakListData);
+    })
+
+    onValue(registerCountRef, (snapshot) => {
+        const registerCountData = snapshot.val() || {};
+        registerCount = registerCountData;
+        updateLineChartData(registerCountData);
+    })
 
         // Attach an event listener to get the data
     onValue(parkingRef, (snapshot) => {
@@ -393,30 +418,64 @@ $spaces = $database->getReference('parking_availability')->getValue();
     }
 
     function updateLineChartData(registerCount) {
-        const labels = Object.keys(registerCount).slice(-7);
-        const data = Object.values(registerCount).slice(-7);
+        const labels = Object.keys(registerCount).slice(-7); // Get the dates as labels
+        const data = Object.values(registerCount).slice(-7); // Get the data for each day
 
-        // Update the chart labels and data
-        myChart.data.labels = labels;
-        myChart.data.datasets[0].data = data;
+        const startDate = document.getElementById("startDate").value;
+        const endDate = document.getElementById("endDate").value;
+
+        if (startDate && endDate) {
+            const formattedStartDate = new Date(startDate);
+            const formattedEndDate = new Date(endDate);
+
+            // Filter labels and data based on the custom date range
+            let filteredLabels = [];
+            let filteredData = [];
+
+            for (let i = 0; i < labels.length; i++) {
+                const currentDate = new Date(labels[i]);
+
+                if (currentDate >= formattedStartDate && currentDate <= formattedEndDate) {
+                    filteredLabels.push(labels[i]);
+                    filteredData.push(data[i]);
+                }
+            }
+
+            // Update the chart labels and data with the filtered values
+            myChart.data.labels = filteredLabels;
+            myChart.data.datasets[0].data = filteredData;
+        } else {
+            // No custom date range selected, use the original labels and data
+            myChart.data.labels = labels;
+            myChart.data.datasets[0].data = data;
+        }
 
         // Update the chart
         myChart.update();
+
+        // Close the custom range dialog
+        const customRangeDialog = document.getElementById("customRangeDialog");
+        customRangeDialog.close();
     }
 
-    const peakListRef = ref(database, 'peak_parking');
+    const customButton = document.getElementById("customButton");
+    const applyButton = document.getElementById("applyButton");
+    const closeButton = document.getElementById("closeButton");
+
+    customButton.addEventListener("click", function() {
+        const customRangeDialog = document.getElementById("customRangeDialog");
+        customRangeDialog.style.display = 'block';
+    });
+
+    applyButton.addEventListener("click", function() {
+        updateLineChartData(registerCount);
+    });
+
+    closeButton.addEventListener("click", function() {
+        const customRangeDialog = document.getElementById("customRangeDialog");
+        customRangeDialog.style.display = 'none';
+    })
     
-    onValue(peakListRef, (snapshot) => {
-        const peakListData = snapshot.val() || {};
-        updateBarChartData(peakListData);
-    })
-
-    const registerCountRef = ref(database, 'user_register_count');
-
-    onValue(registerCountRef, (snapshot) => {
-        const registerCountData = snapshot.val() || {};
-        updateLineChartData(registerCountData);
-    })
 
     function displayTodayrevenue(todayRevenue){
         $('#today-income').text(todayRevenue);

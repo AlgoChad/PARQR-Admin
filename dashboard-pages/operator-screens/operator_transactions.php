@@ -213,7 +213,7 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                 if ($info['top_up']) {
                                                                     echo "Top-up";
                                                                 } else {
-                                                                    echo "Parking";
+                                                                    echo "Parking Pay";
                                                                 }
                                                              ?>
                                                         </h5>

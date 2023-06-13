@@ -133,6 +133,17 @@ if (!isset($_SESSION['user_id'])) {
                 </a>
                 <div style="background-color: white; padding: 20px; margin-bottom: 30px; margin-top: 20px; margin-left: 15px; margin-right: 15px; height: 800px; border-radius: 15px;">
                     <h2>Longest Time Running</h2>
+                    <div style="display: flex; flex-direction: row;  margin-left: 30px; margin-right: 40px;">
+                        <span style="flex: 1.6; padding: 10px">User Name</span>
+                        <span style="flex: 1.6; padding: 10px">Operator Name</span>
+                        <span style="flex: 1; padding: 10px">Plate No</span>
+                        <span style="flex: 1; padding: 10px">Date</span>
+                        <span style="flex: 1.2; padding: 10px">Start Time</span>
+                        <span style="flex: 1.3; padding: 10px">Duration</span>
+                        <span style="flex: 1; padding: 10px">Discount</span>
+                        <span style="flex: 0.7; padding: 10px">Payment</span>
+                        <span style="flex: 2.2; padding: 10px">Reference Number</span>
+                    </div>
                     <div id="list" style="padding: 10px;"></div>
                 </div>
             </div>
@@ -202,19 +213,7 @@ if (!isset($_SESSION['user_id'])) {
         html += '<table>';
 
         // Generate the HTML content for the table header
-        html += '<thead>';
-        html += '<tr>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">User Name</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Operator Name</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Plate No</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Date</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Start Time</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Duration</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Discount</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Payment</th>';
-        html += '<th style="border: 1px solid black; padding: 20px; font-weight: bold;">Reference Number</th>';
-        html += '</tr>';
-        html += '</thead>';
+       
 
         html += '<tbody>';
 
