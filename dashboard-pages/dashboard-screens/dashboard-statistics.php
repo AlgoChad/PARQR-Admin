@@ -165,7 +165,21 @@ if (!isset($_SESSION['user_id'])) {
                         </div>
                         <div style="background-color: white; padding: 20px; height: 700px; width: 100%; border-radius: 15px;">
                             <div style="height: 90%;">
-                                <h2>Total Summary of Parking Spaces</h2>
+                                <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                                    <h4>Total Summary of Parking Spaces</h4>
+                                    <div id="barChartSettings" style="background-color: #f0f0f0; padding: 5px; border-radius: 15px;">
+                                        <button class="btn" id="weekBtn">Daily</button>
+                                        <button class="btn" id="monthBtn">Weekly</button>
+                                        <button class="btn" id="yearBtn">Monthly</button>
+                                        <button class="btn" id="customRangeBtn">Custom</button>
+                                    </div>
+                                    <dialog id="customRangeDialog" style="display: none; align-items: center;">
+                                        <input class="btn" type="date" id="startDateBar">
+                                        <input class="btn" type="date" id="endDateBar">
+                                        <button class="btn" id="applyBtn">Apply</button>
+                                        <button class="btn" id="cancelBtn">Cancel</button>
+                                    </dialog>
+                                </div>
                                 <canvas id="Chart_0"></canvas>
                             </div>
                         </div>
@@ -193,7 +207,21 @@ if (!isset($_SESSION['user_id'])) {
                 </div>
                 <div style="background-color: white; padding: 20px; margin-bottom: 30px; margin-left: 15px; margin-right: 15px; height: 500px; border-radius: 15px;" >
                     <div style="height: 90%;">
-                        <h2>Total Sales</h2>
+                        <div style="display: flex; flex-direction: row; justify-content: space-between;">
+                            <h2>Total Sales</h2>
+                            <div id="lineChartSettings" style="background-color: #f0f0f0; padding: 5px; border-radius: 15px;">
+                                <button class="btn" id="weekBtnLineChart">7 Days</button>
+                                <button class="btn" id="monthBtnLineChart">30 Days</button>
+                                <button class="btn" id="yearBtnLineChart">12 Months</button>
+                                <button class="btn" id="customRangeBtnLineChart">Custom</button>
+                            </div>
+                            <dialog id="customRangeDialogLineChart" style="display: none; align-items: center;">
+                                <input class="btn" type="date" id="startDate">
+                                <input class="btn" type="date" id="endDate">
+                                <button class="btn" id="applyBtnLineChart">Apply</button>
+                                <button class="btn" id="cancelBtnLineChart">Cancel</button>
+                            </dialog>
+                        </div>
                         <canvas id="Chart_1"></canvas>
                     </div>
                 </div>
@@ -763,6 +791,63 @@ if (!isset($_SESSION['user_id'])) {
         Bar.update();
     });
 
+    function updateChartBar(range) {
+        calculateVehicleCounts((vehicleCounts) => {
+            let labels = [];
+            let carsData = [];
+            let motorcyclesData = [];
+            let vacantData = [];
+
+            switch (range) {
+                case 'week':
+                    labels = Object.keys(vehicleCounts).slice(-7);
+                    break;
+                case 'month':
+                    labels = Object.keys(vehicleCounts).slice(-30);
+                    break;
+                case 'year':
+                    labels = Object.keys(vehicleCounts).slice(-365);
+                    break;
+                case "custom":
+                    labels = Object.keys(vehicleCounts)
+                    const startDate = document.getElementById("startDate").value;
+                    const endDate = document.getElementById("endDate").value;
+                    let formattedStartDate = new Date(startDate);
+                    let formattedEndDate = new Date(endDate);
+                    console.log("Test" + startDate);
+
+                    let filteredLabels = [];
+                    for (let i = 0; i < labels.length; i++) {
+                        const currentDate = new Date(labels[i]);
+                        if (currentDate >= formattedStartDate && currentDate <= formattedEndDate) {
+                            console.log("Test");
+                            console.log(currentDate);
+                            filteredLabels.push(labels[i]);
+                        }
+                    }
+
+                    labels = filteredLabels;
+                    console.log(labels);
+                    break;
+                default:
+                    break;
+            }
+
+            for (const date of labels) {
+                carsData.push(vehicleCounts[date].car);
+                motorcyclesData.push(vehicleCounts[date].motorcycle);
+                vacantData.push(vehicleCounts[date].vacant);
+            }
+
+            Bar.data.labels = labels;
+            Bar.data.datasets[0].data = carsData;
+            Bar.data.datasets[1].data = motorcyclesData;
+            Bar.data.datasets[2].data = vacantData;
+
+            Bar.update();
+    });
+    }
+
     function calculateTotalSales(callback) {
         const paymentSettingsRef = ref(database, 'parking_payment_settings');
         const transactionsRef = ref(database, 'transactions');
@@ -834,27 +919,156 @@ if (!isset($_SESSION['user_id'])) {
         });
     }
 
-    calculateTotalSales((salesCounts) => {
-        console.log(salesCounts);
+    const customRangeBtnLine = document.getElementById("customRangeBtnLineChart");
+    const customRangeDialogLine = document.getElementById("customRangeDialogLineChart");
+    const lineChartSettings = document.getElementById("lineChartSettings");
+    const applyBtnLine = document.getElementById("applyBtnLineChart");
+    const cancelBtnLine = document.getElementById("cancelBtnLineChart");
 
-        const labels = Object.keys(salesCounts).slice(-7);
-        const salesCarData = [];
-        const salesMotorcycleData = [];
-        const combinedDiscountsData = [];
+    const customRangeBtnBar = document.getElementById("customRangeBtn");
+    const customRangeDialogBar = document.getElementById("customRangeDialog");
+    const barChartSettings = document.getElementById("barChartSettings");
+    const applyBtnBar = document.getElementById("applyBtn");
+    const cancelBtnBar = document.getElementById("cancelBtn");
 
-        for (const date of labels) {
-            salesCarData.push(salesCounts[date].paymentAmounts.car);
-            salesMotorcycleData.push(salesCounts[date].paymentAmounts.motorcycle);
-            combinedDiscountsData.push(salesCounts[date].revenue - (salesCounts[date].paymentAmounts.motorcycle + salesCounts[date].paymentAmounts.car));
-        }
+    document.addEventListener("DOMContentLoaded", function() {
+        const weekBtnLine = document.getElementById("weekBtnLineChart");
+        const monthBtnLine = document.getElementById("monthBtnLineChart");
+        const yearBtnLine = document.getElementById("yearBtnLineChart");
 
-        Line.data.labels = labels;
-        Line.data.datasets[0].data = combinedDiscountsData;
-        Line.data.datasets[1].data = salesCarData;
-        Line.data.datasets[2].data = salesMotorcycleData;
+        const weekBtnBar = document.getElementById("weekBtn");
+        const monthBtnBar = document.getElementById("monthBtn");
+        const yearBtnBar = document.getElementById("yearBtn");
 
-        Line.update();
+        weekBtnLine.addEventListener("click", function() {
+            updateChart("week");
+        });
+
+        monthBtnLine.addEventListener("click", function() {
+            updateChart("month");
+        });
+
+        yearBtnLine.addEventListener("click", function() {
+            updateChart("month");
+        });
+
+
+        weekBtnBar.addEventListener("click", function() {
+            updateChartBar("week");
+        });
+
+        monthBtnBar.addEventListener("click", function() {
+            updateChartBar("month");
+        });
+
+        yearBtnBar.addEventListener("click", function() {
+            updateChartBar("year");
+        });
+
+        // Call the updateChart function with the initial range
+        updateChart("week");
     });
+
+    function hideCustomRange() {
+        lineChartSettings.style.display = 'block';
+        customRangeDialogLine.style.display = "none";
+    }
+
+    function showCustomRange() {
+        lineChartSettings.style.display = 'none';
+        customRangeDialogLine.style.display = 'block';
+    }
+
+    function applyCustomRange() {
+        updateChart("custom");
+        hideCustomRange();
+    }
+
+    function hideCustomRangeBar() {
+        barChartSettings.style.display = 'block';
+        customRangeDialogBar.style.display = "none";
+    }
+
+    function showCustomRangeBar() {
+        barChartSettings.style.display = 'none';
+        customRangeDialogBar.style.display = 'block';
+    }
+
+    function applyCustomRangeBar() {
+        updateChartBar("custom");
+        hideCustomRangeBar();
+    }
+
+    customRangeBtnLine.addEventListener("click", showCustomRange);
+    cancelBtnLine.addEventListener("click", hideCustomRange);
+    applyBtnLine.addEventListener("click", applyCustomRange);
+
+    customRangeBtn.addEventListener("click", showCustomRangeBar);
+    cancelBtn.addEventListener("click", hideCustomRangeBar);
+    applyBtn.addEventListener("click", applyCustomRangeBar);
+
+    function updateChart(range) {
+        calculateTotalSales((salesCounts) => {
+            
+            let labels = [];
+            let salesCarData = [];
+            let salesMotorcycleData = [];
+            let combinedDiscountsData = [];
+
+            switch (range) {
+                case 'week':
+                    labels = Object.keys(salesCounts).slice(-7);
+                    break;
+                case 'month':
+                    labels = Object.keys(salesCounts).slice(-30);
+                    break;
+                case 'month':
+                    labels = Object.keys(salesCounts).slice(-365);
+                    break;
+                case "custom":
+                    labels = Object.keys(salesCounts)
+                    const startDate = document.getElementById("startDate").value;
+                    const endDate = document.getElementById("endDate").value;
+                    let formattedStartDate = new Date(startDate);
+                    let formattedEndDate = new Date(endDate);
+                    console.log("Test" + startDate);
+
+                    let filteredLabels = [];
+                    for (let i = 0; i < labels.length; i++) {
+                        const currentDate = new Date(labels[i]);
+                        if (currentDate >= formattedStartDate && currentDate <= formattedEndDate) {
+                            console.log("Test");
+                            console.log(currentDate);
+                            filteredLabels.push(labels[i]);
+                        }
+                    }
+
+                    labels = filteredLabels;
+                    console.log(labels);
+                    break;
+                default:
+                    break;
+            }
+
+            for (const date of labels) {
+                salesCarData.push(salesCounts[date].paymentAmounts.car);
+                salesMotorcycleData.push(salesCounts[date].paymentAmounts.motorcycle);
+                combinedDiscountsData.push(
+                    salesCounts[date].revenue - (salesCounts[date].paymentAmounts.motorcycle + salesCounts[date].paymentAmounts.car)
+                );
+            }
+
+            Line.data.labels = labels;
+            Line.data.datasets[0].data = combinedDiscountsData;
+            Line.data.datasets[1].data = salesCarData;
+            Line.data.datasets[2].data = salesMotorcycleData;
+
+            Line.update();
+        });
+    }
+
+    // Call the updateChart function with the initial range
+    updateChart('week');
 
     </script>
     <!-- jQuery and Bootstrap JS -->
