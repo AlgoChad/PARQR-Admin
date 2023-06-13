@@ -764,7 +764,99 @@ if (!isset($_SESSION['user_id'])) {
         Bar.update();
     });
 
-    
+    function calculateTotalSales(callback) {
+        const paymentSettingsRef = ref(database, 'parking_payment_settings');
+        const transactionsRef = ref(database, 'transactions');
+
+        onValue(paymentSettingsRef, (paymentSettingsSnapshot) => {
+            const paymentSettings = paymentSettingsSnapshot.val();
+            const initialHours = paymentSettings.initial_hours || 0;
+            const initialPayment = paymentSettings.initial_payment || 0;
+            const incrementalPayment = paymentSettings.incremental_payment || 0;
+
+            onValue(transactionsRef, (transactionsSnapshot) => {
+                const transactions = transactionsSnapshot.val() || {};
+
+                const salesCounts = {};
+
+                const today = new Date();
+                const oneDay = 24 * 60 * 60 * 1000;
+
+                for (const key in transactions) {
+                    const transaction = transactions[key];
+
+                    // Check if the transaction has a 'top_up' field and its value is false
+                    if ('top_up' in transaction && !transaction.top_up) {
+                        const vehicleType = transaction.vehicle_type || 'car';
+                        const date = new Date(transaction.date);
+                        const dayIndex = Math.floor((today - date) / oneDay);
+
+                        const formattedDate = formatDate(date); // Format the date as needed (e.g., 06/13/2024)
+
+                        if (!(formattedDate in salesCounts)) {
+                            salesCounts[formattedDate] = {
+                                paymentAmounts: {
+                                    car: 0,
+                                    motorcycle: 0
+                                },
+                                discounts: 0,
+                                revenue: 0
+                            };
+                        }
+
+                        const duration = transaction.duration || 0;
+                        let paymentAmount = parseInt(initialPayment);
+
+                        const durationInHours = Math.floor(duration / (60 * 60));
+                        const durationInMinutes = Math.floor((duration % 3600) / 60);
+
+                        const additionalHours = durationInHours - parseInt(initialHours);
+
+                        if (additionalHours > 0) {
+                            paymentAmount += additionalHours * parseInt(incrementalPayment);
+                        }
+
+                        if (vehicleType === 'car') {
+                            salesCounts[formattedDate].paymentAmounts.car += paymentAmount;
+                            salesCounts[formattedDate].revenue += paymentAmount;
+                        } else if (vehicleType === 'motorcycle') {
+                            salesCounts[formattedDate].paymentAmounts.motorcycle += paymentAmount;
+                            salesCounts[formattedDate].revenue += paymentAmount;
+                        }
+                    }
+                }
+
+                callback(salesCounts);
+            }, (error) => {
+                console.log('Error retrieving transactions: ', error);
+            });
+        }, (error) => {
+            console.log('Error retrieving payment settings: ', error);
+        });
+    }
+
+    calculateTotalSales((salesCounts) => {
+        console.log(salesCounts);
+        
+
+        const labels = Object.keys(salesCounts).slice(-7);
+        const salesCarData = [];
+        const salesMotorcycleData = [];
+        const combinedDiscountsData = [];
+
+        for (const date of labels) {
+            salesCarData.push(salesCounts[date].paymentAmounts.car);
+            salesMotorcycleData.push(salesCounts[date].paymentAmounts.motorcycle);
+            combinedDiscountsData.push(salesCounts[date].revenue - (salesCounts[date].paymentAmounts.motorcycle + salesCounts[date].paymentAmounts.car));
+        }
+
+        Line.data.labels = labels;
+        Line.data.datasets[0].data = combinedDiscountsData;
+        Line.data.datasets[1].data = salesCarData;
+        Line.data.datasets[2].data = salesMotorcycleData;
+
+        Line.update();
+    });
 
     </script>
     <!-- jQuery and Bootstrap JS -->
