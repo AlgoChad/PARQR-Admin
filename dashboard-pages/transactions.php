@@ -363,6 +363,36 @@ $data = array_reverse($dataRef)
                         durationText = `${durationInHours} hours ${durationInMinutes % 60} min`;
                     }
 
+                    let vehicleText;
+                    const vehicleTypeTable = {
+                        "car": "Car",
+                        "motorcycle": "Motorcycle"
+                    }
+
+                    for (const key in vehicleTypeTable) {
+                        if (key === info.vehicle_type) {
+                            vehicleText = vehicleTypeTable[key];
+                            break;
+                        }
+                    }
+
+                    let discountText;
+                    const discountsTable = {
+                        "pwd": "Pwd",
+                        "none": "None",
+                        "student": "Student",
+                        "pregnant": "Pregnant",
+                        "senior_citizen": "Senior Citizen",
+                    };
+
+                    for (const key in discountsTable) {
+                        if (key === discount) {
+                            discountText = discountsTable[key];
+                            break;
+                        }
+                    }
+
+
                     html = `<div style="display: flex; flex-direction: column; align-items: center; justify-content:-top:  center;">
                                     <img src="${profilePictureSrc}" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 100px; height: 100px; margin-top: 30px;">
                                     <span style="font-size: 24px; font-weight: bold; color: #213A5C; margin-top: 20px;">${name}</span>
@@ -376,6 +406,10 @@ $data = array_reverse($dataRef)
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                             <span style="font-size: 16px; color: gray;">Plate no</span>
                                             <span style="font-size: 16px; color: gray;">${plateNo}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: gray;">Vehcile Type</span>
+                                            <span style="font-size: 16px; color: gray;">${vehicleText}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                             <span style="font-size: 16px; color: gray;">Date</span>
@@ -399,7 +433,11 @@ $data = array_reverse($dataRef)
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                             <span style="font-size: 16px; color: gray;">Discount</span>
-                                            <span style="font-size: 16px; color: gray;">${discount}</span>
+                                            <span style="font-size: 16px; color: gray;">${discountText}</span>
+                                        </div>
+                                        <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
+                                            <span style="font-size: 16px; color: gray;">Payment Type</span>
+                                            <span style="font-size: 16px; color: gray;">${info.e_wallet ? 'E-wallet': 'Cash'}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
                                             <span style="font-size: 16px; color: gray;">Payment</span>

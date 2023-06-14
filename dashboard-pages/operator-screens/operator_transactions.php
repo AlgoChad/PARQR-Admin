@@ -333,6 +333,38 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                     } else {
                                                                         $durationText = "$durationInHours hours " . ($durationInMinutes % 60) . " min";
                                                                     }
+
+                                                                    $vehicleText;
+                                                                    $vehicleTypeTable = array(
+                                                                        "car" => "Car",
+                                                                        "motorcycle" => "Motorcycle"
+                                                                    );
+
+                                                                    foreach ($vehicleTypeTable as $key => $value) {
+                                                                        if ($key === $info["vehicle_type"]) {
+                                                                            $vehicleText = $value;
+                                                                            break;
+                                                                        }
+                                                                    }
+
+                                                                    $discountText;
+                                                                    $discountsTable = array(
+                                                                        "pwd" => "Pwd",
+                                                                        "none" => "None",
+                                                                        "student" => "Student",
+                                                                        "pregnant" => "Pregnant",
+                                                                        "senior_citizen" => "Senior Citizen"
+                                                                    );
+
+                                                                    foreach ($discountsTable as $key => $value) {
+                                                                        if ($key === $discount) {
+                                                                            $discountText = $value;
+                                                                            break;
+                                                                        }
+                                                                    }
+
+                                                                    $eWalletText = $info['e_wallet'] ? "E-wallet" : "Cash";
+
                                                                     echo '
                                                                     <div style="display: flex; flex-direction: column; align-items: center; justify-content:-top:  center;">
                                                                         <img src="'.$profilePictureSrc.'" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 100px; height: 100px; margin-top: 30px;">
@@ -347,6 +379,10 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                             <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                                                                 <span style="font-size: 16px; color: lightgray;">Plate no</span>
                                                                                 <span style="font-size: 16px; color: gray;">'.$plateNo.'</span>
+                                                                            </div>
+                                                                            <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
+                                                                                <span style="font-size: 16px; color: lightgray;">Vehicle Type</span>
+                                                                                <span style="font-size: 16px; color: gray;">'.$vehicleText.'</span>
                                                                             </div>
                                                                             <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                                                                 <span style="font-size: 16px; color: lightgray;">Date</span>
@@ -366,7 +402,11 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                             </div>
                                                                             <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
                                                                                 <span style="font-size: 16px; color: lightgray;">Discount</span>
-                                                                                <span style="font-size: 16px; color: gray;">'.$discount.'</span>
+                                                                                <span style="font-size: 16px; color: gray;">'.$discountText.'</span>
+                                                                            </div>
+                                                                            <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
+                                                                                <span style="font-size: 16px; color: lightgray;">Payment Type</span>
+                                                                                <span style="font-size: 16px; color: gray;">'.$eWalletText.'</span>
                                                                             </div>
                                                                             <div style="display: flex; flex-direction: row; margin-bottom: 20px; justify-content: space-between; width: 90%;">
                                                                                 <span style="font-size: 16px; color: lightgray;">Payment</span>
