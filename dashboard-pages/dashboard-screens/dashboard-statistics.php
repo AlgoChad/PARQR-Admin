@@ -767,7 +767,7 @@ if (!isset($_SESSION['user_id'])) {
             counter += discountCounts[i];
         }
         console.log(counter);
-        $('#total-users').text("Total Parks: " + counter);
+        $('#total-users').text("Total Parked Users: " + counter);
 
         HalfDonut.data.datasets[0].data = discountCounts;
         HalfDonut.update();
