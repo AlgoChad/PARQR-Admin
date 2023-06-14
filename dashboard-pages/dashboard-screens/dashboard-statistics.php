@@ -888,24 +888,13 @@ if (!isset($_SESSION['user_id'])) {
                             };
                         }
 
-                        const duration = transaction.duration || 0;
-                        let paymentAmount = parseInt(initialPayment);
-
-                        const durationInHours = Math.floor(duration / (60 * 60));
-                        const durationInMinutes = Math.floor((duration % 3600) / 60);
-
-                        const additionalHours = durationInHours - parseInt(initialHours);
-
-                        if (additionalHours > 0) {
-                            paymentAmount += additionalHours * parseInt(incrementalPayment);
-                        }
-
+                        
                         if (vehicleType === 'car') {
-                            salesCounts[formattedDate].paymentAmounts.car += paymentAmount;
-                            salesCounts[formattedDate].revenue += paymentAmount;
+                            salesCounts[formattedDate].paymentAmounts.car += transaction.payment;
+                            salesCounts[formattedDate].revenue += transaction.payment;
                         } else if (vehicleType === 'motorcycle') {
-                            salesCounts[formattedDate].paymentAmounts.motorcycle += paymentAmount;
-                            salesCounts[formattedDate].revenue += paymentAmount;
+                            salesCounts[formattedDate].paymentAmounts.motorcycle += transaction.payment;
+                            salesCounts[formattedDate].revenue += transaction.payment;
                         }
                     }
                 }
