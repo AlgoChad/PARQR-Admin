@@ -168,9 +168,9 @@ if (!isset($_SESSION['user_id'])) {
                                 <div style="display: flex; flex-direction: row; justify-content: space-between;">
                                     <h4>Total Summary of Parking Spaces</h4>
                                     <div id="barChartSettings" style="background-color: #f0f0f0; padding: 5px; border-radius: 15px;">
-                                        <button class="btn" id="weekBtn">Daily</button>
-                                        <button class="btn" id="monthBtn">Weekly</button>
-                                        <button class="btn" id="yearBtn">Monthly</button>
+                                        <button class="btn" id="weekBtn">Week</button>
+                                        <button class="btn" id="monthBtn">Month</button>
+                                        <button class="btn" id="yearBtn">Year</button>
                                         <button class="btn" id="customRangeBtn">Custom</button>
                                     </div>
                                     <dialog id="customRangeDialog" style="display: none; border: none; background-color: #f0f0f0; border-radius: 15px; ">
@@ -845,7 +845,7 @@ if (!isset($_SESSION['user_id'])) {
             Bar.data.datasets[2].data = vacantData;
 
             Bar.update();
-    });
+        });
     }
 
     function calculateTotalSales(callback) {
