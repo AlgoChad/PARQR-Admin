@@ -163,7 +163,7 @@ $data = array_reverse($dataRef)
                                 <div>
                                     <span>Transaction Type</span>
                                 </div>
-                                <div style="flex: 1.3;"></div>
+                                <div style="flex: 1.2;"></div>
                                 <div>
                                     <span>Discount</span>
                                 </div>
@@ -180,8 +180,8 @@ $data = array_reverse($dataRef)
                                     <span>Amount</span>
                                 </div>
                                 <div style="flex: 1;"></div>
-                                <div style="flex: 1;"></div>
-                                <div style="flex: 0.4;"></div>
+                                <div style="flex: 0.5;"></div>
+                                
                             </div>
                             <div style="overflow-y: scroll; height: calc(75vh);">
                                 <?php if ($dataRef !== null) : 
@@ -195,7 +195,7 @@ $data = array_reverse($dataRef)
                                             if (empty($searchQuery) || strpos($name, strtolower($searchQuery)) !== false) :
                                             ?>
                                             <div>
-                                                <div style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; padding: 10px; border-radius: 10px; background-color: #ebedf0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
+                                                <div class="btn" style="display: flex; flex-direction: row; justify-content: center; align-items: center; margin: 20px; padding: 10px; border-radius: 10px; background-color: #ebedf0; box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);">
                                                     <div>
                                                         <img src="<?php echo isset($info['profile_picture']) ? $info['profile_picture'] : '../assets/PARQR-White.png'; ?>" class="img-responsive" style="background-color: #213A5C; border-radius: 50%; width: 50px; height: 50px;">
                                                     </div>

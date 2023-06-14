@@ -334,14 +334,14 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                         $durationText = "$durationInHours hours " . ($durationInMinutes % 60) . " min";
                                                                     }
 
-                                                                    $vehicleText;
+                                                                    $vehicleText = 'Car';
                                                                     $vehicleTypeTable = array(
                                                                         "car" => "Car",
                                                                         "motorcycle" => "Motorcycle"
                                                                     );
 
                                                                     foreach ($vehicleTypeTable as $key => $value) {
-                                                                        if ($key === $info["vehicle_type"]) {
+                                                                        if ($key === isset($info["vehicle_type"])) {
                                                                             $vehicleText = $value;
                                                                             break;
                                                                         }
@@ -363,7 +363,7 @@ $database = $factory->withDatabaseUri('https://parqr-8d2fd-default-rtdb.asia-sou
                                                                         }
                                                                     }
 
-                                                                    $eWalletText = $info['e_wallet'] ? "E-wallet" : "Cash";
+                                                                    $eWalletText = isset($info['e_wallet']) ? "E-wallet" : "Cash";
 
                                                                     echo '
                                                                     <div style="display: flex; flex-direction: column; align-items: center; justify-content:-top:  center;">
