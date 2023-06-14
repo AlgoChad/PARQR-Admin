@@ -888,13 +888,21 @@ if (!isset($_SESSION['user_id'])) {
                             };
                         }
 
-                        
+                        const duration = transaction.duration || 0;
+                        let paymentAmount = parseInt(initialPayment);
+                        const durationInHours = Math.floor(duration / (60 * 60));
+                        const durationInMinutes = Math.floor((duration % 3600) / 60);
+                        const additionalHours = durationInHours - parseInt(initialHours);
+                        if (additionalHours > 0) {
+                            paymentAmount += additionalHours * parseInt(incrementalPayment);
+                        }
+
                         if (vehicleType === 'car') {
                             salesCounts[formattedDate].paymentAmounts.car += transaction.payment;
-                            salesCounts[formattedDate].revenue += transaction.payment;
+                            salesCounts[formattedDate].revenue += paymentAmount;
                         } else if (vehicleType === 'motorcycle') {
                             salesCounts[formattedDate].paymentAmounts.motorcycle += transaction.payment;
-                            salesCounts[formattedDate].revenue += transaction.payment;
+                            salesCounts[formattedDate].revenue += paymentAmount;
                         }
                     }
                 }
@@ -1043,7 +1051,7 @@ if (!isset($_SESSION['user_id'])) {
                 salesCarData.push(salesCounts[date].paymentAmounts.car);
                 salesMotorcycleData.push(salesCounts[date].paymentAmounts.motorcycle);
                 combinedDiscountsData.push(
-                    salesCounts[date].revenue - (salesCounts[date].paymentAmounts.motorcycle + salesCounts[date].paymentAmounts.car)
+                    Math.max(salesCounts[date].revenue - (salesCounts[date].paymentAmounts.motorcycle + salesCounts[date].paymentAmounts.car), 0)
                 );
             }
 
