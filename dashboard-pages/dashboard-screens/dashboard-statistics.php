@@ -889,9 +889,10 @@ if (!isset($_SESSION['user_id'])) {
 
                         const duration = transaction.duration || 0;
                         let paymentAmount = parseInt(initialPayment);
-                        const durationInHours = Math.floor(duration / (60 * 60));
-                        const durationInMinutes = Math.floor((duration % 3600) / 60);
+                        const durationInHours = Math.ceil(duration / (60 * 60));
+                        const durationInMinutes = Math.ceil((durationInHours % 3600) / 60);
                         const additionalHours = durationInHours - parseInt(initialHours);
+
                         if (additionalHours > 0) {
                             paymentAmount += additionalHours * parseInt(incrementalPayment);
                         }
