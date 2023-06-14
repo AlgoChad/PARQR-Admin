@@ -192,7 +192,6 @@ if (!isset($_SESSION['user_id'])) {
                                 <span style="flex: 1.5;">Start Time</span>
                                 <span style="flex: 1.5;">Duration</span>
                                 <span style="flex: 0.8;">Fee</span>
-                                
                             </div>
                             <div id="list" style="overflow-y: scroll; height: calc(30vh); padding: 10px;"></div>
                             <a class="btn" style="width: 100%; align-items: center; color: white; background-color: #213A5C; padding: 10px; margin-top: 10px;" href="dashboard-statistics-table.php">Full View</a>
