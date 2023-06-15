@@ -408,7 +408,7 @@ $data = array_reverse($dataRef)
                                             <span style="font-size: 16px; color: gray;">${plateNo}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
-                                            <span style="font-size: 16px; color: gray;">Vehcile Type</span>
+                                            <span style="font-size: 16px; color: gray;">Vehicle Type</span>
                                             <span style="font-size: 16px; color: gray;">${vehicleText}</span>
                                         </div>
                                         <div style="display: flex; flex-direction: row; margin-bottom: 15px; justify-content: space-between; width: 90%;">
